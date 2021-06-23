@@ -24,29 +24,26 @@
                     <router-link to="/home" class="nav-link">Home</router-link>
                   </li>
                   <li class="nav-item">
-                    <router-link to="/" class="nav-link">API Library</router-link>
+                    <router-link to="/home" class="nav-link">API Library</router-link>
                   </li>
                   <li class="nav-item">
-                    <router-link to="/" class="nav-link">Blog</router-link>
+                    <router-link to="/home" class="nav-link">Blog</router-link>
                   </li>
                   <li class="nav-item submenu dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
                        aria-haspopup="true" aria-expanded="false">Pages</a>
                     <ul class="dropdown-menu">
                       <li class="nav-item">
-                        <router-link to="/qa" class="nav-link">Upload Knowledges</router-link>
+                        <router-link to="/qa" class="nav-link">Upload Knowledges</router-link></li>
                       <li class="nav-item">
-                        <router-link to="/knowledge" class="nav-link">List Knowledges</router-link>
-                      <li class="nav-item">
-                        <a class="nav-link" href="elements.html">Elements</a>
-                      </li>
+                        <router-link to="/knowledge" class="nav-link">List Knowledges</router-link></li>
                     </ul>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="contact.html">Contact</a>
+                    <router-link to="/home" class="nav-link">Contact</router-link>
                   </li>
                   <li class="nav-item">
-                    <router-link to="/login" class="nav-link"><i class="fa fa-user"/>&nbsp;My Account</router-link>
+                    <router-link to="/home" class="nav-link"><i class="fa fa-user"/>&nbsp;My Account</router-link>
                   </li>
                   <li class="nav-item">
                     <router-link to="/" class="nav-link">Logout</router-link>
