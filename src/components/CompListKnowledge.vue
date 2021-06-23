@@ -6,10 +6,10 @@
       <div class="banner_inner d-flex align-items-center">
         <div class="container">
           <div class="banner_content text-center">
-            <h2>List Knowledges</h2>
+            <h2>List Knowledge</h2>
             <div class="page_link">
               <router-link to="/home">Home</router-link>
-              <router-link to="/knowledge">List Knowledges</router-link>
+              <router-link to="/knowledge">List Knowledge</router-link>
             </div>
           </div>
         </div>
@@ -44,7 +44,7 @@ import CompHeaderLogin from "./CompHeaderLogin";
 import CompFooter from "./CompFooter";
 
 export default {
-  name: 'CompListKnowledges',
+  name: 'CompListKnowledge',
   components: {
     CompHeaderLogin, CompFooter
   },

@@ -6,10 +6,10 @@
       <div class="banner_inner d-flex align-items-center">
         <div class="container">
           <div class="banner_content text-center">
-            <h2>Upload Knowledges</h2>
+            <h2>Upload Knowledge</h2>
             <div class="page_link">
               <router-link to="/home">Home</router-link>
-              <router-link to="/qa">Upload Knowledges</router-link>
+              <router-link to="/knowledge">Upload Knowledge</router-link>
             </div>
           </div>
         </div>
@@ -66,7 +66,7 @@ import CompFooter from "./CompFooter";
 
 export default {
 
-  name: "CompUploadKnowledges",
+  name: "CompUploadKnowledge",
   components: {
     CompHeaderLogin, CompFooter
   },
@@ -107,7 +107,7 @@ export default {
         Make the request to the POST /select-files URL
       */
       const axios = require('axios');
-      axios.put('http://localhost:1323/qa',
+      axios.put('http://localhost:1323/knowledge',
         formData,
         {
           headers: {

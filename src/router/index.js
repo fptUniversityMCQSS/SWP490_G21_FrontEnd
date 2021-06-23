@@ -4,8 +4,9 @@ import CompLogin from "../components/CompLogin";
 import CompRegister from "../components/CompRegister";
 import CompIndex from "../components/CompIndex";
 import CompHome from "../components/CompHome";
-import CompListKnowledges from "../components/CompListKnowledges";
-import CompUploadKnowledges from "../components/CompUploadKnowledges";
+import CompListKnowledge from "../components/CompListKnowledge";
+import CompUploadKnowledge from "../components/CompUploadKnowledge";
+import CompQA from "../components/CompQA";
 
 Vue.use(Router)
 
@@ -18,13 +19,19 @@ export default new Router({
     },
     {
       path: '/knowledge',
-      component: CompListKnowledges,
+      component: CompListKnowledge,
       meta:{title:'Knowledge'}
+    },
+
+    {
+      path: '/knowledge/upload',
+      component: CompUploadKnowledge,
+      meta:{title:'Upload Knowledge'}
     },
     {
       path: '/qa',
-      component: CompUploadKnowledges,
-      meta:{title:'Knowledge'}
+      component: CompQA,
+      meta:{title:'Question & Answer'}
     },
     {
       path: '/home',
