@@ -42,7 +42,7 @@
                          v-model="username">
                 </div>
                 <div class="col-md-12 form-group">
-                  <input type="text" class="form-control" name="password" placeholder="Password"
+                  <input type="password" class="form-control" name="password" placeholder="Password"
                          v-model="password">
                 </div>
                 <div class="col-md-12 form-group">

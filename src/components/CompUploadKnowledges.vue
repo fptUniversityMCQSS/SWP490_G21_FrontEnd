@@ -44,6 +44,7 @@ export default {
       Submits files to the server
     */
     submitFiles(){
+      const sess = this;
       /*
         Initialize the form data
       */
@@ -60,12 +61,12 @@ export default {
       /*
         Make the request to the POST /select-files URL
       */
-      axios.post( 'http://localhost:1323/qa',
+      axios.put( 'http://localhost:1323/qa',
         formData,
         {
           headers: {
             'Content-Type': 'multipart/form-data',
-            'Authorization': 'Bearer ' + localStorage.getItem("token")
+            'Authorization': 'Bearer ' + sess.$session.get('token')
           }
         }
       ).then(function(){
