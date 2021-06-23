@@ -6,10 +6,10 @@
       <div class="banner_inner d-flex align-items-center">
         <div class="container">
           <div class="banner_content text-center">
-            <h2>Upload Knowledges</h2>
+            <h2>Question and Answer</h2>
             <div class="page_link">
               <router-link to="/home">Home</router-link>
-              <router-link to="/qa">Upload Knowledges</router-link>
+              <router-link to="/q&a">Question and Answer</router-link>
             </div>
           </div>
         </div>
@@ -36,6 +36,8 @@
       <br>
       <b-button variant="outline-secondary" class="btnUpload" v-on:click="submitFiles()">Upload</b-button>
     </div>
+
+
     <comp-footer/>
   </div>
 </template>
@@ -47,7 +49,7 @@ import CompFooter from "./CompFooter";
 
 export default {
 
-  name: "CompUploadKnowledges",
+  name: "CompQA",
   components: {
     CompHeaderLogin, CompFooter
   },

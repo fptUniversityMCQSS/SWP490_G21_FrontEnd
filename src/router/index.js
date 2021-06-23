@@ -6,6 +6,7 @@ import CompIndex from "../components/CompIndex";
 import CompHome from "../components/CompHome";
 import CompListKnowledges from "../components/CompListKnowledges";
 import CompUploadKnowledges from "../components/CompUploadKnowledges";
+import CompQA from "../components/CompQA";
 
 Vue.use(Router)
 
@@ -40,6 +41,11 @@ export default new Router({
       path: '/register',
       component: CompRegister,
       meta:{title:'Register'}
+    },
+    {
+      path: '/q&a',
+      component: CompQA,
+      meta:{title:'Question and Answer'}
     }
   ]
 })

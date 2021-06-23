@@ -37,6 +37,8 @@
                         <router-link to="/qa" class="nav-link">Upload Knowledges</router-link></li>
                       <li class="nav-item">
                         <router-link to="/knowledge" class="nav-link">List Knowledges</router-link></li>
+                      <li class="nav-item">
+                        <router-link to="/q&a" class="nav-link">Question and Answer</router-link></li>
                     </ul>
                   </li>
                   <li class="nav-item">
