@@ -39,7 +39,7 @@
       <div class="row py-5">
         <div class="col-lg-10 mx-auto">
           <div class="card rounded shadow border-0">
-            <div class="titleTable">Table List Knowledges</div>
+            <div class="ttable">Table List Knowledges</div>
             <div class="card-body p-5 bg-white rounded">
               <div class="table-responsive">
                 <table id="example" style="width:100%" class="table table-striped table-bordered">
@@ -100,7 +100,7 @@ export default {
 </script>
 
 <style scoped>
-.titleTable {
+.ttable {
   text-align: center;
   font-weight: bold;
   font-size: 23px;
