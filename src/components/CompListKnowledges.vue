@@ -1,35 +1,60 @@
 <template>
-  <div id="app">
-    {{info}}
-    <table class="table">
-      <thead>
-      <tr>
-        <th scope="col">Name</th>
-        <th scope="col">Date</th>
-        <th scope="col">Username</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr v-for="data in info" :key="data.id" >
-        <td>{{data.Name}}</td>
-        <td>{{data.Date}}</td>
-        <td>{{data.Username}}</td>
-      </tr>
-      </tbody>
-    </table>
+  <div>
+    <comp-header-login/>
+    <!--================Home Banner Area =================-->
+    <section class="banner_area">
+      <div class="banner_inner d-flex align-items-center">
+        <div class="container">
+          <div class="banner_content text-center">
+            <h2>List Knowledges</h2>
+            <div class="page_link">
+              <router-link to="/home">Home</router-link>
+              <router-link to="/knowledge">List Knowledges</router-link>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!--================End Home Banner Area =================-->
+
+    <!--    <table class="table">-->
+    <!--      <thead>-->
+    <!--      <tr>-->
+    <!--        <th scope="col">Name</th>-->
+    <!--        <th scope="col">Date</th>-->
+    <!--        <th scope="col">Username</th>-->
+    <!--      </tr>-->
+    <!--      </thead>-->
+    <!--      <tbody>-->
+    <!--      <tr v-for="data in info" :key="data.id">-->
+    <!--        <td>{{ data.Name}}</td>-->
+    <!--        <td>{{ data.Date}}</td>-->
+    <!--        <td>{{ data.Username}}</td>-->
+    <!--      </tr>-->
+    <!--      </tbody>-->
+    <!--    </table>-->
     <b-table striped hover :items="info"></b-table>
+
+    <comp-footer/>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
+import CompHeaderLogin from "./CompHeaderLogin";
+import CompFooter from "./CompFooter";
+
 export default {
   name: 'CompListKnowledges',
-  data() { return {
-    info: null,
-  }
+  components: {
+    CompHeaderLogin, CompFooter
   },
-  created () {
+  data() {
+    return {
+      info: null,
+    }
+  },
+  created() {
+    const axios = require('axios');
     axios
       .get('http://localhost:1323/knowledge')
       // .get('https://api.coindesk.com/v1/bpi/currentprice.json')
