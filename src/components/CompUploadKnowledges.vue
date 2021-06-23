@@ -17,22 +17,22 @@
     </section>
     <!--================End Home Banner Area =================-->
 
-<!--        <div class="large-12 medium-12 small-12 cell">-->
-<!--          <label>Files-->
-<!--            <input type="file" name="file" id="file" ref="file" multiple v-on:change="handleFilesUpload()"/>-->
-<!--          </label>-->
-<!--        </div>-->
-<!--        <div class="large-12 medium-12 small-12 cell">-->
-<!--          {{ fileName }}-->
-<!--        </div>-->
-<!--        <br>-->
-<!--        <div class="large-12 medium-12 small-12 cell">-->
-<!--          <button v-on:click="addFiles()">Add Files</button>-->
-<!--        </div>-->
-<!--        <br>-->
-<!--        <div class="large-12 medium-12 small-12 cell">-->
-<!--          <button v-on:click="submitFiles()">Submit</button>-->
-<!--        </div>-->
+    <!--        <div class="large-12 medium-12 small-12 cell">-->
+    <!--          <label>Files-->
+    <!--            <input type="file" name="file" id="file" ref="file" multiple v-on:change="handleFilesUpload()"/>-->
+    <!--          </label>-->
+    <!--        </div>-->
+    <!--        <div class="large-12 medium-12 small-12 cell">-->
+    <!--          {{ fileName }}-->
+    <!--        </div>-->
+    <!--        <br>-->
+    <!--        <div class="large-12 medium-12 small-12 cell">-->
+    <!--          <button v-on:click="addFiles()">Add Files</button>-->
+    <!--        </div>-->
+    <!--        <br>-->
+    <!--        <div class="large-12 medium-12 small-12 cell">-->
+    <!--          <button v-on:click="submitFiles()">Submit</button>-->
+    <!--        </div>-->
 
     <div class="wrapper">
       <div class="cont">
@@ -51,7 +51,7 @@
         </div>
       </div>
       <br>
-      <b-button variant="outline-secondary" v-on:click="submitFiles()">Upload</b-button>
+      <b-button variant="outline-secondary" class="btnUpload" v-on:click="submitFiles()">Upload</b-button>
     </div>
 
 
@@ -209,5 +209,14 @@ h1 {
 .icons {
   color: #95afc0;
   opacity: 0.55;
+}
+
+.btnUpload {
+  width: 100px;
+  border: solid 2px;
+}
+
+.btnUpload:hover {
+  background-color: #0c63e4;
 }
 </style>
