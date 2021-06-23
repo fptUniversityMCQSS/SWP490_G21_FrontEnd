@@ -2,12 +2,6 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
-import router from './router'
-import VueAxios from 'vue-axios'
-import VueSession from "vue-session";
-import axios from "axios"
-import {BootstrapVue, IconsPlugin} from 'bootstrap-vue'
-
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
@@ -35,7 +29,14 @@ import './assets/vendors/counter-up/jquery.counterup.js'
 import './assets/vendors/lightbox/simpleLightbox.min'
 import './assets/js/theme.js'
 
-Vue.use(BootstrapVue, IconsPlugin, axios, VueAxios)
+import router from './router'
+import VueAxios from 'vue-axios'
+import VueSession from "vue-session"
+import axios from "axios"
+import {BootstrapVue, IconsPlugin} from "bootstrap-vue"
+import VueMeta from "vue-meta"
+
+Vue.use(BootstrapVue, IconsPlugin, axios, VueAxios, VueMeta)
 const options = {
   persist: true
 }

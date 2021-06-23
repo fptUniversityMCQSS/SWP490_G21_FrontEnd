@@ -18,23 +18,28 @@ export default new Router({
     },
     {
       path: '/knowledge',
-      component: CompListKnowledges
+      component: CompListKnowledges,
+      meta:{title:'Knowledge'}
     },
     {
       path: '/qa',
-      component: CompUploadKnowledges
+      component: CompUploadKnowledges,
+      meta:{title:'Knowledge'}
     },
     {
       path: '/home',
-      component: CompHome
+      component: CompHome,
+      meta:{title:'Home'}
     },
     {
       path: '/login',
-      component: CompLogin
+      component: CompLogin,
+      meta:{title:'Login'}
     },
     {
       path: '/register',
-      component: CompRegister
+      component: CompRegister,
+      meta:{title:'Register'}
     }
   ]
 })

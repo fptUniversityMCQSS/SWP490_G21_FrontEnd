@@ -6,25 +6,6 @@
         <div class="float-left">
           <p>Call Us: 012 44 5698 7456 896</p>
         </div>
-        <div class="float-right">
-          <ul class="right_side">
-            <li>
-              <router-link to="/login">
-                Login/Register
-              </router-link>
-            </li>
-            <li>
-              <a href="#">
-                My Account
-              </a>
-            </li>
-            <li>
-              <a href="contact.html">
-                Contact Us
-              </a>
-            </li>
-          </ul>
-        </div>
       </div>
     </div>
     <div class="main_menu">
@@ -37,7 +18,7 @@
           <!-- Collect the nav links, forms, and other content for toggling -->
           <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
             <div class="row w-100">
-              <div class="col-lg-7 pr-0">
+              <div class="col-lg-11 pr-0">
                 <ul class="nav navbar-nav center_nav pull-right">
                   <li class="nav-item">
                     <router-link to="/home" class="nav-link">Home</router-link>
@@ -64,16 +45,11 @@
                   <li class="nav-item">
                     <a class="nav-link" href="contact.html">Contact</a>
                   </li>
-                </ul>
-              </div>
-
-              <div class="col-lg-5">
-                <ul class="nav navbar-nav center_nav pull-right">
                   <li class="nav-item">
                     <router-link to="/login" class="nav-link"><i class="fa fa-user"/>&nbsp;My Account</router-link>
                   </li>
                   <li class="nav-item">
-                    <router-link to="/login" class="nav-link">Logout</router-link>
+                    <router-link to="/" class="nav-link">Logout</router-link>
                   </li>
                 </ul>
               </div>

@@ -42,7 +42,7 @@
                          v-model="username">
                 </div>
                 <div class="col-md-12 form-group">
-                  <input type="password" class="form-control" name="password" placeholder="Password"
+                  <input type="text" class="form-control" name="password" placeholder="Password"
                          v-model="password">
                 </div>
                 <div class="col-md-12 form-group">
@@ -116,7 +116,7 @@ export default {
   },
   methods: {
     loginData() {
-      const sess = this;
+      const self = this;
       const axios = require('axios');
       const FormData = require('form-data');
       const form = new FormData();
@@ -126,9 +126,10 @@ export default {
 
         .then(function (response) {
           if (response.status === 200) {
-            sess.$session.start()
-            sess.$session.set('token', response.data.token)
-            console.log("return", sess.$session.get('token'))
+            self.$session.start()
+            self.$session.set('token', response.data.token)
+            console.log("return", self.$session.get('token'))
+            self.$router.push('/home');
           }
         }, function (err) {
           console.log('err', err)
