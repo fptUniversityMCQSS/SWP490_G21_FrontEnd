@@ -22,11 +22,10 @@
         <h1>Upload a file</h1>
         <div class="upload-container">
           <div class="border-container">
-            <div class="icons fa-4x">
-              <i class="fas fa-file-image" data-fa-transform="shrink-3 down-2 left-6 rotate--45"></i>
-              <i class="fas fa-file-alt" data-fa-transform="shrink-2 up-4"></i>
-              <i class="fas fa-file-pdf" data-fa-transform="shrink-3 down-2 right-6 rotate-45"></i>
-            </div>
+            <p>To make this feature available,
+              your file must be in the correct format. You can check out <a href="../../static/QB_SWT391_BanTQ.doc"
+                                                                            download="The_sample_doc"><u>the sample
+                format</u></a></p>
             <!--<input type="file" id="file-upload">-->
             <p>Drag and drop files here, or
               <input type="file" name="file" id="file" ref="file" multiple v-on:change="handleFilesUpload()"/></p>
@@ -36,7 +35,6 @@
       <br>
       <b-button variant="outline-secondary" class="btnUpload" v-on:click="submitFiles()">Upload</b-button>
     </div>
-
 
     <comp-footer/>
   </div>
@@ -133,9 +131,6 @@ body {
   background-color: #f9f9f9;
   padding: 20px;
   border-radius: 10px;
-  /*border: 0.5px solid rgba(130, 130, 130, 0.25);*/
-  /*box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1),
-              0 0 0 1px rgba(0, 0, 0, 0.1);*/
 }
 
 h1 {
@@ -154,7 +149,6 @@ h1 {
 
 .border-container {
   border: 5px dashed rgba(198, 198, 198, 0.65);
-  /*   border-radius: 4px; */
   padding: 20px;
 }
 
@@ -166,22 +160,6 @@ h1 {
   margin-top: 30px;
   margin-bottom: 0;
   opacity: 0.65;
-}
-
-#file-browser {
-  text-decoration: none;
-  color: rgb(22, 42, 255);
-  border-bottom: 3px dotted rgba(22, 22, 255, 0.85);
-}
-
-#file-browser:hover {
-  color: rgb(0, 0, 255);
-  border-bottom: 3px dotted rgba(0, 0, 255, 0.85);
-}
-
-.icons {
-  color: #95afc0;
-  opacity: 0.55;
 }
 
 .btnUpload {
