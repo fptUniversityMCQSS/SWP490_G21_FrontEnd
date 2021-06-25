@@ -6,10 +6,10 @@
       <div class="banner_inner d-flex align-items-center">
         <div class="container">
           <div class="banner_content text-center">
-            <h2>Question & Answer</h2>
+            <h2>Question and Answer</h2>
             <div class="page_link">
               <router-link to="/home">Home</router-link>
-              <router-link to="/qa">Question & Answer</router-link>
+              <router-link to="/q&a">Question and Answer</router-link>
             </div>
           </div>
         </div>
@@ -34,7 +34,7 @@
         </div>
       </div>
       <br>
-      <b-button variant="outline-secondary" v-on:click="submitFiles()">Upload</b-button>
+      <b-button variant="outline-secondary" class="btnUpload" v-on:click="submitFiles()">Upload</b-button>
     </div>
 
 
@@ -78,17 +78,7 @@ export default {
       */
       let formData = new FormData();
       formData.append('file', this.files)
-      /*
-        Iteate over any file sent over appending the files
-        to the form data.
-      */
-      // for( var i = 0; i < this.files.length; i++ ){
-      //   let file = this.files[i];
-      //   formData.append('files[' + i + ']', file);
-      // }
-      /*
-        Make the request to the POST /select-files URL
-      */
+
       const axios = require('axios');
       axios.put('http://localhost:1323/qa',
         formData,
@@ -192,5 +182,14 @@ h1 {
 .icons {
   color: #95afc0;
   opacity: 0.55;
+}
+
+.btnUpload {
+  width: 100px;
+  border: solid 2px;
+}
+
+.btnUpload:hover {
+  background-color: #0c63e4;
 }
 </style>

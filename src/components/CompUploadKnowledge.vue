@@ -17,23 +17,6 @@
     </section>
     <!--================End Home Banner Area =================-->
 
-<!--        <div class="large-12 medium-12 small-12 cell">-->
-<!--          <label>Files-->
-<!--            <input type="file" name="file" id="file" ref="file" multiple v-on:change="handleFilesUpload()"/>-->
-<!--          </label>-->
-<!--        </div>-->
-<!--        <div class="large-12 medium-12 small-12 cell">-->
-<!--          {{ fileName }}-->
-<!--        </div>-->
-<!--        <br>-->
-<!--        <div class="large-12 medium-12 small-12 cell">-->
-<!--          <button v-on:click="addFiles()">Add Files</button>-->
-<!--        </div>-->
-<!--        <br>-->
-<!--        <div class="large-12 medium-12 small-12 cell">-->
-<!--          <button v-on:click="submitFiles()">Submit</button>-->
-<!--        </div>-->
-
     <div class="wrapper">
       <div class="cont">
         <h1>Upload a file</h1>
@@ -51,10 +34,8 @@
         </div>
       </div>
       <br>
-      <b-button variant="outline-secondary" v-on:click="submitFiles()">Upload</b-button>
+      <b-button variant="outline-secondary" class="btnUpload" v-on:click="submitFiles()">Upload</b-button>
     </div>
-
-
     <comp-footer/>
   </div>
 </template>
@@ -95,17 +76,7 @@ export default {
       */
       let formData = new FormData();
       formData.append('file', this.files)
-      /*
-        Iteate over any file sent over appending the files
-        to the form data.
-      */
-      // for( var i = 0; i < this.files.length; i++ ){
-      //   let file = this.files[i];
-      //   formData.append('files[' + i + ']', file);
-      // }
-      /*
-        Make the request to the POST /select-files URL
-      */
+
       const axios = require('axios');
       axios.put('http://localhost:1323/knowledge',
         formData,
@@ -209,5 +180,14 @@ h1 {
 .icons {
   color: #95afc0;
   opacity: 0.55;
+}
+
+.btnUpload {
+  width: 100px;
+  border: solid 2px;
+}
+
+.btnUpload:hover {
+  background-color: #0c63e4;
 }
 </style>
