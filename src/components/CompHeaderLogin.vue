@@ -34,11 +34,11 @@
                        aria-haspopup="true" aria-expanded="false">Pages</a>
                     <ul class="dropdown-menu">
                       <li class="nav-item">
-                        <router-link to="/qa" class="nav-link">Upload Knowledges</router-link></li>
+                        <router-link to="/knowledge/upload" class="nav-link">Upload Knowledges</router-link></li>
                       <li class="nav-item">
                         <router-link to="/knowledge" class="nav-link">List Knowledges</router-link></li>
                       <li class="nav-item">
-                        <router-link to="/q&a" class="nav-link">Question and Answer</router-link></li>
+                        <router-link to="/qa" class="nav-link">Question and Answer</router-link></li>
                     </ul>
                   </li>
                   <li class="nav-item">
