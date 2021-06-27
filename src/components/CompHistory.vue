@@ -46,18 +46,19 @@
         </div>
       </div>
     </div>
-
+    <comp-back-to-top/>
     <comp-footer/>
   </div>
 </template>
 <script>
 import CompHeaderLogin from "./CompHeaderLogin";
 import CompFooter from "./CompFooter";
+import CompBackToTop from "./CompBackToTop";
 
 export default {
   name: "CompHistory",
   components: {
-    CompHeaderLogin, CompFooter
+    CompHeaderLogin, CompFooter, CompBackToTop
   },
   data() {
     return {

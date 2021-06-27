@@ -36,6 +36,7 @@
       <b-button variant="outline-secondary" class="btnUpload" v-on:click="submitFiles()">Upload</b-button>
     </div>
 
+    <comp-back-to-top/>
     <comp-footer/>
   </div>
 </template>
@@ -44,12 +45,13 @@
 
 import CompHeaderLogin from "./CompHeaderLogin";
 import CompFooter from "./CompFooter";
+import CompBackToTop from "./CompBackToTop";
 
 export default {
 
   name: "CompQA",
   components: {
-    CompHeaderLogin, CompFooter
+    CompHeaderLogin, CompFooter, CompBackToTop
   },
   data() {
     return {
@@ -174,7 +176,7 @@ h1 {
   text-align: center;
 }
 
-.btnUpload:hover{
+.btnUpload:hover {
   border: none;
   outline: none;
   background-color: #229bebad

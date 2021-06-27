@@ -54,17 +54,19 @@
     </section>
     <!--================ End Subscription Area ================-->
 
+    <comp-back-to-top/>
     <comp-footer/>
   </div>
 </template>
 <script>
 import CompHeaderLogin from "./CompHeaderLogin";
 import CompFooter from "./CompFooter";
+import CompBackToTop from "./CompBackToTop";
 
 export default {
   name: "CompHome",
   components: {
-    CompHeaderLogin, CompFooter
+    CompHeaderLogin, CompFooter, CompBackToTop
   },
   metaInfo: {
     title: 'Home'

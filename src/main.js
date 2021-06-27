@@ -33,10 +33,10 @@ import router from './router'
 import VueAxios from 'vue-axios'
 import VueSession from "vue-session"
 import axios from "axios"
-import {BootstrapVue} from "bootstrap-vue"
-import {BootstrapVueIcons} from 'bootstrap-vue'
+import {BootstrapVue, BootstrapVueIcons} from "bootstrap-vue"
 import VueMeta from "vue-meta"
 import 'bootstrap-vue/dist/bootstrap-vue-icons.min.css'
+import BackToTop from './components/CompBackToTop'
 
 Vue.use(BootstrapVue, axios, VueAxios, VueMeta)
 Vue.use(BootstrapVueIcons)
@@ -45,6 +45,9 @@ const options = {
 }
 
 Vue.use(VueSession, options)
+BackToTop.install = function (Vue, options) {
+  Vue.component(BackToTop.name, BackToTop)
+}
 
 Vue.config.productionTip = false
 

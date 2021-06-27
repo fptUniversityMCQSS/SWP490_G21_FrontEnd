@@ -102,18 +102,19 @@
     </section>
     <!--================ End Subscription Area ================-->
 
+    <comp-back-to-top/>
     <comp-footer/>
-
   </div>
 </template>
 
 <script>
 import CompHeader from "./CompHeader";
 import CompFooter from "./CompFooter";
+import CompBackToTop from "./CompBackToTop";
 
 export default {
   name: "CompLogin",
-  components: {CompFooter, CompHeader},
+  components: {CompFooter, CompHeader, CompBackToTop},
   data() {
     return {
       username: '',
