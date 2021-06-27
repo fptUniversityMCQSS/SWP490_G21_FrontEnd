@@ -25,10 +25,10 @@
             <div class="login_box_img">
               <img class="img-fluid" src="../assets/img/login.jpg" alt="">
               <div class="hover">
-                <h4>New to our website?</h4>
+                <h4>You already have an account?</h4>
                 <p>There are advances being made in science and technology everyday, and a good example of this is
                   the</p>
-                <a class="main_btn" href="#">Create an Account</a>
+                <router-link to="/login" class="main_btn">Login</router-link>
               </div>
             </div>
           </div>

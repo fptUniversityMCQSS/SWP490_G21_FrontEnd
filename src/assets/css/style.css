@@ -717,7 +717,8 @@ a:hover, a:focus {
 }
 
 .banner_area .banner_inner .banner_content .page_link a {
-  font-size: 14px;
+  font-size: 15px;
+  font-weight: 600;
   color: #ffffff;
   font-family: "Roboto", sans-serif;
   margin-right: 32px;

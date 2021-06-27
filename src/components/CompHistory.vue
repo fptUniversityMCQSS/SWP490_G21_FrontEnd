@@ -6,10 +6,10 @@
       <div class="banner_inner d-flex align-items-center">
         <div class="container">
           <div class="banner_content text-center">
-            <h2>List Knowledge</h2>
+            <h2>History Question & Answer</h2>
             <div class="page_link">
               <router-link to="/home">Home</router-link>
-              <router-link to="/knowledge">List Knowledge</router-link>
+              <router-link to="/history">History Question & Answer</router-link>
             </div>
           </div>
         </div>
@@ -21,7 +21,7 @@
       <div class="row py-5">
         <div class="col-lg-10 mx-auto">
           <div class="card rounded shadow border-0">
-            <div class="tableTl">Table List Knowledges</div>
+            <div class="tableTl">Table List history</div>
             <div class="card-body p-5 bg-white rounded">
               <div class="table-responsive">
                 <table id="example" style="width:100%" class="table table-striped table-bordered">
@@ -29,14 +29,14 @@
                   <tr>
                     <th>Name</th>
                     <th>Date</th>
-                    <th>Username</th>
                   </tr>
                   </thead>
                   <tbody>
-                  <tr v-for="data in info" :key="data.id">
-                    <td>{{ data.knowledgeName }}</td>
-                    <td>{{ data.knowledgeDate }}</td>
-                    <td>{{ data.Username }}</td>
+                  <tr v-for="item in items" :key="item.title">
+                    <td>
+                      <router-link to="/history/detail">{{ item.title }}</router-link>
+                    </td>
+                    <td>{{ item.date }}</td>
                   </tr>
                   </tbody>
                 </table>
@@ -50,31 +50,40 @@
     <comp-footer/>
   </div>
 </template>
-
 <script>
 import CompHeaderLogin from "./CompHeaderLogin";
 import CompFooter from "./CompFooter";
 
 export default {
-  name: 'CompListKnowledge',
+  name: "CompHistory",
   components: {
     CompHeaderLogin, CompFooter
   },
   data() {
     return {
-      info: null,
+      items: [
+        {
+          title: 'History 1',
+          date: '10/06/2021'
+        },
+        {
+          title: 'History 2',
+          date: '11/06/2021'
+        },
+        {
+          title: 'History 3',
+          date: '12/06/2021'
+        },
+        {
+          title: 'History 4',
+          date: '13/06/2021'
+        },
+        {
+          title: 'History 5',
+          date: '14/06/2021'
+        }
+      ]
     }
-  },
-  created() {
-    const axios = require('axios');
-    axios
-      .get('http://localhost:1323/knowledge')
-      .then(response => {
-        this.info = response.data
-      })
-      .catch(error => {
-        console.log(error)
-      })
   }
 }
 </script>

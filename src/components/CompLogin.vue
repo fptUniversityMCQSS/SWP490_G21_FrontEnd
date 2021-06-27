@@ -42,8 +42,14 @@
                          v-model="username">
                 </div>
                 <div class="col-md-12 form-group">
-                  <input type="password" class="form-control" name="password" placeholder="Password"
+                  <input v-bind:type="[showPassword ? 'text' : 'password']" class="form-control" name="password"
+                         placeholder="Password"
                          v-model="password">
+                  <div class="input-group-append">
+                    <span class="input-group-text" @click="showPassword = !showPassword" style="margin-left: 315px">
+                        <i class="fa" :class="[showPassword ? 'fa-eye' : 'fa-eye-slash']" aria-hidden="true"></i>
+                    </span>
+                  </div>
                 </div>
                 <div class="col-md-12 form-group">
                   <div class="creat_account">
@@ -111,7 +117,8 @@ export default {
   data() {
     return {
       username: '',
-      password: ''
+      password: '',
+      showPassword: false
     }
   },
   methods: {
@@ -134,18 +141,6 @@ export default {
         }, function (err) {
           console.log('err', err)
         })
-
-      //   if (response.status === 200) {
-      //     localStorage.setItem("token", response.data.token)
-      //     console.log("return", localStorage.getItem("token"))
-      //     const router = new Router({
-      //       mode: "history"
-      //     })
-      //     router.push('/home');
-      //   }
-      // }, function (err) {
-      //   console.log('err', err)
-      // })
     }
   }
 }

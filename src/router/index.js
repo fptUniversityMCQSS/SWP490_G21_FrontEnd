@@ -7,6 +7,8 @@ import CompHome from "../components/CompHome";
 import CompListKnowledge from "../components/CompListKnowledge";
 import CompUploadKnowledge from "../components/CompUploadKnowledge";
 import CompQA from "../components/CompQA";
+import CompHistory from "../components/CompHistory";
+import CompHistoryDetail from "../components/CompHistoryDetail";
 
 Vue.use(Router)
 
@@ -47,6 +49,19 @@ export default new Router({
       path: '/register',
       component: CompRegister,
       meta:{title:'Register'}
+    },
+    {
+      path: '/history',
+      component: CompHistory,
+      meta:{title:'History'}
+    },
+    {
+      path: '/history/detail',
+      component: CompHistoryDetail,
+      meta:{title:'History Detail'}
     }
-  ]
+    ],
+    scrollBehavior() {
+      return {x: 0, y: 0}
+    }
 })

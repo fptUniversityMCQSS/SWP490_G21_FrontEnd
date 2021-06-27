@@ -34,7 +34,7 @@
         </div>
       </div>
       <br>
-      <b-button variant="outline-secondary" class="btnUpload" v-on:click="submitFiles()">Upload</b-button>
+      <b-button class="btnUpload" v-on:click="submitFiles()">Upload</b-button>
     </div>
     <comp-footer/>
   </div>
@@ -131,9 +131,6 @@ body {
   background-color: #f9f9f9;
   padding: 20px;
   border-radius: 10px;
-  /*border: 0.5px solid rgba(130, 130, 130, 0.25);*/
-  /*box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1),
-              0 0 0 1px rgba(0, 0, 0, 0.1);*/
 }
 
 h1 {
@@ -166,28 +163,26 @@ h1 {
   opacity: 0.65;
 }
 
-#file-browser {
-  text-decoration: none;
-  color: rgb(22, 42, 255);
-  border-bottom: 3px dotted rgba(22, 22, 255, 0.85);
-}
-
-#file-browser:hover {
-  color: rgb(0, 0, 255);
-  border-bottom: 3px dotted rgba(0, 0, 255, 0.85);
-}
-
 .icons {
   color: #95afc0;
   opacity: 0.55;
 }
 
 .btnUpload {
-  width: 100px;
-  border: solid 2px;
+  width: 200px;
+  height: 50px;
+  background-color: #229aeb;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
 }
 
-.btnUpload:hover {
-  background-color: #0c63e4;
+.btnUpload:hover{
+  border: none;
+  outline: none;
+  background-color: #229bebad
 }
 </style>

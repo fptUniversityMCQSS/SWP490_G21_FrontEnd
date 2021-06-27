@@ -33,10 +33,13 @@ import router from './router'
 import VueAxios from 'vue-axios'
 import VueSession from "vue-session"
 import axios from "axios"
-import {BootstrapVue, IconsPlugin} from "bootstrap-vue"
+import {BootstrapVue} from "bootstrap-vue"
+import {BootstrapVueIcons} from 'bootstrap-vue'
 import VueMeta from "vue-meta"
+import 'bootstrap-vue/dist/bootstrap-vue-icons.min.css'
 
-Vue.use(BootstrapVue, IconsPlugin, axios, VueAxios, VueMeta)
+Vue.use(BootstrapVue, axios, VueAxios, VueMeta)
+Vue.use(BootstrapVueIcons)
 const options = {
   persist: true
 }
