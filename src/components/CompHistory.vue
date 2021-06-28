@@ -32,11 +32,11 @@
                   </tr>
                   </thead>
                   <tbody>
-                  <tr v-for="item in items" :key="item.title">
+                  <tr v-for="item in items" :key="item.id">
                     <td>
-                      <router-link to="/history/detail">{{ item.title }}</router-link>
+                      <router-link to="/history/detail">{{ item.id }}</router-link>
                     </td>
-                    <td>{{ item.date }}</td>
+                    <td>{{ item.historyDate }}</td>
                   </tr>
                   </tbody>
                 </table>
@@ -62,29 +62,24 @@ export default {
   },
   data() {
     return {
-      items: [
-        {
-          title: 'History 1',
-          date: '10/06/2021'
-        },
-        {
-          title: 'History 2',
-          date: '11/06/2021'
-        },
-        {
-          title: 'History 3',
-          date: '12/06/2021'
-        },
-        {
-          title: 'History 4',
-          date: '13/06/2021'
-        },
-        {
-          title: 'History 5',
-          date: '14/06/2021'
-        }
-      ]
+      items: null,
     }
+  },
+  created() {
+    const axios = require('axios');
+    axios
+      .get('http://localhost:1323/history', {
+        headers: {
+          'Authorization': 'Bearer ' + this.$session.get("token")
+        }
+      })
+      .then(response => {
+        this.items = response.data
+        console.log(this.items)
+      })
+      .catch(error => {
+        console.log(error)
+      })
   }
 }
 </script>
