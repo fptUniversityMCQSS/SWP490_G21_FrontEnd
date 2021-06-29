@@ -35,19 +35,20 @@
           </div>
           <div class="col-lg-6">
             <div class="login_form_inner">
-              <h3>Log in to enter</h3>
+              <h3>Login form</h3>
+              <div class="errNotice">{{ err }}</div>
               <form class="row login_form" @submit.prevent="loginData" method="post">
                 <div class="col-md-12 form-group">
-                  <input type="text" class="form-control" name="username" placeholder="Username"
+                  <input type="text" class="form-control" name="username" placeholder="Username" required
                          v-model="username">
                 </div>
                 <div class="col-md-12 form-group">
                   <input v-bind:type="[showPassword ? 'text' : 'password']" class="form-control" name="password"
-                         placeholder="Password"
+                         placeholder="Password" required
                          v-model="password">
                   <div class="input-group-append">
                     <span class="input-group-text" @click="showPassword = !showPassword" style="margin-left: 315px">
-                        <i class="fa" :class="[showPassword ? 'fa-eye' : 'fa-eye-slash']" aria-hidden="true"></i>
+                        <i class="fa" :class="[showPassword ? 'fa-eye-slash':'fa-eye']" aria-hidden="true"></i>
                     </span>
                   </div>
                 </div>
@@ -69,39 +70,6 @@
     </section>
     <!--================End Login Box Area =================-->
 
-    <!--================ Subscription Area ================-->
-    <section class="subscription-area section_gap">
-      <div class="container">
-        <div class="row justify-content-center">
-          <div class="col-lg-8">
-            <div class="section-title text-center">
-              <h2>Subscribe for Our Newsletter</h2>
-              <span>We won’t send any kind of spam</span>
-            </div>
-          </div>
-        </div>
-        <div class="row justify-content-center">
-          <div class="col-lg-6">
-            <div>
-              <form target="_blank" novalidate
-                    action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&id=92a4423d01"
-                    method="get" class="subscription relative">
-                <input type="email" name="EMAIL" placeholder="Email address" onfocus="this.placeholder = ''"
-                       onblur="this.placeholder = 'Email address'"
-                       required="">
-                <!-- <div style="position: absolute; left: -5000px;">
-                    <input type="text" name="b_36c4fd991d266f23781ded980_aefe40901a" tabindex="-1" value="">
-                  </div> -->
-                <button type="submit" class="newsl-btn">Get Started</button>
-                <div class="info"></div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    <!--================ End Subscription Area ================-->
-
     <comp-back-to-top/>
     <comp-footer/>
   </div>
@@ -119,7 +87,8 @@ export default {
     return {
       username: '',
       password: '',
-      showPassword: false
+      showPassword: false,
+      err: ''
     }
   },
   methods: {
@@ -139,14 +108,19 @@ export default {
             console.log("return", self.$session.get('token'))
             self.$router.push('/home');
           }
-        }, function (err) {
-          console.log('err', err)
-        })
+        }).catch(error => {
+        console.log(error)
+        this.err = 'Username or password invalid'
+      })
     }
   }
 }
 </script>
 
 <style scoped>
-
+.errNotice {
+  color: red;
+  font-weight: bold;
+  font-size: 15px;
+}
 </style>

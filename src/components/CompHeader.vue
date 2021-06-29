@@ -27,13 +27,10 @@
                     <router-link to="/login" class="nav-link">API Library</router-link>
                   </li>
                   <li class="nav-item">
-                    <router-link to="/login" class="nav-link">Blog</router-link>
-                  </li>
-                  <li class="nav-item">
                     <router-link to="/login" class="nav-link">Pages</router-link>
                   </li>
                   <li class="nav-item">
-                    <router-link to="/login" class="nav-link">Contact</router-link>
+                    <router-link to="/login" class="nav-link">About</router-link>
                   </li>
                   <li class="nav-item">
                     <router-link to="/login" class="nav-link">Login/Register</router-link>
