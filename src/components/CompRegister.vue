@@ -113,6 +113,8 @@ export default {
           const form = new FormData();
           form.append('username', this.username);
           form.append('password', this.password);
+          form.append('re-password', this.rePassword);
+          console.log(this.username, this.password)
           axios.post('http://localhost:1323/register', form)
             .then(function (response) {
               if (response.status === 200) {

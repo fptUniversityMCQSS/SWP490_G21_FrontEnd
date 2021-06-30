@@ -105,6 +105,7 @@ export default {
           if (response.status === 200) {
             self.$session.start()
             self.$session.set('token', response.data.token)
+            self.$session.set('user', response.data.username)
             console.log("return", self.$session.get('token'))
             self.$router.push('/home');
           }
