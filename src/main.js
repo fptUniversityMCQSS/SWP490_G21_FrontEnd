@@ -36,6 +36,7 @@ import axios from "axios"
 import {BootstrapVue, BootstrapVueIcons} from "bootstrap-vue"
 import VueMeta from "vue-meta"
 import 'bootstrap-vue/dist/bootstrap-vue-icons.min.css'
+import VeeValidate from "vee-validate";
 
 Vue.use(BootstrapVue, axios, VueAxios, VueMeta)
 Vue.use(BootstrapVueIcons)
@@ -44,7 +45,7 @@ const options = {
 }
 
 Vue.use(VueSession, options)
-
+Vue.use(VeeValidate)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

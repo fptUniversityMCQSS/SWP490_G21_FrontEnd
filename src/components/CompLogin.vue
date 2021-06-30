@@ -9,8 +9,8 @@
           <div class="banner_content text-center">
             <h2>Login/Register</h2>
             <div class="page_link">
-              <a href="index.html">Home</a>
-              <a href="login.html">Login</a>
+              <router-link to="/index">Home</router-link>
+              <router-link to="/login">Login</router-link>
             </div>
           </div>
         </div>
@@ -37,7 +37,7 @@
             <div class="login_form_inner">
               <h3>Login form</h3>
               <div class="errNotice">{{ err }}</div>
-              <form class="row login_form" @submit.prevent="loginData" method="post">
+              <form class="row login_form" @submit.prevent="loginData()" method="post">
                 <div class="col-md-12 form-group">
                   <input type="text" class="form-control" name="username" placeholder="Username" required
                          v-model="username">
@@ -48,7 +48,7 @@
                          v-model="password">
                   <div class="input-group-append">
                     <span class="input-group-text" @click="showPassword = !showPassword" style="margin-left: 315px">
-                        <i class="fa" :class="[showPassword ? 'fa-eye-slash':'fa-eye']" aria-hidden="true"></i>
+                        <i class="fa" :class="[showPassword ? 'fa-eye' : 'fa-eye-slash']" aria-hidden="true"></i>
                     </span>
                   </div>
                 </div>

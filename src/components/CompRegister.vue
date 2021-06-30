@@ -8,8 +8,8 @@
           <div class="banner_content text-center">
             <h2>Login/Register</h2>
             <div class="page_link">
-              <a href="index.html">Home</a>
-              <a href="registration.html">Register</a>
+              <router-link to="/index">Home</router-link>
+              <router-link to="/register">Register</router-link>
             </div>
           </div>
         </div>
@@ -35,19 +35,34 @@
           <div class="col-lg-6">
             <div class="login_form_inner reg_form">
               <h3>Create an Account</h3>
-              <form class="row login_form" action="contact_process.php" method="post" id="contactForm"
-                    novalidate="novalidate">
+              <form class="row login_form" @submit.prevent="register()" method="post">
                 <div class="col-md-12 form-group">
-                  <input type="text" class="form-control" id="name" name="name" placeholder="Name">
+                  <input type="text" class="form-control" name="username" placeholder="Username" required
+                         v-model="username" v-validate="'required'"
+                         :class="{ 'is-invalid': submitted && errors.has('username') }">
+                  <div v-if="submitted && errors.has('username')" class="invalid-feedback">
+                    {{ errors.first('username') }}
+                  </div>
                 </div>
                 <div class="col-md-12 form-group">
-                  <input type="email" class="form-control" id="email" name="email" placeholder="Email Address">
+                  <input type="password" class="form-control" name="password" placeholder="Password" required
+                         v-model="password" v-validate="{ required: true, min: 4}"
+                         :class="{ 'is-invalid': submitted && errors.has('password') }" ref="password">
+                  <div v-if="submitted && errors.has('password')" class="invalid-feedback">
+                    {{
+                      errors.first('password')
+                    }}
+                  </div>
                 </div>
                 <div class="col-md-12 form-group">
-                  <input type="text" class="form-control" id="password" name="password" placeholder="Password">
-                </div>
-                <div class="col-md-12 form-group">
-                  <input type="password" class="form-control" id="pass" name="pass" placeholder="Confirm password">
+                  <input type="password" class="form-control" placeholder="Confirm password" required
+                         v-model="rePassword" v-validate="'required|confirmed:password'"
+                         name="confirm" :class="{ 'is-invalid': submitted && errors.has('confirm') }">
+                  <div v-if="submitted && errors.has('confirm')" class="invalid-feedback">
+                    {{
+                      errors.first('confirm')
+                    }}
+                  </div>
                 </div>
                 <div class="col-md-12 form-group">
                   <div class="creat_account">
@@ -65,40 +80,6 @@
       </div>
     </section>
     <!--================End Login Box Area =================-->
-
-    <!--================ Subscription Area ================-->
-    <section class="subscription-area section_gap">
-      <div class="container">
-        <div class="row justify-content-center">
-          <div class="col-lg-8">
-            <div class="section-title text-center">
-              <h2>Subscribe for Our Newsletter</h2>
-              <span>We won’t send any kind of spam</span>
-            </div>
-          </div>
-        </div>
-        <div class="row justify-content-center">
-          <div class="col-lg-6">
-            <div>
-              <form target="_blank" novalidate
-                    action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&id=92a4423d01"
-                    method="get" class="subscription relative">
-                <input type="email" name="EMAIL" placeholder="Email address" onfocus="this.placeholder = ''"
-                       onblur="this.placeholder = 'Email address'"
-                       required="">
-                <!-- <div style="position: absolute; left: -5000px;">
-                    <input type="text" name="b_36c4fd991d266f23781ded980_aefe40901a" tabindex="-1" value="">
-                  </div> -->
-                <button type="submit" class="newsl-btn">Get Started</button>
-                <div class="info"></div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    <!--================ End Subscription Area ================-->
-
     <comp-back-to-top/>
     <comp-footer/>
   </div>
@@ -111,7 +92,39 @@ import CompBackToTop from "./CompBackToTop";
 
 export default {
   name: "CompRegister",
-  components: {CompFooter, CompHeader, CompBackToTop}
+  components: {CompFooter, CompHeader, CompBackToTop},
+  data() {
+    return {
+      username: '',
+      password: '',
+      rePassword: '',
+      submitted: false
+    }
+  },
+  methods: {
+    register() {
+      const self = this;
+      this.submitted = true;
+      this.$validator.validate().then(valid => {
+        if (valid) {
+          alert('SUCCESS!!')
+          const axios = require('axios');
+          const FormData = require('form-data');
+          const form = new FormData();
+          form.append('username', this.username);
+          form.append('password', this.password);
+          axios.post('http://localhost:1323/register', form)
+            .then(function (response) {
+              if (response.status === 200) {
+                self.$router.push('/login');
+              }
+            }).catch(error => {
+            console.log(error)
+          })
+        }
+      });
+    }
+  }
 }
 </script>
 
