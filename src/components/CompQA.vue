@@ -17,24 +17,42 @@
     </section>
     <!--================End Home Banner Area =================-->
 
-    <div class="wrapper">
-      <div class="cont">
-        <h1>Upload a file</h1>
-        <div class="upload-container">
-          <div class="border-container">
-            <p>To make this feature available,
-              your file must be in the correct format. You can check out <a href="../../static/QB_SWT391_BanTQ.doc"
-                                                                            download="The_sample_doc"><u>the sample
-                format</u></a></p>
-            <!--<input type="file" id="file-upload">-->
-            <p>Drag and drop files here, or
-              <input type="file" name="file" id="file" ref="file" multiple v-on:change="handleFilesUpload()"/></p>
+    <!--================Content Area =================-->
+    <section class="cat_product_area section_gap">
+      <div class="container-fluid">
+        <div class="row flex-row-reverse">
+          <div class="col-lg-10">
+            <div class="col-lg-11 mx-auto">
+              <div class="wrapper">
+                <div class="cont">
+                  <h1>Upload a file</h1>
+                  <div class="upload-container">
+                    <div class="border-container">
+                      <p>To make this feature available,
+                        your file must be in the correct format. You can check out <a
+                          href="../../static/QB_SWT391_BanTQ.doc"
+                          download="The_sample_doc"><u>the sample
+                          format</u></a></p>
+                      <!--<input type="file" id="file-upload">-->
+                      <p>Drag and drop files here, or
+                        <input type="file" name="file" id="file" ref="file" multiple v-on:change="handleFilesUpload()"/>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <br>
+                <b-button variant="outline-secondary" class="btnUpload" v-on:click="submitFiles()">Upload</b-button>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2 py-5">
+            <comp-left-sider/>
           </div>
         </div>
+        <!-- code paging here--->
       </div>
-      <br>
-      <b-button variant="outline-secondary" class="btnUpload" v-on:click="submitFiles()">Upload</b-button>
-    </div>
+    </section>
+    <!--================End Content Area =================-->
 
     <comp-back-to-top/>
     <comp-footer/>
@@ -46,12 +64,13 @@
 import CompHeaderLogin from "./CompHeaderLogin";
 import CompFooter from "./CompFooter";
 import CompBackToTop from "./CompBackToTop";
+import CompLeftSider from "./CompLeftSider";
 
 export default {
 
   name: "CompQA",
   components: {
-    CompHeaderLogin, CompFooter, CompBackToTop
+    CompHeaderLogin, CompFooter, CompBackToTop, CompLeftSider
   },
   data() {
     return {

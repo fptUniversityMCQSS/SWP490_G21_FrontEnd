@@ -139,7 +139,12 @@ a:hover, a:focus {
 }
 
 .section_gap {
-  padding: 120px 0px;
+  padding: 40px 0px;
+  background-color: #FFFFFF;
+}
+
+.section_gap1 {
+  padding: 40px 0px;
   background-color: #f9f9ff;
 }
 
@@ -157,7 +162,7 @@ a:hover, a:focus {
 
 .container-fluid {
   margin: 0px !important;
-  padding: 0px 8% !important;
+  padding: 0px 3% !important;
 }
 
 @media (max-width: 1224px) {
@@ -213,7 +218,7 @@ a:hover, a:focus {
 }
 
 .header_area {
-  position: absolute;
+  position: fixed;
   width: 100%;
   top: 0;
   left: 0;
@@ -222,7 +227,7 @@ a:hover, a:focus {
 }
 
 .header_area .main_menu {
-  background: #f8f8f8;
+  background: #f9f9ff;
 }
 
 .header_area .navbar {
@@ -267,7 +272,7 @@ a:hover, a:focus {
 }
 
 .header_area .navbar .nav .nav-item {
-  margin-right: 60px;
+  margin-right: 70px;
 }
 
 .header_area .navbar .nav .nav-item .nav-link {
@@ -421,7 +426,7 @@ a:hover, a:focus {
 }
 
 .header_area.navbar_fixed .main_menu {
-  position: fixed;
+  position: absolute;
   width: 100%;
   top: -70px;
   left: 0;
@@ -557,10 +562,10 @@ a:hover, a:focus {
 /* Home Banner Area css
 ============================================================================================ */
 .home_banner_area {
-  background: url(../img/banner/banner-bg.jpg) no-repeat center bottom;
+  background: url(../img/banner/bannerhome.jpg) no-repeat center bottom;
   position: relative;
   z-index: 1;
-  min-height: 900px;
+  height: 500px;
 }
 
 .home_banner_area .overlay {
@@ -577,7 +582,7 @@ a:hover, a:focus {
 .home_banner_area .banner_inner {
   position: relative;
   width: 100%;
-  min-height: 900px;
+  min-height: 500px;
 }
 
 .home_banner_area .banner_inner .banner_content {
@@ -637,7 +642,6 @@ a:hover, a:focus {
 }
 
 .blog_banner .banner_inner .overlay {
-  background: url(../img/banner/banner-2.jpg) no-repeat scroll center center;
   opacity: .5;
   height: 125%;
   position: absolute;
@@ -688,7 +692,7 @@ a:hover, a:focus {
   overflow: hidden;
   width: 100%;
   min-height: 395px;
-  background: url(../img/breadcrumb/checkout-bg.jpg) no-repeat center bottom;
+  background: url(../img/banner/banner3.jpg) no-repeat center bottom;
   background-size: contain;
   z-index: 1;
 }
@@ -1705,7 +1709,6 @@ a:hover, a:focus {
 
 .reservation_form_area .res_form_inner:before {
   content: "";
-  background: url(../img/banner/banner-2.jpg);
   position: absolute;
   left: -125px;
   height: 421px;
@@ -1716,7 +1719,6 @@ a:hover, a:focus {
 
 .reservation_form_area .res_form_inner:after {
   content: "";
-  background: url(../img/banner/banner-2.jpg);
   position: absolute;
   right: -125px;
   height: 421px;
@@ -3280,7 +3282,6 @@ h6 {
 }
 
 .primary-checkbox input:checked + label {
-  background: url(../img/elements/primary-check.png) no-repeat center center/cover;
   border: none;
 }
 
@@ -3318,7 +3319,6 @@ h6 {
 }
 
 .confirm-checkbox input:checked + label {
-  background: url(../img/elements/success-check.png) no-repeat center center/cover;
   border: none;
 }
 
@@ -3361,7 +3361,6 @@ h6 {
 }
 
 .disabled-checkbox input:checked + label {
-  background: url(../img/elements/disabled-check.png) no-repeat center center/cover;
   border: none;
 }
 
@@ -3399,7 +3398,6 @@ h6 {
 }
 
 .primary-radio input:checked + label {
-  background: url(../img/elements/primary-radio.png) no-repeat center center/cover;
   border: none;
 }
 
@@ -3437,7 +3435,6 @@ h6 {
 }
 
 .confirm-radio input:checked + label {
-  background: url(../img/elements/success-radio.png) no-repeat center center/cover;
   border: none;
 }
 
@@ -3491,7 +3488,6 @@ h6 {
 }
 
 .disabled-radio input:checked + label {
-  background: url(../img/elements/disabled-radio.png) no-repeat center center/cover;
   border: none;
 }
 
@@ -3698,7 +3694,7 @@ h6 {
   font-size: 13px;
   font-weight: 500;
   line-height: 34px;
-  border-radius: 0px;
+  border-radius: 50px;
   outline: none !important;
   box-shadow: none !important;
   text-align: center;
@@ -3976,7 +3972,7 @@ h6 {
 
 .l_w_title {
   background: #f9f9ff;
-  padding-left: 30px;
+  text-align: center;
 }
 
 .l_w_title h3 {
@@ -5755,7 +5751,7 @@ h6 {
   padding-right: 40px;
   height: 40px;
   color: #999999;
-  background: #f9f9ff;
+  background: white;
   padding-left: 20px;
 }
 

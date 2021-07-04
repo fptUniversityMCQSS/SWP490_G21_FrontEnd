@@ -22,46 +22,46 @@ export default new Router({
     {
       path: '/knowledge',
       component: CompListKnowledge,
-      meta:{title:'Knowledge'}
+      meta: {title: 'Knowledge'}
     },
 
     {
       path: '/knowledge/upload',
       component: CompUploadKnowledge,
-      meta:{title:'Upload Knowledge'}
+      meta: {title: 'Upload Knowledge'}
     },
     {
       path: '/qa',
       component: CompQA,
-      meta:{title:'Question & Answer'}
+      meta: {title: 'Question & Answer'}
     },
     {
       path: '/home',
       component: CompHome,
-      meta:{title:'Home'}
+      meta: {title: 'Home'}
     },
     {
       path: '/login',
       component: CompLogin,
-      meta:{title:'Login'}
+      meta: {title: 'Login'}
     },
     {
       path: '/register',
       component: CompRegister,
-      meta:{title:'Register'}
+      meta: {title: 'Register'}
     },
     {
       path: '/history',
       component: CompHistory,
-      meta:{title:'History'}
+      meta: {title: 'History'}
     },
     {
       path: '/history/detail',
       component: CompHistoryDetail,
-      meta:{title:'History Detail'}
+      meta: {title: 'History Detail'}
     }
-    ],
-    scrollBehavior() {
-      return {x: 0, y: 0}
-    }
+  ],
+  scrollBehavior() {
+    return {x: 0, y: 0}
+  }
 })

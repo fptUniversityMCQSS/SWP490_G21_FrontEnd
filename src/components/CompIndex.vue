@@ -8,12 +8,9 @@
         <div class="container">
           <div class="banner_content row">
             <div class="offset-lg-2 col-lg-8">
-              <h3>Fashion for
-                <br/>Upcoming Winter</h3>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                dolore magna
-                aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
-              <a class="white_bg_btn" href="#">View Collection</a>
+              <h2 class="h2css">Do you have a high school exam? <br>
+                Allow our AI assistant to help you in finding a solution</h2>
+              <router-link to="/login" class="white_bg_btn" href="#">Get Started</router-link>
             </div>
           </div>
         </div>
@@ -21,38 +18,25 @@
     </section>
     <!--================End Home Banner Area =================-->
 
-    <!--================ Subscription Area ================-->
-    <section class="subscription-area section_gap">
-      <div class="container">
-        <div class="row justify-content-center">
-          <div class="col-lg-8">
-            <div class="section-title text-center">
-              <h2>Subscribe for Our Newsletter</h2>
-              <span>We won’t send any kind of spam</span>
+    <!--================Content Area =================-->
+    <section class="cat_product_area section_gap">
+      <div class="container-fluid">
+        <div class="row flex-row-reverse">
+          <div class="col-lg-10 py-5" style="padding-left: 30px">
+            <div class="col-lg-11 mx-auto">
+
+              <!-- code home here-->
+
             </div>
           </div>
-        </div>
-        <div class="row justify-content-center">
-          <div class="col-lg-6">
-            <div id="mc_embed_signup">
-              <form target="_blank" novalidate
-                    action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&id=92a4423d01"
-                    method="get" class="subscription relative">
-                <input type="email" name="EMAIL" placeholder="Email address" onfocus="this.placeholder = ''"
-                       onblur="this.placeholder = 'Email address'"
-                       required="">
-                <!-- <div style="position: absolute; left: -5000px;">
-                  <input type="text" name="b_36c4fd991d266f23781ded980_aefe40901a" tabindex="-1" value="">
-                </div> -->
-                <button type="submit" class="newsl-btn">Get Started</button>
-                <div class="info"></div>
-              </form>
-            </div>
+          <div class="col-lg-2 py-5">
+            <comp-left-sider/>
           </div>
         </div>
+        <!-- code paging here--->
       </div>
     </section>
-    <!--================ End Subscription Area ================-->
+    <!--================End Content Area =================-->
 
     <comp-back-to-top/>
     <comp-footer/>
@@ -71,5 +55,10 @@ export default {
 </script>
 
 <style scoped>
-
+.h2css {
+  font-family: Courier;
+  font-weight: bold;
+  color: white;
+  font-size: 30px
+}
 </style>

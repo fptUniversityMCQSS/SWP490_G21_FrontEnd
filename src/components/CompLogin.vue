@@ -26,9 +26,9 @@
             <div class="login_box_img">
               <img class="img-fluid" src="../assets/img/login.jpg" alt="">
               <div class="hover">
-                <h4>New to our website?</h4>
-                <p>There are advances being made in science and technology everyday, and a good example of this is
-                  the</p>
+                <h4>Create an account</h4>
+                <p>The new way to learn properly!
+                  Join us to develop an even <br>more convenient learning environment</p>
                 <router-link to="/register" class="main_btn">Create an Account</router-link>
               </div>
             </div>

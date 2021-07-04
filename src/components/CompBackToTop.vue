@@ -31,7 +31,7 @@ export default {
   border: none;
   outline: none;
   cursor: pointer;
-  border-radius: 10px;
+  border-radius: 50px;
   height: 50px;
   width: 50px;
   background-repeat: no-repeat;

@@ -26,8 +26,7 @@
               <img class="img-fluid" src="../assets/img/login.jpg" alt="">
               <div class="hover">
                 <h4>You already have an account?</h4>
-                <p>There are advances being made in science and technology everyday, and a good example of this is
-                  the</p>
+                <p>Log in to your account and take advantage of the features <br>we have to offer</p>
                 <router-link to="/login" class="main_btn">Login</router-link>
               </div>
             </div>

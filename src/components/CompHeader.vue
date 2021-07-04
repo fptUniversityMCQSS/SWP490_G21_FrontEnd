@@ -1,13 +1,6 @@
 <template>
   <!--================Header Menu Area =================-->
   <header class="header_area">
-<!--    <div class="top_menu row m0">-->
-<!--      <div class="container-fluid">-->
-<!--        <div class="float-left">-->
-<!--          <p>Call Us: 012 44 5698 7456 896</p>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
     <div class="main_menu">
       <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container-fluid">
@@ -27,13 +20,12 @@
                     <router-link to="/login" class="nav-link">API Library</router-link>
                   </li>
                   <li class="nav-item">
-                    <router-link to="/login" class="nav-link">Pages</router-link>
-                  </li>
-                  <li class="nav-item">
                     <router-link to="/login" class="nav-link">About</router-link>
                   </li>
                   <li class="nav-item">
-                    <router-link to="/login" class="nav-link">Login/Register</router-link>
+                    <router-link to="/login" class="nav-link">
+                      <b-button class="header_btn">LOGIN/REGISTER</b-button>
+                    </router-link>
                   </li>
                 </ul>
               </div>
@@ -54,4 +46,18 @@ export default {
 </script>
 
 <style scoped>
+.header_btn {
+  font-size: 12px;
+  font-weight: bold;
+  width: 130px;
+  height: 40px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  border-radius: 90px;
+  background-color: #229aeb;
+}
+.header_btn:hover{
+  background-color: #229bebad
+}
 </style>

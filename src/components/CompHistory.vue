@@ -17,35 +17,46 @@
     </section>
     <!--================End Home Banner Area =================-->
 
-    <div class="container py-5">
-      <div class="row py-5">
-        <div class="col-lg-10 mx-auto">
-          <div class="card rounded shadow border-0">
-            <div class="tableTl">Table List history</div>
-            <div class="card-body p-5 bg-white rounded">
-              <div class="table-responsive">
-                <table id="example" style="width:100%" class="table table-striped table-bordered">
-                  <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Date</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <tr v-for="item in items" :key="item.id">
-                    <td>
-                      <router-link to="/history/detail">{{ item.id }}</router-link>
-                    </td>
-                    <td>{{ item.historyDate }}</td>
-                  </tr>
-                  </tbody>
-                </table>
+    <!--================Content Area =================-->
+    <section class="cat_product_area section_gap">
+      <div class="container-fluid">
+        <div class="row flex-row-reverse">
+          <div class="col-lg-10 py-5" style="padding-left: 30px">
+            <div class="col-lg-11 mx-auto">
+              <div class="card rounded shadow border-0">
+                <div class="tableTl">History List</div>
+                <div class="card-body p-5 bg-white rounded">
+                  <div class="table-responsive">
+                    <table id="example" style="width:100%" class="table table-striped table-bordered">
+                      <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Date</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr v-for="item in items" :key="item.id">
+                        <td>
+                          <router-link to="/history/detail">{{ item.id }}</router-link>
+                        </td>
+                        <td>{{ item.historyDate }}</td>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
+          <div class="col-lg-2 py-5">
+            <comp-left-sider/>
+          </div>
         </div>
+        <!-- code paging here--->
       </div>
-    </div>
+    </section>
+    <!--================End content Area =================-->
+
     <comp-back-to-top/>
     <comp-footer/>
   </div>
@@ -54,11 +65,12 @@
 import CompHeaderLogin from "./CompHeaderLogin";
 import CompFooter from "./CompFooter";
 import CompBackToTop from "./CompBackToTop";
+import CompLeftSider from "./CompLeftSider";
 
 export default {
   name: "CompHistory",
   components: {
-    CompHeaderLogin, CompFooter, CompBackToTop
+    CompHeaderLogin, CompFooter, CompBackToTop, CompLeftSider
   },
   data() {
     return {

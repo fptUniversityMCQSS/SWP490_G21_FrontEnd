@@ -17,25 +17,37 @@
     </section>
     <!--================End Home Banner Area =================-->
 
-    <div class="wrapper">
-      <div class="cont">
-        <h1>Upload a file</h1>
-        <div class="upload-container">
-          <div class="border-container">
-            <div class="icons fa-4x">
-              <i class="fas fa-file-image" data-fa-transform="shrink-3 down-2 left-6 rotate--45"></i>
-              <i class="fas fa-file-alt" data-fa-transform="shrink-2 up-4"></i>
-              <i class="fas fa-file-pdf" data-fa-transform="shrink-3 down-2 right-6 rotate-45"></i>
+    <!--================Content Area =================-->
+    <section class="cat_product_area section_gap">
+      <div class="container-fluid">
+        <div class="row flex-row-reverse">
+          <div class="col-lg-10">
+            <div class="col-lg-11 mx-auto">
+              <div class="wrapper">
+                <div class="cont">
+                  <h1>Upload a file</h1>
+                  <div class="upload-container">
+                    <div class="border-container">
+                      <!--<input type="file" id="file-upload">-->
+                      <p>Drag and drop files here, or
+                        <input type="file" name="file" id="file" ref="file" multiple v-on:change="handleFilesUpload()"/>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <br>
+                <b-button class="btnUpload" v-on:click="submitFiles()">Upload</b-button>
+              </div>
             </div>
-            <!--<input type="file" id="file-upload">-->
-            <p>Drag and drop files here, or
-              <input type="file" name="file" id="file" ref="file" multiple v-on:change="handleFilesUpload()"/></p>
+          </div>
+          <div class="col-lg-2 py-5">
+            <comp-left-sider/>
           </div>
         </div>
+        <!-- code paging here--->
       </div>
-      <br>
-      <b-button class="btnUpload" v-on:click="submitFiles()">Upload</b-button>
-    </div>
+    </section>
+    <!--================End Content Area =================-->
 
     <comp-back-to-top/>
     <comp-footer/>
@@ -47,12 +59,13 @@
 import CompHeaderLogin from "./CompHeaderLogin";
 import CompFooter from "./CompFooter";
 import CompBackToTop from "./CompBackToTop";
+import CompLeftSider from "./CompLeftSider";
 
 export default {
 
   name: "CompUploadKnowledge",
   components: {
-    CompHeaderLogin, CompFooter, CompBackToTop
+    CompHeaderLogin, CompFooter, CompBackToTop, CompLeftSider
   },
   data() {
     return {

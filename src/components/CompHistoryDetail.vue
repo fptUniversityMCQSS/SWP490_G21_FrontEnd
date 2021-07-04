@@ -17,25 +17,40 @@
     </section>
     <!--================End Home Banner Area =================-->
 
-    <div class="wrappers textColor">
-      <p>Details about your multiple choice test</p>
+    <!--================Content Area =================-->
+    <section class="cat_product_area section_gap">
+      <div class="container-fluid">
+        <div class="row flex-row-reverse">
+          <div class="col-lg-10 py-5">
+            <div class="col-lg-11 mx-auto">
+              <div class="wrappers textColor">
+                <p>Details about your multiple choice test</p>
+                <div v-for="item in items" :key="item.content">
+                  <p class="text-justify h5 pb-2 font-weight-bold">{{ item.content }}</p>
+                  <div class="options py-3">
+                    <label class="rounded p-2 option">{{ item.ansA }}</label>
+                    <label class="rounded p-2 option">{{ item.ansB }}</label>
+                    <label class="rounded p-2 option">{{ item.ansC }}</label>
+                    <label class="rounded p-2 option">{{ item.ansD }}</label></div>
+                  <b>Correct Answer</b>
+                  <p class="mt-2 mb-4 pl-2 text-justify">{{ item.correct }}</p>
 
-      <div v-for="item in items" :key="item.content">
-        <p class="text-justify h5 pb-2 font-weight-bold">{{ item.content }}</p>
-        <div class="options py-3">
-          <label class="rounded p-2 option">{{ item.ansA }}</label>
-          <label class="rounded p-2 option">{{ item.ansB }}</label>
-          <label class="rounded p-2 option">{{ item.ansC }}</label>
-          <label class="rounded p-2 option">{{ item.ansD }}</label></div>
-        <b>Correct Answer</b>
-        <p class="mt-2 mb-4 pl-2 text-justify">{{ item.correct }}</p>
+                </div>
 
+                <router-link to="/history">
+                  <b-button class="btnUpload">Finish Review</b-button>
+                </router-link>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2 py-5">
+            <comp-left-sider/>
+          </div>
+        </div>
+        <!-- code paging here--->
       </div>
-
-      <router-link to="/history">
-        <b-button class="btnUpload">Finish Review</b-button>
-      </router-link>
-    </div>
+    </section>
+    <!--================End Content Area =================-->
 
     <comp-back-to-top/>
     <comp-footer/>
@@ -45,11 +60,12 @@
 import CompHeaderLogin from "./CompHeaderLogin";
 import CompFooter from "./CompFooter";
 import CompBackToTop from "./CompBackToTop";
+import CompLeftSider from "./CompLeftSider";
 
 export default {
   name: "CompHistoryDetail",
   components: {
-    CompHeaderLogin, CompFooter, CompBackToTop
+    CompHeaderLogin, CompFooter, CompBackToTop, CompLeftSider
   },
   data() {
     return {
@@ -91,8 +107,8 @@ export default {
 }
 
 .wrappers {
-  max-width: 600px;
-  margin: 20px auto;
+  max-width: 700px;
+  margin: 10px auto;
   font-size: 15px;
 }
 
