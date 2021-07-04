@@ -59,7 +59,7 @@ export default new Router({
       path: '/history/detail',
       component: CompHistoryDetail,
       meta: {title: 'History Detail'}
-    }
+    },
   ],
   scrollBehavior() {
     return {x: 0, y: 0}

@@ -24,10 +24,10 @@
           <div class="col-lg-10 py-5" style="padding-left: 30px">
             <div class="col-lg-11 mx-auto">
               <div class="card rounded shadow border-0">
-                <div class="tableTl">Knowledges List</div>
+                <div class="tableTl">Knowledges Table</div>
                 <div class="card-body p-5 bg-white rounded">
                   <div class="table-responsive">
-                    <table id="example" style="width:100%" class="table table-striped table-bordered">
+                    <table id="tableData" style="width:100%" class="table table-striped table-bordered">
                       <thead>
                       <tr>
                         <th>Name</th>
@@ -52,11 +52,9 @@
             <comp-left-sider/>
           </div>
         </div>
-        <!-- code paging here--->
       </div>
     </section>
     <!--================End Content Area =================-->
-
 
     <comp-back-to-top/>
     <comp-footer/>
@@ -85,6 +83,7 @@ export default {
       .get('http://localhost:1323/knowledge')
       .then(response => {
         this.info = response.data
+        this.exampleItems = response.data
       })
       .catch(error => {
         console.log(error)

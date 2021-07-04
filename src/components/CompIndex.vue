@@ -30,7 +30,7 @@
             </div>
           </div>
           <div class="col-lg-2 py-5">
-            <comp-left-sider/>
+            <!-- code content-->
           </div>
         </div>
         <!-- code paging here--->
