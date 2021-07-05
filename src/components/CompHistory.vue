@@ -21,28 +21,44 @@
     <section class="cat_product_area section_gap">
       <div class="container-fluid">
         <div class="row flex-row-reverse">
-          <div class="col-lg-10 py-5" style="padding-left: 30px">
+          <div class="col-lg-10 py-5">
             <div class="col-lg-11 mx-auto">
               <div class="card rounded shadow border-0">
                 <div class="tableTl">History Table</div>
-                <div class="card-body p-5 bg-white rounded">
+                <div class="card-body bg-white rounded">
                   <div class="table-responsive">
-                    <table id="tableData" style="width:100%" class="table table-striped table-bordered">
-                      <thead>
-                      <tr>
-                        <th>Name</th>
-                        <th>Date</th>
-                      </tr>
-                      </thead>
-                      <tbody>
-                      <tr v-for="item in items" :key="item.id">
-                        <td>
-                          <router-link to="/history/detail">{{ item.id }}</router-link>
-                        </td>
-                        <td>{{ item.historyDate }}</td>
-                      </tr>
-                      </tbody>
-                    </table>
+                    <div style="padding: 20px;">
+                      <div class="justify-content-centermy-1 row">
+                        <b-form-group horizontal label="Rows per page:" class="col-2">
+                          <b-form-select size="sm"
+                                         :options="[{text:5,value:5},{text:10,value:10},
+                                         {text:15,value:15},{text:20,value:20}]"
+                                         v-model="perPage">
+                          </b-form-select>
+                        </b-form-group>
+
+                        <b-form-group label="Search:" class="col-5 searchTab">
+                          <b-input-group size="sm">
+                            <b-form-input v-model="filter" type="search" placeholder="Type to Search"></b-form-input>
+                            <b-input-group-append>
+                              <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>
+                            </b-input-group-append>
+                          </b-input-group>
+                        </b-form-group>
+
+                      </div>
+                      <!-- Main table element -->
+                      <b-table striped hover :items="items" :current-page="currentPage" stacked="md"
+                               show-empty
+                               small
+                               :per-page="perPage" :filter="filter" :fields="fields" id="my-table"
+                               @filtered="onFiltered">
+                      </b-table>
+                      <div style="padding-top: 20px">
+                        <b-pagination size="md" :total-rows="totalRows" :per-page="perPage"
+                                      v-model="currentPage" aria-controls="my-table"/>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -52,7 +68,6 @@
             <comp-left-sider/>
           </div>
         </div>
-        <!-- code paging here--->
       </div>
     </section>
     <!--================End content Area =================-->
@@ -74,7 +89,29 @@ export default {
   },
   data() {
     return {
-      items: null,
+      items: [],
+      currentPage: 1,
+      perPage: 5,
+      filter: "",
+      totalRows: 1,
+      fields: [
+        {
+          key: 'id',
+          label: 'Name',
+          sortable: true
+        },
+        {
+          key: 'historyDate',
+          label: 'Date',
+          sortable: true
+        }
+      ],
+    }
+  },
+  methods: {
+    onFiltered(filteredItems) {
+      this.totalRows = filteredItems.length
+      this.currentPage = 1
     }
   },
   created() {
@@ -87,7 +124,7 @@ export default {
       })
       .then(response => {
         this.items = response.data
-        console.log(this.items)
+        this.totalRows = response.data.length
       })
       .catch(error => {
         console.log(error)
@@ -103,5 +140,9 @@ export default {
   font-size: 23px;
   margin-top: 30px;
   color: #2c3e50;
+}
+
+.searchTab {
+  margin-left: 360px;
 }
 </style>

@@ -26,7 +26,7 @@
                     <router-link to="/home" class="nav-link">{{ currentUser }}</router-link>
                   </li>
                   <li class="nav-item">
-                    <router-link to="/" class="nav-link">Logout</router-link>
+                    <b-button class="header_btn" v-on:click="logout()">LOGOUT</b-button>
                   </li>
                 </ul>
               </div>
@@ -46,10 +46,31 @@ export default {
     return {
       currentUser: this.$session.get('user')
     }
+  },
+  methods: {
+    logout() {
+      this.$session.destroy();
+      this.$router.push('/login');
+    },
   }
 }
 </script>
 
 <style scoped>
+.header_btn {
+  margin-top: 20px;
+  font-size: 12px;
+  font-weight: bold;
+  width: 130px;
+  height: 40px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  border-radius: 90px;
+  background-color: #229aeb;
+}
 
+.header_btn:hover {
+  background-color: #229bebad
+}
 </style>

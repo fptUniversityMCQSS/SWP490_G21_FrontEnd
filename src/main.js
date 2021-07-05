@@ -29,12 +29,6 @@ import './assets/vendors/counter-up/jquery.counterup.js'
 import './assets/vendors/lightbox/simpleLightbox.min'
 import './assets/js/theme.js'
 
-import './assets/js/dataTables.bootstrap4.min.css'
-import './assets/js/jquery-3.3.1.slim.min'
-import './assets/js/jquery.dataTables.min'
-import './assets/js/dataTables.bootstrap4.min'
-import './assets/js/tablejs'
-
 import router from './router'
 import VueAxios from 'vue-axios'
 import VueSession from "vue-session"
@@ -43,7 +37,6 @@ import {BootstrapVue, BootstrapVueIcons} from "bootstrap-vue"
 import VueMeta from "vue-meta"
 import 'bootstrap-vue/dist/bootstrap-vue-icons.min.css'
 import VeeValidate from "vee-validate";
-import JwPagination from 'jw-vue-pagination'
 
 Vue.use(BootstrapVue, axios, VueAxios, VueMeta)
 Vue.use(BootstrapVueIcons)
@@ -52,8 +45,10 @@ const options = {
 }
 
 Vue.use(VueSession, options)
-Vue.use(VeeValidate)
-Vue.component('jw-pagination', JwPagination)
+Vue.use(VeeValidate, {
+  inject: true,
+  fieldsBagName: 'veeFields'
+});
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

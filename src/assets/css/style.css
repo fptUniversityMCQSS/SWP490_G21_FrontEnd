@@ -3954,6 +3954,7 @@ h6 {
 }
 
 .left_widgets {
+  border-radius: 50px;
   margin-bottom: 30px;
   background-color: white;
   box-shadow: 0px 10px 10px 0px rgba(153, 153, 153, 0.1);
@@ -3961,6 +3962,8 @@ h6 {
 
 .left_widgets:last-child {
   margin-bottom: 0px;
+  border-radius: 50px;
+  color: #FFFFFF;
 }
 
 .widgets_inner {
@@ -3972,7 +3975,11 @@ h6 {
 
 .l_w_title {
   background: #f9f9ff;
+  border-radius: 50px;
   text-align: center;
+}
+.l_w_title:hover {
+  background-color: #229bebad;
 }
 
 .l_w_title h3 {
@@ -3982,6 +3989,10 @@ h6 {
   text-transform: uppercase;
   font-weight: 500;
   line-height: 60px;
+}
+
+.l_w_title h3:hover {
+  color: #FFFFFF;
 }
 
 .cat_widgets .list li {
