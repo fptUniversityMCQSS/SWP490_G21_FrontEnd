@@ -106,7 +106,6 @@ export default {
       this.submitted = true;
       this.$validator.validate().then(valid => {
         if (valid) {
-          alert('SUCCESS!!')
           const axios = require('axios');
           const FormData = require('form-data');
           const form = new FormData();
