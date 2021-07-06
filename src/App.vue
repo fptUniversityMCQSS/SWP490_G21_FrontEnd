@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import CompIndex from "./components/CompIndex";
+import CompIndex from "./components/user/CompIndex";
 
 export default {
   name: 'App',
