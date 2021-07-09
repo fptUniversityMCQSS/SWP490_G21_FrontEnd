@@ -9,7 +9,7 @@
             <h2>List Knowledge</h2>
             <div class="page_link">
               <router-link to="/home">Home</router-link>
-              <router-link to="/knowledge">List Knowledge</router-link>
+              <router-link to="/admin/users">List Knowledge</router-link>
             </div>
           </div>
         </div>
@@ -56,8 +56,8 @@
                         <template #cell(knowledgeDate)="row">
                           {{ row.value }}
                         </template>
-                        <template #cell(actions)>
-                          <b-button size="sm" v-on:click="editUser()" class="mr-1">
+                        <template #cell(actions)="{item}">
+                          <b-button size="sm" v-on:click="editUser(item)" class="mr-1">
                             Edit User
                           </b-button>
                           <b-button size="sm" v-on:click="deleteUser()">
@@ -76,7 +76,7 @@
             </div>
           </div>
           <div class="col-lg-2 py-5">
-            <comp-a-d_-left-sider/>
+            <comp-left-sider/>
           </div>
         </div>
       </div>
@@ -91,12 +91,12 @@
 import CompHeaderLogin from "../frame/CompHeaderLogin";
 import CompFooter from "../frame/CompFooter";
 import CompBackToTop from "../frame/CompBackToTop";
-import CompAD_LeftSider from "../frame/CompAD_LeftSider";
+import CompLeftSider from "../frame/CompLeftSider";
 
 export default {
   name: 'CompAD_ListUser',
   components: {
-    CompHeaderLogin, CompFooter, CompBackToTop, CompAD_LeftSider
+    CompHeaderLogin, CompFooter, CompBackToTop, CompLeftSider
   },
   data() {
     return {
@@ -124,6 +124,9 @@ export default {
     }
   },
   methods: {
+    editUser(item){
+      console.log(item)
+    },
     onFiltered(filteredItems) {
       this.totalRows = filteredItems.length
       this.currentPage = 1

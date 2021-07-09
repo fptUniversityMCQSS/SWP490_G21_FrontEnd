@@ -55,9 +55,6 @@ export default {
   name: "CompHome",
   components: {
     CompHeaderLogin, CompFooter, CompBackToTop, CompLeftSider
-  },
-  metaInfo: {
-    title: 'Home'
   }
 }
 </script>

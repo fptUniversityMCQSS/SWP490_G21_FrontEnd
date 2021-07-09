@@ -96,7 +96,7 @@ export default {
       totalRows: 1,
       fields: [
         {
-          key: 'id',
+          key: 'historyName',
           label: 'Name',
           sortable: true
         },

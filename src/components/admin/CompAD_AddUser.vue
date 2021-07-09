@@ -6,10 +6,10 @@
       <div class="banner_inner d-flex align-items-center">
         <div class="container">
           <div class="banner_content text-center">
-            <h2>Question and Answer</h2>
+            <h2>Create New Account</h2>
             <div class="page_link">
               <router-link to="/home">Home</router-link>
-              <router-link to="/q&a">Question and Answer</router-link>
+              <router-link to="/admin/qa">Create New Account</router-link>
             </div>
           </div>
         </div>
@@ -34,6 +34,21 @@
                       {{ errors.first('username') }}
                     </div>
                   </div>
+                  <div class="form-group bd-r col-lg-9">
+                    <b-form-select class="b-select" v-model="role" required name="role" v-validate="'required'"
+                                   :class="{ 'is-invalid': submitted && errors.has('role') }">
+                      <template v-slot:first>
+                        <b-form-select-option :value="null" disabled selected hidden>-- Choose account role --
+                        </b-form-select-option>
+                      </template>
+                      <b-form-select-option value="user">User</b-form-select-option>
+                      <b-form-select-option value="staff">Staff</b-form-select-option>
+                      <b-form-select-option value="admin">Admin</b-form-select-option>
+                    </b-form-select>
+                    <div v-if="submitted && errors.has('role')" class="invalid-feedback" style="padding-right: 170px">
+                      {{ errors.first('role') }}
+                    </div>
+                  </div>
                   <div class="form-group col-lg-9">
                     <input type="password" class="form-control bd-r" name="password" placeholder="Password" required
                            v-model="password" v-validate="{ required: true, min: 4}"
@@ -51,28 +66,13 @@
                       {{ errors.first('confirm') }}
                     </div>
                   </div>
-                  <div class="form-group bd-r col-lg-9">
-                    <b-form-select class="b-select" v-model="role" required name="role" v-validate="'required'"
-                                   :class="{ 'is-invalid': submitted && errors.has('role') }">
-                      <template v-slot:first>
-                        <b-form-select-option :value="null" disabled selected hidden>-- Choose account role --
-                        </b-form-select-option>
-                      </template>
-                      <b-form-select-option value="user">User</b-form-select-option>
-                      <b-form-select-option value="staff">Staff</b-form-select-option>
-                      <b-form-select-option value="admin">Admin</b-form-select-option>
-                    </b-form-select>
-                    <div v-if="submitted && errors.has('role')" class="invalid-feedback">
-                      {{ errors.first('role') }}
-                    </div>
-                  </div>
                   <b-button class="btnUpload" v-on:click="addUser()">Add User</b-button>
                 </form>
               </div>
             </div>
           </div>
           <div class="col-lg-2 py-5">
-            <comp-a-d_-left-sider/>
+            <comp-left-sider/>
           </div>
         </div>
         <!-- code paging here--->
@@ -90,13 +90,13 @@
 import CompHeaderLogin from "../frame/CompHeaderLogin";
 import CompFooter from "../frame/CompFooter";
 import CompBackToTop from "../frame/CompBackToTop";
-import CompAD_LeftSider from "../frame/CompAD_LeftSider";
+import CompLeftSider from "../frame/CompLeftSider";
 
 export default {
 
-  name: "CompAD_QA",
+  name: "CompAD_AddUser",
   components: {
-    CompHeaderLogin, CompFooter, CompBackToTop, CompAD_LeftSider
+    CompHeaderLogin, CompFooter, CompBackToTop, CompLeftSider
   },
   data() {
     return {

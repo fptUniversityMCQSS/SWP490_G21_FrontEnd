@@ -9,7 +9,7 @@
             <h2>Question and Answer</h2>
             <div class="page_link">
               <router-link to="/home">Home</router-link>
-              <router-link to="/q&a">Question and Answer</router-link>
+              <router-link to="/qa">Question and Answer</router-link>
             </div>
           </div>
         </div>

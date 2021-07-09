@@ -10,15 +10,34 @@ import CompHistory from "../components/user/CompHistory";
 import CompHistoryDetail from "../components/user/CompHistoryDetail";
 import CompAD_ListUser from "../components/admin/CompAD_ListUser";
 import CompAD_EditUser from "../components/admin/CompAD_EditUser";
-import CompAD_AddUser from "../components/admin/CompAD_AddUser";
-import CompAD_ListKnowledge from "../components/admin/CompAD_ListKnowledge";
-import CompAD_UploadKnowledge from "../components/admin/CompAD_UploadKnowledge";
-import CompAD_QA from "../components/admin/CompAD_QA";
-import CompAD_History from "../components/admin/CompAD_History";
-import CompAD_HistoryDetail from "../components/admin/CompAD_HistoryDetail";
 import CompQA from "../components/user/CompQA";
+import CompAD_AddUser from "../components/admin/CompAD_AddUser";
+import CompError from "../components/user/CompError";
+import multiguard from 'vue-router-multiguard';
 
 Vue.use(Router)
+
+const isAdmin = (to, from, next) => {
+  if (Vue.prototype.$session.get('user') === 'khailq') {
+    next()
+  } else {
+    next('/error')
+  }
+}
+const isStaff = (to, from, next) => {
+  if (Vue.prototype.$session.get('user') === 'thienlh') {
+    next()
+  } else {
+    next('/error')
+  }
+}
+const isUser = (to, from, next) => {
+  if (Vue.prototype.$session.get('user') === 'binhtb') {
+    next()
+  } else {
+    next('/error')
+  }
+}
 
 export default new Router({
   mode: "history",
@@ -30,37 +49,26 @@ export default new Router({
     {
       path: '/knowledge',
       component: CompListKnowledge,
-      meta: {title: 'Knowledge'}
-    },
-    {
-      path: '/admin/knowledge',
-      component: CompAD_ListKnowledge,
-      meta: {title: 'Knowledge'}
+      meta: {title: 'Knowledge'},
+      beforeEnter: multiguard([isUser, isAdmin, isStaff])
     },
     {
       path: '/knowledge/upload',
       component: CompUploadKnowledge,
-      meta: {title: 'Upload Knowledge'}
-    },
-    {
-      path: '/admin/knowledge/upload',
-      component: CompAD_UploadKnowledge,
-      meta: {title: 'Upload Knowledge'}
+      meta: {title: 'Upload Knowledge'},
+      beforeEnter: multiguard([isUser, isAdmin, isStaff])
     },
     {
       path: '/qa',
       component: CompQA,
-      meta: {title: 'Question & Answer'}
-    },
-    {
-      path: '/admin/qa',
-      component: CompAD_QA,
-      meta: {title: 'Question & Answer'}
+      meta: {title: 'Question & Answer'},
+      beforeEnter: multiguard([isUser, isAdmin, isStaff])
     },
     {
       path: '/home',
       component: CompHome,
-      meta: {title: 'Home'}
+      meta: {title: 'Home'},
+      beforeEnter: multiguard([isUser, isAdmin, isStaff])
     },
     {
       path: '/login',
@@ -78,37 +86,38 @@ export default new Router({
       meta: {title: 'History'}
     },
     {
-      path: '/admin/history',
-      component: CompAD_History,
-      meta: {title: 'History'}
-    },
-    {
       path: '/history/detail',
       component: CompHistoryDetail,
-      meta: {title: 'History Detail'}
-    },
-    {
-      path: '/admin/history/detail',
-      component: CompAD_HistoryDetail,
-      meta: {title: 'History Detail'}
+      meta: {title: 'History Detail'},
+      beforeEnter: multiguard([isUser, isAdmin, isStaff])
     },
     {
       path: '/admin/users',
       component: CompAD_ListUser,
-      meta: {title: 'List User'}
+      meta: {title: 'List User'},
+      beforeEnter: isAdmin
     },
     {
       path: '/admin/edit',
       component: CompAD_EditUser,
-      meta: {title: 'Edit User'}
+      meta: {title: 'Edit User'},
+      beforeEnter: isAdmin,
     },
     {
       path: '/admin/add',
       component: CompAD_AddUser,
-      meta: {title: 'Add User'}
+      meta: {title: 'Add User'},
+      beforeEnter: isAdmin,
+    },
+    {
+      path: '/error',
+      component: CompError,
+      meta: {title: 'Error'}
     },
   ],
   scrollBehavior() {
     return {x: 0, y: 0}
   }
 })
+
+
