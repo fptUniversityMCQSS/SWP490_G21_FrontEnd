@@ -22,7 +22,22 @@
                   <li class="nav-item">
                     <router-link to="/login" class="nav-link">About</router-link>
                   </li>
-                  <li class="nav-item">
+                  <li class="nav-item submenu dropdown" v-if="role==='binhtb' || role==='khailq'">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">Welcome, {{ currentUser }}</a>
+                    <ul class="dropdown-menu">
+                      <li class="nav-item">
+                        <router-link to="/home" class="nav-link" href="login.html"><i class="fa fa-user"/>&nbsp;&nbsp;My
+                          Account
+                        </router-link>
+                      </li>
+                      <li class="nav-item">
+                        <button v-on:click="logout()" class="header_btn1 nav-link"><i class="fa fa-sign-out"/>&nbsp;&nbsp;LOGOUT
+                        </button>
+                      </li>
+                    </ul>
+                  </li>
+                  <li class="nav-item" v-if="!role">
                     <router-link to="/login" class="nav-link">
                       <b-button class="header_btn">LOGIN/REGISTER</b-button>
                     </router-link>
@@ -41,7 +56,19 @@
 <script>
 
 export default {
-  name: "CompHeader"
+  name: "CompHeader",
+  data() {
+    return {
+      role: this.$session.get('user'),
+      currentUser: this.$session.get('user')
+    }
+  },
+  methods: {
+    logout() {
+      this.$session.destroy();
+      this.$router.push('/login');
+    }
+  }
 }
 </script>
 
@@ -57,7 +84,21 @@ export default {
   border-radius: 90px;
   background-color: #229aeb;
 }
-.header_btn:hover{
+
+.header_btn:hover {
   background-color: #229bebad
+}
+.header_btn1 {
+  font-size: 14px;
+  font-weight: bold;
+  border: none;
+  background-color: #FFFFFF;
+  color: #222222;
+  width: 200px;
+}
+
+.header_btn1:hover {
+  background-color: #229aeb;
+  color: #fff;
 }
 </style>

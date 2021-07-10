@@ -51,6 +51,16 @@ Vue.use(VeeValidate, {
 });
 Vue.config.productionTip = false
 
+export const EventBus = new Vue()
+
+Object.defineProperties(Vue.prototype, {
+  $bus: {
+    get: function () {
+      return EventBus
+    }
+  }
+})
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

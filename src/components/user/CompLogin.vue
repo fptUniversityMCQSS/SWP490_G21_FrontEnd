@@ -106,7 +106,7 @@ export default {
             self.$session.start()
             self.$session.set('token', response.data.token)
             self.$session.set('user', response.data.username)
-            self.$router.push('/home');
+            self.$router.push('/');
           }
         }).catch(error => {
         console.log(error)

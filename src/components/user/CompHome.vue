@@ -1,6 +1,6 @@
 <template>
   <div>
-    <comp-header-login/>
+    <comp-header/>
     <!--================Home Banner Area =================-->
     <section class="home_banner_area">
       <div class="overlay"></div>
@@ -46,7 +46,7 @@
   </div>
 </template>
 <script>
-import CompHeaderLogin from "../frame/CompHeaderLogin";
+import CompHeader from "../frame/CompHeader";
 import CompFooter from "../frame/CompFooter";
 import CompBackToTop from "../frame/CompBackToTop";
 import CompLeftSider from "../frame/CompLeftSider";
@@ -54,7 +54,7 @@ import CompLeftSider from "../frame/CompLeftSider";
 export default {
   name: "CompHome",
   components: {
-    CompHeaderLogin, CompFooter, CompBackToTop, CompLeftSider
+    CompHeader, CompFooter, CompBackToTop, CompLeftSider
   }
 }
 </script>

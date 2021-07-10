@@ -1,6 +1,6 @@
 <template>
   <div>
-    <comp-header-login/>
+    <comp-header/>
     <!--================Home Banner Area =================-->
     <section class="banner_area">
       <div class="banner_inner d-flex align-items-center">
@@ -53,6 +53,14 @@
                                small
                                :per-page="perPage" :filter="filter" :fields="fields" id="my-table"
                                @filtered="onFiltered">
+
+                        <template #cell(historyName)="{item}">
+                          <a v-on:click="sendData(item)">{{ item.historyName }}
+                          </a>
+                        </template>
+                        <template #cell(historyDate)="row">
+                          {{ row.value }}
+                        </template>
                       </b-table>
                       <div style="padding-top: 20px">
                         <b-pagination size="md" :total-rows="totalRows" :per-page="perPage"
@@ -77,7 +85,7 @@
   </div>
 </template>
 <script>
-import CompHeaderLogin from "../frame/CompHeaderLogin";
+import CompHeader from "../frame/CompHeader";
 import CompFooter from "../frame/CompFooter";
 import CompBackToTop from "../frame/CompBackToTop";
 import CompLeftSider from "../frame/CompLeftSider";
@@ -85,7 +93,7 @@ import CompLeftSider from "../frame/CompLeftSider";
 export default {
   name: "CompHistory",
   components: {
-    CompHeaderLogin, CompFooter, CompBackToTop, CompLeftSider
+    CompHeader, CompFooter, CompBackToTop, CompLeftSider
   },
   data() {
     return {
@@ -106,15 +114,26 @@ export default {
           sortable: true
         }
       ],
+      abc: null
     }
   },
   methods: {
+    sendData(item) {
+      this.$bus.$emit('passID', item.id)
+
+    },
+    getData(dt) {
+      this.abc = dt
+      console.log(this.abc)
+      // this.$router.push('/history/detail')
+    },
     onFiltered(filteredItems) {
       this.totalRows = filteredItems.length
       this.currentPage = 1
     }
   },
   created() {
+    this.$bus.$on('passID', this.getData)
     const axios = require('axios');
     axios
       .get('http://localhost:1323/history', {

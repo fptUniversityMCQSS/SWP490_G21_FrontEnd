@@ -5,11 +5,11 @@
 </template>
 
 <script>
-import CompIndex from "./components/user/CompIndex";
+import CompHome from "./components/user/CompHome";
 
 export default {
   name: 'App',
-  components: {CompIndex},
+  components: {CompHome},
   watch: {
     $route: {
       immediate: true,

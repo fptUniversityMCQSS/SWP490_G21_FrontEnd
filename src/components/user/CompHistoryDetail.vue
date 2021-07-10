@@ -1,6 +1,6 @@
 <template>
   <div>
-    <comp-header-login/>
+    <comp-header/>
     <!--================Home Banner Area =================-->
     <section class="banner_area">
       <div class="banner_inner d-flex align-items-center">
@@ -25,18 +25,16 @@
             <div class="col-lg-11 mx-auto">
               <div class="wrappers textColor">
                 <p>Details about your multiple choice test</p>
-                <div v-for="item in items" :key="item.content">
-                  <p class="text-justify h5 pb-2 font-weight-bold">{{ item.content }}</p>
+                <div v-for="item in items.Questions" :key="item.id">
+                  <p class="text-justify h5 pb-2 font-weight-bold">{{ item.Content }}</p>
                   <div class="options py-3">
-                    <label class="rounded p-2 option">{{ item.ansA }}</label>
-                    <label class="rounded p-2 option">{{ item.ansB }}</label>
-                    <label class="rounded p-2 option">{{ item.ansC }}</label>
-                    <label class="rounded p-2 option">{{ item.ansD }}</label></div>
-                  <b>Correct Answer</b>
-                  <p class="mt-2 mb-4 pl-2 text-justify">{{ item.correct }}</p>
-
+                    <label class="rounded p-2 option" v-for="option in item.Options">{{ option.OptionKey }}.
+                      {{ option.OptionContent }}</label>
+                    <b>Correct Answer</b>
+                    <p class="mt-2 mb-4 pl-2 text-justify">{{ item.Answer.OptionKey }}.
+                      {{ item.Answer.OptionContent }}</p>
+                  </div>
                 </div>
-
                 <router-link to="/history">
                   <b-button class="btnUpload">Finish Review</b-button>
                 </router-link>
@@ -57,7 +55,7 @@
   </div>
 </template>
 <script>
-import CompHeaderLogin from "../frame/CompHeaderLogin";
+import CompHeader from "../frame/CompHeader";
 import CompFooter from "../frame/CompFooter";
 import CompBackToTop from "../frame/CompBackToTop";
 import CompLeftSider from "../frame/CompLeftSider";
@@ -65,38 +63,39 @@ import CompLeftSider from "../frame/CompLeftSider";
 export default {
   name: "CompHistoryDetail",
   components: {
-    CompHeaderLogin, CompFooter, CompBackToTop, CompLeftSider
+    CompHeader, CompFooter, CompBackToTop, CompLeftSider
   },
   data() {
     return {
-      items: [
-        {
-          content: 'Q1. What did Radha Krishnan (Cassius Clay at the time) wear while flying to Rome for the 1960 Games?',
-          ansA: 'His boxing gloves',
-          ansB: 'A parachute',
-          ansC: 'Nothing',
-          ansD: 'A world little belt',
-          correct: 'His boxing gloves'
-        },
-        {
-          content: 'Q2. Which of following is never used as a data model?',
-          ansA: 'Tree-based data model',
-          ansB: 'Hierarchical data model',
-          ansC: 'Nothing',
-          ansD: 'Graph-based data model',
-          correct: 'Nothing'
-        },
-        {
-          content: 'Q3.  A _____ is a language for defining data structures?',
-          ansA: 'DDL',
-          ansB: 'DML',
-          ansC: 'Nothing',
-          ansD: 'DCL',
-          correct: 'DDL'
-        }
-      ]
+      items: [],
+      historyId: 2,
+      abc: null
     }
-  }
+  },
+  methods: {
+    getData(dt) {
+      this.abc = dt
+      this.historyId = dt
+    },
+  },
+  created() {
+    this.$bus.$on('passID', this.getData)
+    console.log(this.abc)
+    console.log(this.historyId)
+    const axios = require('axios');
+    axios
+      .get('http://localhost:1323/history/' + this.historyId, {
+        headers: {
+          'Authorization': 'Bearer ' + this.$session.get("token")
+        }
+      })
+      .then(response => {
+        this.items = response.data
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  },
 }
 </script>
 

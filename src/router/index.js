@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import CompLogin from "../components/user/CompLogin";
 import CompRegister from "../components/user/CompRegister";
-import CompIndex from "../components/user/CompIndex";
 import CompHome from "../components/user/CompHome";
 import CompListKnowledge from "../components/user/CompListKnowledge";
 import CompUploadKnowledge from "../components/user/CompUploadKnowledge";
@@ -13,62 +12,60 @@ import CompAD_EditUser from "../components/admin/CompAD_EditUser";
 import CompQA from "../components/user/CompQA";
 import CompAD_AddUser from "../components/admin/CompAD_AddUser";
 import CompError from "../components/user/CompError";
-import multiguard from 'vue-router-multiguard';
 
 Vue.use(Router)
-
-const isAdmin = (to, from, next) => {
-  if (Vue.prototype.$session.get('user') === 'khailq') {
-    next()
-  } else {
-    next('/error')
-  }
-}
-const isStaff = (to, from, next) => {
-  if (Vue.prototype.$session.get('user') === 'thienlh') {
-    next()
-  } else {
-    next('/error')
-  }
-}
-const isUser = (to, from, next) => {
-  if (Vue.prototype.$session.get('user') === 'binhtb') {
-    next()
-  } else {
-    next('/error')
-  }
-}
 
 export default new Router({
   mode: "history",
   routes: [
     {
       path: '/',
-      component: CompIndex
-    },
-    {
-      path: '/knowledge',
-      component: CompListKnowledge,
-      meta: {title: 'Knowledge'},
-      beforeEnter: multiguard([isUser, isAdmin, isStaff])
-    },
-    {
-      path: '/knowledge/upload',
-      component: CompUploadKnowledge,
-      meta: {title: 'Upload Knowledge'},
-      beforeEnter: multiguard([isUser, isAdmin, isStaff])
-    },
-    {
-      path: '/qa',
-      component: CompQA,
-      meta: {title: 'Question & Answer'},
-      beforeEnter: multiguard([isUser, isAdmin, isStaff])
+      component: CompHome,
+      meta: {title: 'Home'},
     },
     {
       path: '/home',
       component: CompHome,
       meta: {title: 'Home'},
-      beforeEnter: multiguard([isUser, isAdmin, isStaff])
+    },
+    {
+      path: '/knowledge',
+      component: CompListKnowledge,
+      meta: {title: 'Knowledge'},
+      beforeEnter: (to, from, next) => {
+        let role = Vue.prototype.$session.get('user')
+        if (role === 'binhtb' || role === 'khailq') {
+          next()
+        } else {
+          next('/error')
+        }
+      }
+    },
+    {
+      path: '/knowledge/upload',
+      component: CompUploadKnowledge,
+      meta: {title: 'Upload Knowledge'},
+      beforeEnter: (to, from, next) => {
+        let role = Vue.prototype.$session.get('user')
+        if (role === 'binhtb' || role === 'khailq') {
+          next()
+        } else {
+          next('/error')
+        }
+      }
+    },
+    {
+      path: '/qa',
+      component: CompQA,
+      meta: {title: 'Question & Answer'},
+      beforeEnter: (to, from, next) => {
+        let role = Vue.prototype.$session.get('user')
+        if (role === 'binhtb' || role === 'khailq') {
+          next()
+        } else {
+          next('/error')
+        }
+      }
     },
     {
       path: '/login',
@@ -83,31 +80,67 @@ export default new Router({
     {
       path: '/history',
       component: CompHistory,
-      meta: {title: 'History'}
+      meta: {title: 'History'},
+      beforeEnter: (to, from, next) => {
+        let role = Vue.prototype.$session.get('user')
+        if (role === 'binhtb' || role === 'khailq') {
+          next()
+        } else {
+          next('/error')
+        }
+      }
     },
     {
       path: '/history/detail',
       component: CompHistoryDetail,
       meta: {title: 'History Detail'},
-      beforeEnter: multiguard([isUser, isAdmin, isStaff])
+      beforeEnter: (to, from, next) => {
+        let role = Vue.prototype.$session.get('user')
+        if (role === 'binhtb' || role === 'khailq') {
+          next()
+        } else {
+          next('/error')
+        }
+      }
     },
     {
       path: '/admin/users',
       component: CompAD_ListUser,
       meta: {title: 'List User'},
-      beforeEnter: isAdmin
+      beforeEnter: (to, from, next) => {
+        let role = Vue.prototype.$session.get('user')
+        if (role === 'khailq') {
+          next()
+        } else {
+          next('/error')
+        }
+      }
     },
     {
       path: '/admin/edit',
       component: CompAD_EditUser,
       meta: {title: 'Edit User'},
-      beforeEnter: isAdmin,
+      beforeEnter: (to, from, next) => {
+        let role = Vue.prototype.$session.get('user')
+        if (role === 'khailq') {
+          next()
+        } else {
+          next('/error')
+        }
+      }
     },
     {
       path: '/admin/add',
       component: CompAD_AddUser,
       meta: {title: 'Add User'},
-      beforeEnter: isAdmin,
+      beforeEnter: (to, from, next) => {
+        let role = Vue.prototype.$session.get('user')
+        if (role === 'khailq') {
+          next()
+        } else {
+          next('/error')
+        }
+      }
     },
     {
       path: '/error',

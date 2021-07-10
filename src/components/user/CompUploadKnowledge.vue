@@ -1,6 +1,6 @@
 <template>
   <div>
-    <comp-header-login/>
+    <comp-header/>
     <!--================Home Banner Area =================-->
     <section class="banner_area">
       <div class="banner_inner d-flex align-items-center">
@@ -56,7 +56,7 @@
 
 <script>
 
-import CompHeaderLogin from "../frame/CompHeaderLogin";
+import CompHeader from "../frame/CompHeader";
 import CompFooter from "../frame/CompFooter";
 import CompBackToTop from "../frame/CompBackToTop";
 import CompLeftSider from "../frame/CompLeftSider";
@@ -65,7 +65,7 @@ export default {
 
   name: "CompUploadKnowledge",
   components: {
-    CompHeaderLogin, CompFooter, CompBackToTop, CompLeftSider
+    CompHeader, CompFooter, CompBackToTop, CompLeftSider
   },
   data() {
     return {
