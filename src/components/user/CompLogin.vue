@@ -100,7 +100,6 @@ export default {
       form.append('username', this.username);
       form.append('password', this.password);
       axios.post('http://localhost:1323/login', form)
-
         .then(function (response) {
           if (response.status === 200) {
             self.$session.start()

@@ -37,6 +37,7 @@ import {BootstrapVue, BootstrapVueIcons} from "bootstrap-vue"
 import VueMeta from "vue-meta"
 import 'bootstrap-vue/dist/bootstrap-vue-icons.min.css'
 import VeeValidate from "vee-validate";
+import Vuex from 'vuex'
 
 Vue.use(BootstrapVue, axios, VueAxios, VueMeta)
 Vue.use(BootstrapVueIcons)
@@ -45,21 +46,14 @@ const options = {
 }
 
 Vue.use(VueSession, options)
+
+Vue.use(Vuex)
+
 Vue.use(VeeValidate, {
   inject: true,
   fieldsBagName: 'veeFields'
 });
 Vue.config.productionTip = false
-
-export const EventBus = new Vue()
-
-Object.defineProperties(Vue.prototype, {
-  $bus: {
-    get: function () {
-      return EventBus
-    }
-  }
-})
 
 /* eslint-disable no-new */
 new Vue({

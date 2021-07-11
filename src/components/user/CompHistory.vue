@@ -89,6 +89,7 @@ import CompHeader from "../frame/CompHeader";
 import CompFooter from "../frame/CompFooter";
 import CompBackToTop from "../frame/CompBackToTop";
 import CompLeftSider from "../frame/CompLeftSider";
+import store from "../../store";
 
 export default {
   name: "CompHistory",
@@ -114,18 +115,13 @@ export default {
           sortable: true
         }
       ],
-      abc: null
+      historyId: 0
     }
   },
   methods: {
     sendData(item) {
-      this.$bus.$emit('passID', item.id)
-
-    },
-    getData(dt) {
-      this.abc = dt
-      console.log(this.abc)
-      // this.$router.push('/history/detail')
+      store.commit('getHistoryId', item.id)
+      this.$router.push('/history/detail')
     },
     onFiltered(filteredItems) {
       this.totalRows = filteredItems.length
@@ -133,12 +129,12 @@ export default {
     }
   },
   created() {
-    this.$bus.$on('passID', this.getData)
+    const self = this
     const axios = require('axios');
     axios
       .get('http://localhost:1323/history', {
         headers: {
-          'Authorization': 'Bearer ' + this.$session.get("token")
+          'Authorization': 'Bearer ' + self.$session.get("token")
         }
       })
       .then(response => {

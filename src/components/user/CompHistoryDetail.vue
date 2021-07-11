@@ -59,6 +59,7 @@ import CompHeader from "../frame/CompHeader";
 import CompFooter from "../frame/CompFooter";
 import CompBackToTop from "../frame/CompBackToTop";
 import CompLeftSider from "../frame/CompLeftSider";
+import store from "../../store";
 
 export default {
   name: "CompHistoryDetail",
@@ -67,26 +68,16 @@ export default {
   },
   data() {
     return {
-      items: [],
-      historyId: 2,
-      abc: null
+      items: []
     }
   },
-  methods: {
-    getData(dt) {
-      this.abc = dt
-      this.historyId = dt
-    },
-  },
   created() {
-    this.$bus.$on('passID', this.getData)
-    console.log(this.abc)
-    console.log(this.historyId)
+    const self = this;
     const axios = require('axios');
     axios
-      .get('http://localhost:1323/history/' + this.historyId, {
+      .get('http://localhost:1323/history/' + store.state.historyID, {
         headers: {
-          'Authorization': 'Bearer ' + this.$session.get("token")
+          'Authorization': 'Bearer ' + self.$session.get("token")
         }
       })
       .then(response => {
