@@ -99,6 +99,7 @@ import CompHeader from "../frame/CompHeader";
 import CompFooter from "../frame/CompFooter";
 import CompBackToTop from "../frame/CompBackToTop";
 import CompLeftSider from "../frame/CompLeftSider";
+import store from "../../store";
 
 export default {
 
@@ -108,11 +109,11 @@ export default {
   },
   data() {
     return {
-      username: '',
+      username: store.state.user.username,
       password: '',
       confirmPassword: '',
-      role: null,
-      checked: false,
+      role: store.state.user.role,
+      checked: true,
       submitted: false
     }
   },
@@ -127,13 +128,15 @@ export default {
           const form = new FormData();
           form.append('username', this.username);
           form.append('password', this.password);
-          form.append('re-password', this.confirmPassword);
           form.append('role', this.role);
-          axios.post('http://localhost:1323/register', form)
+          axios.patch('http://localhost:1323/admin/user/' + store.state.user.id, form, {
+            headers: {
+              'Authorization': 'Bearer ' + self.$session.get("token")
+            }
+          })
             .then(function (response) {
               if (response.status === 200) {
                 self.$router.push('/admin/users');
-                console.log(form)
               }
             }).catch(error => {
             console.log(error)

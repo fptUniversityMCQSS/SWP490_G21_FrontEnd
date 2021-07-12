@@ -49,7 +49,6 @@
                       <!-- Main table element -->
                       <b-table striped hover :items="items" :current-page="currentPage" stacked="md"
                                show-empty
-                               small
                                :per-page="perPage" :filter="filter" :fields="fields" id="my-table"
                                @filtered="onFiltered">
                       </b-table>

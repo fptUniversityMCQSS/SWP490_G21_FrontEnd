@@ -36,7 +36,7 @@
                   </div>
                 </div>
                 <router-link to="/history">
-                  <b-button class="btnUpload">Finish Review</b-button>
+                  <b-button variant="outline-primary" class="btnUpload">Finish Review</b-button>
                 </router-link>
               </div>
             </div>

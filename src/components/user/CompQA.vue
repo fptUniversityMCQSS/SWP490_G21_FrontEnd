@@ -41,7 +41,7 @@
                   </div>
                 </div>
                 <br>
-                <b-button variant="outline-secondary" class="btnUpload" v-on:click="submitFiles()">Upload</b-button>
+                <b-button variant="outline-primary" class="btnUpload" v-on:click="submitFiles()">Upload</b-button>
               </div>
             </div>
           </div>

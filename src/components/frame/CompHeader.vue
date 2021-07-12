@@ -39,7 +39,7 @@
                   </li>
                   <li class="nav-item" v-if="!role">
                     <router-link to="/login" class="nav-link">
-                      <b-button class="header_btn">LOGIN/REGISTER</b-button>
+                      <b-button variant="outline-primary" class="header_btn">LOGIN/REGISTER</b-button>
                     </router-link>
                   </li>
                 </ul>
@@ -83,6 +83,7 @@ export default {
   cursor: pointer;
   border-radius: 90px;
   background-color: #229aeb;
+  color: #FFFFFF;
 }
 
 .header_btn:hover {

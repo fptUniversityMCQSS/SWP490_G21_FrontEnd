@@ -45,22 +45,26 @@
                           </b-input-group>
                         </b-form-group>
 
+                        <b-form-group class="col-2">
+                          <b-button variant="outline-primary" size="sm" class="addButton" v-on:click="addUser()">Add User</b-button>
+                        </b-form-group>
+
                       </div>
                       <!-- Main table element -->
-                      <b-table striped hover :items="items" :current-page="currentPage" show-empty small
+                      <b-table striped hover :items="items" :current-page="currentPage" show-empty
                                :per-page="perPage" :filter="filter" :fields="fields" id="my-table"
                                @filtered="onFiltered">
-                        <template #cell(knowledgeName)="row">
+                        <template #cell(username)="row">
                           {{ row.value }}
                         </template>
-                        <template #cell(knowledgeDate)="row">
+                        <template #cell(role)="row">
                           {{ row.value }}
                         </template>
                         <template #cell(actions)="{item}">
-                          <b-button size="sm" v-on:click="editUser(item)" class="mr-1">
+                          <b-button variant="outline-primary" size="sm" v-on:click="editUser(item)" class="mr-1 actionBtn">
                             Edit User
                           </b-button>
-                          <b-button size="sm" v-on:click="deleteUser()">
+                          <b-button variant="outline-primary" size="sm" v-on:click="deleteUser(item)" class="actionBtn">
                             Delete User
                           </b-button>
                         </template>
@@ -92,6 +96,7 @@ import CompHeader from "../frame/CompHeader";
 import CompFooter from "../frame/CompFooter";
 import CompBackToTop from "../frame/CompBackToTop";
 import CompLeftSider from "../frame/CompLeftSider";
+import store from "../../store";
 
 export default {
   name: 'CompAD_ListUser',
@@ -107,12 +112,12 @@ export default {
       totalRows: 1,
       fields: [
         {
-          key: 'Username',
-          label: 'User',
+          key: 'username',
+          label: 'Username',
           sortable: true
         },
         {
-          key: 'knowledgeName',
+          key: 'role',
           label: 'Role',
           sortable: true
         },
@@ -125,17 +130,48 @@ export default {
   },
   methods: {
     editUser(item) {
-      console.log(item)
+      store.commit('getUserId', item)
+      this.$router.push('/admin/edit')
+    },
+    deleteUser(item) {
+      const self = this
+      if (confirm('Do you really want to delete this account? You will not be able to restore this data again!"')) {
+        const axios = require('axios');
+        axios
+          .delete('http://localhost:1323/admin/user/' + item.id, {
+            headers: {
+              'Authorization': 'Bearer ' + self.$session.get("token")
+            }
+          })
+          .then(() => {
+            alert("Delete Successfully !")
+            let index = this.items.indexOf(item)
+            this.items.splice(index, 1)
+            this.totalRows--
+          })
+          .catch(error => {
+            console.log(error)
+          })
+      }
+    },
+    addUser() {
+      this.$router.push('/admin/add')
     },
     onFiltered(filteredItems) {
       this.totalRows = filteredItems.length
       this.currentPage = 1
     }
   },
+
   created() {
+    const self = this
     const axios = require('axios');
     axios
-      .get('http://localhost:1323/knowledge')
+      .get('http://localhost:1323/admin/user', {
+        headers: {
+          'Authorization': 'Bearer ' + self.$session.get("token")
+        }
+      })
       .then(response => {
         this.items = response.data
         this.totalRows = response.data.length
@@ -157,6 +193,28 @@ export default {
 }
 
 .searchTab {
-  margin-left: 390px;
+  margin-left: 294px;
+}
+
+.addButton {
+  background-color: #229aeb;
+  margin-top: 28px;
+  color: #FFFFFF;
+  font-weight: bold;
+}
+
+.addButton:hover {
+  background-color: #229bebad
+}
+
+.actionBtn {
+  background-color: #95999c;
+  color: #FFFFFF;
+  font-weight: bold;
+  border: none;
+}
+
+.actionBtn:hover {
+  background-color: #229bebad
 }
 </style>

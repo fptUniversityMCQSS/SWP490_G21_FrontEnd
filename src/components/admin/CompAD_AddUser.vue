@@ -66,7 +66,7 @@
                       {{ errors.first('confirm') }}
                     </div>
                   </div>
-                  <b-button class="btnUpload" v-on:click="addUser()">Add User</b-button>
+                  <b-button variant="outline-primary" class="btnUpload" v-on:click="addUser()">Add User</b-button>
                 </form>
               </div>
             </div>
@@ -118,13 +118,15 @@ export default {
           const form = new FormData();
           form.append('username', this.username);
           form.append('password', this.password);
-          form.append('re-password', this.confirmPassword);
           form.append('role', this.role);
-          axios.post('http://localhost:1323/register', form)
+          axios.post('http://localhost:1323/admin/user', form, {
+            headers: {
+              'Authorization': 'Bearer ' + self.$session.get("token")
+            }
+          })
             .then(function (response) {
               if (response.status === 200) {
                 self.$router.push('/admin/users');
-                console.log(form)
               }
             }).catch(error => {
             console.log(error)
