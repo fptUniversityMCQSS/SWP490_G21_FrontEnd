@@ -53,12 +53,17 @@
                                :per-page="perPage" :filter="filter" :fields="fields" id="my-table"
                                @filtered="onFiltered">
 
-                        <template #cell(historyName)="{item}">
-                          <a v-on:click="sendData(item)">{{ item.historyName }}
-                          </a>
+                        <template #cell(historyName)="row">
+                          {{ row.value }}
                         </template>
                         <template #cell(historyDate)="row">
                           {{ row.value }}
+                        </template>
+                        <template #cell(action)="{item}">
+                          <b-button variant="outline-primary" size="sm" v-on:click="sendData(item)"
+                                    class="mr-1 actionBtn">
+                            Review
+                          </b-button>
                         </template>
                       </b-table>
                       <div style="padding-top: 20px">
@@ -112,6 +117,10 @@ export default {
           key: 'historyDate',
           label: 'Date',
           sortable: true
+        },
+        {
+          key: 'action',
+          label: 'Action'
         }
       ],
       historyId: 0
@@ -158,5 +167,16 @@ export default {
 
 .searchTab {
   margin-left: 390px;
+}
+
+.actionBtn {
+  background-color: #95999c;
+  color: #FFFFFF;
+  font-weight: bold;
+  border: none;
+}
+
+.actionBtn:hover {
+  background-color: #229bebad
 }
 </style>

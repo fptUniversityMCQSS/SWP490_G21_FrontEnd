@@ -31,8 +31,7 @@
                     <label class="rounded p-2 option" v-for="option in item.Options">{{ option.OptionKey }}.
                       {{ option.OptionContent }}</label>
                     <b>Correct Answer</b>
-                    <p class="mt-2 mb-4 pl-2 text-justify">{{ item.Answer.OptionKey }}.
-                      {{ item.Answer.OptionContent }}</p>
+                    <p class="mt-2 mb-4 pl-2 text-justify">{{ item.Answer }}</p>
                   </div>
                 </div>
                 <router-link to="/history">
