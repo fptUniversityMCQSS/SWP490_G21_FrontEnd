@@ -5,7 +5,8 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     historyID: 0,
-    user: null
+    user: null,
+    totalQuestion:0
   },
   getters: {},
   mutations: {
@@ -14,6 +15,9 @@ const store = new Vuex.Store({
     },
     getUserId(state, object) {
       state.user = object
+    },
+    getTotal(state, total) {
+      state.totalQuestion = total
     }
   },
   actions: {}

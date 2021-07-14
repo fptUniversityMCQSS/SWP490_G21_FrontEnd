@@ -71,6 +71,7 @@ import CompHeader from "../frame/CompHeader";
 import CompFooter from "../frame/CompFooter";
 import CompBackToTop from "../frame/CompBackToTop";
 import CompLeftSider from "../frame/CompLeftSider";
+import store from "../../store";
 
 export default {
   name: "CompHistoryDetail",
@@ -107,6 +108,7 @@ export default {
       })
       .then(response => {
         this.items = response.data
+        store.commit('getTotal', response.data.Questions.length)
       })
       .catch(error => {
         console.log(error)

@@ -100,6 +100,7 @@ export default {
       perPage: 5,
       filter: "",
       totalRows: 1,
+      totalQuestion: store.state.totalQuestion,
       fields: [
         {
           key: 'historyName',
@@ -112,6 +113,16 @@ export default {
           sortable: true
         },
         {
+          key: 'subject',
+          label: 'Subject',
+          sortable: true
+        },
+        {
+          key: 'total',
+          label: 'Total',
+          sortable: true
+        },
+        {
           key: 'action',
           label: 'Action'
         }
@@ -120,7 +131,6 @@ export default {
   },
   methods: {
     sendData(item) {
-      store.commit('getHistoryId', item.id)
       this.$router.push('/history/'+item.id)
     },
     onFiltered(filteredItems) {
