@@ -33,8 +33,8 @@ export default new Router({
       component: CompListKnowledge,
       meta: {title: 'Knowledge'},
       beforeEnter: (to, from, next) => {
-        let role = Vue.prototype.$session.get('user')
-        if (role === 'binhtb' || role === 'khailq') {
+        let role = Vue.prototype.$session.get('role')
+        if (role === 'staff' || role === 'admin') {
           next()
         } else {
           next('/error')
@@ -46,8 +46,8 @@ export default new Router({
       component: CompUploadKnowledge,
       meta: {title: 'Upload Knowledge'},
       beforeEnter: (to, from, next) => {
-        let role = Vue.prototype.$session.get('user')
-        if (role === 'binhtb' || role === 'khailq') {
+        let role = Vue.prototype.$session.get('role')
+        if (role === 'staff' || role === 'admin') {
           next()
         } else {
           next('/error')
@@ -59,8 +59,8 @@ export default new Router({
       component: CompQA,
       meta: {title: 'Question & Answer'},
       beforeEnter: (to, from, next) => {
-        let role = Vue.prototype.$session.get('user')
-        if (role === 'binhtb' || role === 'khailq') {
+        let role = Vue.prototype.$session.get('role')
+        if (role === 'user' || role === 'staff' || role==='admin') {
           next()
         } else {
           next('/error')
@@ -82,8 +82,8 @@ export default new Router({
       component: CompHistory,
       meta: {title: 'History'},
       beforeEnter: (to, from, next) => {
-        let role = Vue.prototype.$session.get('user')
-        if (role === 'binhtb' || role === 'khailq') {
+        let role = Vue.prototype.$session.get('role')
+        if (role === 'user' || role === 'staff' || role==='admin') {
           next()
         } else {
           next('/error')
@@ -91,12 +91,12 @@ export default new Router({
       }
     },
     {
-      path: '/history/detail',
+      path: '/history/:id',
       component: CompHistoryDetail,
       meta: {title: 'History Detail'},
       beforeEnter: (to, from, next) => {
-        let role = Vue.prototype.$session.get('user')
-        if (role === 'binhtb' || role === 'khailq') {
+        let role = Vue.prototype.$session.get('role')
+        if (role === 'user' || role === 'staff' || role==='admin') {
           next()
         } else {
           next('/error')
@@ -104,12 +104,12 @@ export default new Router({
       }
     },
     {
-      path: '/admin/users',
+      path: '/admin/user',
       component: CompAD_ListUser,
       meta: {title: 'List User'},
       beforeEnter: (to, from, next) => {
-        let role = Vue.prototype.$session.get('user')
-        if (role === 'khailq') {
+        let role = Vue.prototype.$session.get('role')
+        if (role === 'admin') {
           next()
         } else {
           next('/error')
@@ -117,12 +117,12 @@ export default new Router({
       }
     },
     {
-      path: '/admin/edit',
+      path: '/admin/user/:id',
       component: CompAD_EditUser,
       meta: {title: 'Edit User'},
       beforeEnter: (to, from, next) => {
-        let role = Vue.prototype.$session.get('user')
-        if (role === 'khailq') {
+        let role = Vue.prototype.$session.get('role')
+        if (role === 'admin') {
           next()
         } else {
           next('/error')
@@ -134,8 +134,8 @@ export default new Router({
       component: CompAD_AddUser,
       meta: {title: 'Add User'},
       beforeEnter: (to, from, next) => {
-        let role = Vue.prototype.$session.get('user')
-        if (role === 'khailq') {
+        let role = Vue.prototype.$session.get('role')
+        if (role === 'admin') {
           next()
         } else {
           next('/error')

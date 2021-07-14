@@ -21,23 +21,36 @@
     <section class="cat_product_area section_gap">
       <div class="container-fluid">
         <div class="row flex-row-reverse">
-          <div class="col-lg-10 py-5">
-            <div class="col-lg-11 mx-auto">
-              <div class="wrappers textColor">
-                <p>Details about your multiple choice test</p>
-                <div v-for="item in items.Questions" :key="item.id">
-                  <p class="text-justify h5 pb-2 font-weight-bold">{{ item.Content }}</p>
-                  <div class="options py-3">
-                    <label class="rounded p-2 option" v-for="option in item.Options">{{ option.OptionKey }}.
-                      {{ option.OptionContent }}</label>
-                    <b>Correct Answer</b>
-                    <p class="mt-2 mb-4 pl-2 text-justify">{{ item.Answer }}</p>
-                  </div>
+          <div class="col-lg-2 py-5">
+
+            <b-table striped hover :items="items.Questions" :fields="fields">
+              <template #cell(Number)="{item}">
+                {{ item.Number }}
+              </template>
+              <template #cell(Answer)="{item}">
+                {{ item.Answer }}
+              </template>
+            </b-table>
+
+          </div>
+          <div class="col-lg-8 py-5">
+            <div class="wrappers textColor">
+              <h3>{{ items.Name }}</h3>
+              <p>{{ items.Date }}</p>
+
+              <p>Details about your multiple choice test</p>
+              <div v-for="item in items.Questions" :key="item.id">
+                <p class="text-justify h5 pb-2 font-weight-bold">{{ item.Number }}.{{ item.Content }}</p>
+                <div class="options py-3">
+                  <label class="rounded p-2 option" v-for="option in item.Options">{{ option.OptionKey }}.
+                    {{ option.OptionContent }}</label>
+                  <b>Correct Answer</b>
+                  <p class="mt-2 mb-4 pl-2 text-justify">{{ item.Answer }}</p>
                 </div>
-                <router-link to="/history">
-                  <b-button variant="outline-primary" class="btnUpload">Finish Review</b-button>
-                </router-link>
               </div>
+              <router-link to="/history">
+                <b-button variant="outline-primary" class="btnUpload">Finish Review</b-button>
+              </router-link>
             </div>
           </div>
           <div class="col-lg-2 py-5">
@@ -58,7 +71,6 @@ import CompHeader from "../frame/CompHeader";
 import CompFooter from "../frame/CompFooter";
 import CompBackToTop from "../frame/CompBackToTop";
 import CompLeftSider from "../frame/CompLeftSider";
-import store from "../../store";
 
 export default {
   name: "CompHistoryDetail",
@@ -67,14 +79,28 @@ export default {
   },
   data() {
     return {
-      items: []
+      items: [],
+      currentPage: 1,
+      perPage: 5,
+      filter: "",
+      totalRows: 1,
+      fields: [
+        {
+          key: 'Number',
+          label: 'Question'
+        },
+        {
+          key: 'Answer',
+          label: 'Answer'
+        }
+      ],
     }
   },
   created() {
     const self = this;
     const axios = require('axios');
     axios
-      .get('http://localhost:1323/history/' + store.state.historyID, {
+      .get('http://localhost:1323/history/' + self.$route.params.id, {
         headers: {
           'Authorization': 'Bearer ' + self.$session.get("token")
         }

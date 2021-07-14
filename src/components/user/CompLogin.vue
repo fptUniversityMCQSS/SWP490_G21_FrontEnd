@@ -24,7 +24,7 @@
         <div class="row">
           <div class="col-lg-6">
             <div class="login_box_img">
-              <img class="img-fluid" src="../../assets/img/login.jpg" alt="">
+              <img class="img-fluid" src="../../assets/img/product/login.jpg" alt="">
               <div class="hover">
                 <h4>Create an account</h4>
                 <p>The new way to learn properly!
@@ -100,11 +100,12 @@ export default {
       form.append('username', this.username);
       form.append('password', this.password);
       axios.post('http://localhost:1323/login', form)
-        .then(function (response) {
+        .then(response=> {
           if (response.status === 200) {
             self.$session.start()
             self.$session.set('token', response.data.token)
-            self.$session.set('user', response.data.username)
+            self.$session.set('username', response.data.username)
+            self.$session.set('role', response.data.role)
             self.$router.push('/');
           }
         }).catch(error => {

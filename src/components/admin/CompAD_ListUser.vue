@@ -54,18 +54,12 @@
                       <b-table striped hover :items="items" :current-page="currentPage" show-empty
                                :per-page="perPage" :filter="filter" :fields="fields" id="my-table"
                                @filtered="onFiltered">
-                        <template #cell(username)="row">
-                          {{ row.value }}
-                        </template>
-                        <template #cell(role)="row">
-                          {{ row.value }}
-                        </template>
                         <template #cell(actions)="{item}">
                           <b-button variant="outline-primary" size="sm" v-on:click="editUser(item)" class="mr-1 actionBtn">
-                            Edit User
+                            Edit Account
                           </b-button>
                           <b-button variant="outline-primary" size="sm" v-on:click="deleteUser(item)" class="actionBtn">
-                            Delete User
+                            Delete Account
                           </b-button>
                         </template>
                       </b-table>
@@ -130,8 +124,7 @@ export default {
   },
   methods: {
     editUser(item) {
-      store.commit('getUserId', item)
-      this.$router.push('/admin/edit')
+      this.$router.push('/admin/user/'+item.id)
     },
     deleteUser(item) {
       const self = this
@@ -144,7 +137,7 @@ export default {
             }
           })
           .then(() => {
-            alert("Delete Successfully !")
+            alert("DELETE SUCCESS!")
             let index = this.items.indexOf(item)
             this.items.splice(index, 1)
             this.totalRows--

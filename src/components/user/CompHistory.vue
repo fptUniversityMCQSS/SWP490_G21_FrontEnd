@@ -52,13 +52,6 @@
                                show-empty
                                :per-page="perPage" :filter="filter" :fields="fields" id="my-table"
                                @filtered="onFiltered">
-
-                        <template #cell(historyName)="row">
-                          {{ row.value }}
-                        </template>
-                        <template #cell(historyDate)="row">
-                          {{ row.value }}
-                        </template>
                         <template #cell(action)="{item}">
                           <b-button variant="outline-primary" size="sm" v-on:click="sendData(item)"
                                     class="mr-1 actionBtn">
@@ -122,14 +115,13 @@ export default {
           key: 'action',
           label: 'Action'
         }
-      ],
-      historyId: 0
+      ]
     }
   },
   methods: {
     sendData(item) {
       store.commit('getHistoryId', item.id)
-      this.$router.push('/history/detail')
+      this.$router.push('/history/'+item.id)
     },
     onFiltered(filteredItems) {
       this.totalRows = filteredItems.length

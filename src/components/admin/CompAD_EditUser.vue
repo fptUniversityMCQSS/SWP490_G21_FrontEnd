@@ -99,7 +99,6 @@ import CompHeader from "../frame/CompHeader";
 import CompFooter from "../frame/CompFooter";
 import CompBackToTop from "../frame/CompBackToTop";
 import CompLeftSider from "../frame/CompLeftSider";
-import store from "../../store";
 
 export default {
 
@@ -109,13 +108,28 @@ export default {
   },
   data() {
     return {
-      username: store.state.user.username,
+      username: '',
       password: '',
       confirmPassword: '',
-      role: store.state.user.role,
+      role: '',
       checked: true,
       submitted: false
     }
+  },
+  created() {
+    const self = this;
+    const axios = require('axios');
+    axios.get('http://localhost:1323/admin/user/' + self.$route.params.id, {
+      headers: {
+        'Authorization': 'Bearer ' + self.$session.get("token")
+      }
+    })
+      .then(response => {
+        this.username = response.data.username
+        this.role = response.data.role
+      }).catch(error => {
+      console.log(error)
+    })
   },
   methods: {
     editUser() {
@@ -129,14 +143,16 @@ export default {
           form.append('username', this.username);
           form.append('password', this.password);
           form.append('role', this.role);
-          axios.patch('http://localhost:1323/admin/user/' + store.state.user.id, form, {
+          form.append('change_password', this.checked);
+          axios.patch('http://localhost:1323/admin/user/' + self.$route.params.id, form, {
             headers: {
               'Authorization': 'Bearer ' + self.$session.get("token")
             }
           })
-            .then(function (response) {
+            .then(response => {
               if (response.status === 200) {
-                self.$router.push('/admin/users');
+                alert("EDIT SUCCESS!")
+                self.$router.push('/admin/user');
               }
             }).catch(error => {
             console.log(error)
@@ -144,7 +160,7 @@ export default {
         }
       });
     }
-  }
+  },
 }
 </script>
 

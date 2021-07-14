@@ -23,7 +23,7 @@
         <div class="row">
           <div class="col-lg-6">
             <div class="login_box_img">
-              <img class="img-fluid" src="../../assets/img/login.jpg" alt="">
+              <img class="img-fluid" src="../../assets/img/product/login.jpg" alt="">
               <div class="hover">
                 <h4>You already have an account?</h4>
                 <p>Log in to your account and take advantage of the features <br>we have to offer</p>

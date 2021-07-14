@@ -102,8 +102,8 @@ export default {
             'Authorization': 'Bearer ' + this.$session.get("token")
           }
         }
-      ).then(function () {
-        console.log('SUCCESS!!');
+      ).then(()=> {
+        alert("UPLOAD SUCCESS!")
       })
         .catch((er) => {
           console.log(er);

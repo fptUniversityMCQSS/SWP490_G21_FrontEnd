@@ -5,8 +5,8 @@
       <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container-fluid">
           <!-- Brand and toggle get grouped for better mobile display -->
-          <router-link to="/" class="navbar-brand logo_h">
-            <img src="../../assets/img/logo.png" alt="">
+          <router-link to="/home" class="navbar-brand logo_h">
+            <img src="../../assets/img/logo/logo17.png" alt="">
           </router-link>
           <!-- Collect the nav links, forms, and other content for toggling -->
           <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
@@ -22,7 +22,7 @@
                   <li class="nav-item">
                     <router-link to="/login" class="nav-link">About</router-link>
                   </li>
-                  <li class="nav-item submenu dropdown" v-if="role==='binhtb' || role==='khailq'">
+                  <li class="nav-item submenu dropdown" v-if="role === 'user' || role === 'staff' || role==='admin'">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false">Welcome, {{ currentUser }}</a>
                     <ul class="dropdown-menu">
@@ -32,6 +32,9 @@
                         </router-link>
                       </li>
                       <li class="nav-item">
+<!--                        <router-link to="/login" class="nav-link" v-on:click="logout()">-->
+<!--                          <i class="fa fa-sign-out"/>LOGOUT-->
+<!--                        </router-link>-->
                         <button v-on:click="logout()" class="header_btn1 nav-link"><i class="fa fa-sign-out"/>&nbsp;&nbsp;LOGOUT
                         </button>
                       </li>
@@ -59,8 +62,8 @@ export default {
   name: "CompHeader",
   data() {
     return {
-      role: this.$session.get('user'),
-      currentUser: this.$session.get('user')
+      role: this.$session.get('role'),
+      currentUser: this.$session.get('username')
     }
   },
   methods: {
@@ -89,6 +92,7 @@ export default {
 .header_btn:hover {
   background-color: #229bebad
 }
+
 .header_btn1 {
   font-size: 14px;
   font-weight: bold;

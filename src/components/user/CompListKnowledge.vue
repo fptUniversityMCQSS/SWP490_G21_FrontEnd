@@ -51,6 +51,16 @@
                                show-empty
                                :per-page="perPage" :filter="filter" :fields="fields" id="my-table"
                                @filtered="onFiltered">
+                        <template #cell(actions)="{item}">
+                          <b-button variant="outline-primary" size="sm" v-on:click="downloadKnowledge(item)"
+                                    class="mr-1 actionBtn">
+                            Download
+                          </b-button>
+                          <b-button variant="outline-primary" size="sm" v-on:click="deleteKnowledge(item)"
+                                    class="actionBtn">
+                            Delete
+                          </b-button>
+                        </template>
                       </b-table>
                       <div style="padding-top: 20px">
                         <b-pagination size="md" :total-rows="totalRows" :per-page="perPage"
@@ -107,11 +117,32 @@ export default {
           key: 'Username',
           label: 'Username',
           sortable: true,
+        },
+        {
+          key: 'actions',
+          label: 'Actions'
         }
       ],
     }
   },
   methods: {
+    downloadKnowledge(item) {
+      window.location.href = "http://localhost:1323/knowledge/" + item.knowledgeId
+    },
+    deleteKnowledge(item) {
+      const axios = require('axios');
+      axios
+        .delete('http://localhost:1323/knowledge/' + item.knowledgeId)
+        .then(() => {
+          alert("DELETE SUCCESS!")
+          let index = this.items.indexOf(item)
+          this.items.splice(index, 1)
+          this.totalRows--
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
     onFiltered(filteredItems) {
       this.totalRows = filteredItems.length
       this.currentPage = 1
@@ -143,5 +174,16 @@ export default {
 
 .searchTab {
   margin-left: 390px;
+}
+
+.actionBtn {
+  background-color: #95999c;
+  color: #FFFFFF;
+  font-weight: bold;
+  border: none;
+}
+
+.actionBtn:hover {
+  background-color: #229bebad
 }
 </style>

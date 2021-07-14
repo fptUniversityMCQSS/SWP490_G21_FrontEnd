@@ -95,6 +95,7 @@ export default {
       /*
         Initialize the form data
       */
+      let self = this
       let formData = new FormData();
       formData.append('file', this.files)
 
@@ -104,11 +105,13 @@ export default {
         {
           headers: {
             'Content-Type': 'multipart/form-data',
-            'Authorization': 'Bearer ' + this.$session.get("token")
+            'Authorization': 'Bearer ' + self.$session.get("token")
           }
         }
-      ).then(function () {
-        console.log('SUCCESS!!');
+      ).then(response => {
+        alert("UPLOAD SUCCESS!")
+        console.log(response)
+        this.$router.push('/history/' + response.data.id)
       })
         .catch((er) => {
           console.log(er);

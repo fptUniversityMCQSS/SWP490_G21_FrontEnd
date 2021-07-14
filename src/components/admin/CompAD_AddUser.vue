@@ -126,7 +126,8 @@ export default {
           })
             .then(function (response) {
               if (response.status === 200) {
-                self.$router.push('/admin/users');
+                alert("ADD SUCCESS!")
+                self.$router.push('/admin/user');
               }
             }).catch(error => {
             console.log(error)

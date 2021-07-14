@@ -35,7 +35,7 @@ export default {
   height: 50px;
   width: 50px;
   background-repeat: no-repeat;
-  background-image: url("../../assets/img/top.png");
+  background-image: url("../../assets/img/product/top.png");
   background-size: 100%;
 }
 
