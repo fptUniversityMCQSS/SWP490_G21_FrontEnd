@@ -52,6 +52,9 @@
                                show-empty
                                :per-page="perPage" :filter="filter" :fields="fields" id="my-table"
                                @filtered="onFiltered">
+                        <template #cell(historyDate)="row">
+                         {{formatDate(row.value)}}
+                        </template>
                         <template #cell(action)="{item}">
                           <b-button variant="outline-primary" size="sm" v-on:click="sendData(item)"
                                     class="mr-1 actionBtn">
@@ -130,6 +133,11 @@ export default {
     }
   },
   methods: {
+    formatDate(date) {
+      let dateFormat = require('dateformat');
+      let newDate = new Date(date);
+      return dateFormat(newDate, "dddd, mmmm dS, yyyy, h:MM:ss TT");
+    },
     sendData(item) {
       this.$router.push('/history/'+item.id)
     },

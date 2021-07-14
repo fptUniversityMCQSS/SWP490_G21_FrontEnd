@@ -8,12 +8,9 @@
         <div class="container">
           <div class="banner_content row">
             <div class="offset-lg-2 col-lg-8">
-              <h3>Fashion for
-                <br/>Upcoming Winter</h3>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                dolore magna
-                aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
-              <a class="white_bg_btn" href="#">View Collection</a>
+              <h2>Do you have a high school exam test?<br>
+                Let our AI assistant help you find the solution</h2>
+              <router-link to="/login" class="white_bg_btn">Get Started</router-link>
             </div>
           </div>
         </div>
@@ -60,5 +57,10 @@ export default {
 </script>
 
 <style scoped>
-
+h2 {
+  color: #FFFFFF;
+  font-weight: bold;
+  font-size: 30px;
+  font-family: Courier;
+}
 </style>

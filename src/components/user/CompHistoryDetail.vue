@@ -36,11 +36,11 @@
           <div class="col-lg-8 py-5">
             <div class="wrappers textColor">
               <h3>{{ items.Name }}</h3>
-              <p>{{ items.Date }}</p>
+              <p>{{ formatDate(items.Date) }}</p>
 
-              <p>Details about your multiple choice test</p>
               <div v-for="item in items.Questions" :key="item.id">
-                <p class="text-justify h5 pb-2 font-weight-bold">{{ item.Number }}.{{ item.Content }}</p>
+                <p class="text-justify h5 pb-2 font-weight-bold" style="white-space: pre-line">
+                  {{ item.Number + '. ' + item.Content }}</p>
                 <div class="options py-3">
                   <label class="rounded p-2 option" v-for="option in item.Options">{{ option.OptionKey }}.
                     {{ option.OptionContent }}</label>
@@ -71,12 +71,18 @@ import CompHeader from "../frame/CompHeader";
 import CompFooter from "../frame/CompFooter";
 import CompBackToTop from "../frame/CompBackToTop";
 import CompLeftSider from "../frame/CompLeftSider";
-import store from "../../store";
 
 export default {
   name: "CompHistoryDetail",
   components: {
     CompHeader, CompFooter, CompBackToTop, CompLeftSider
+  },
+  methods: {
+    formatDate(date) {
+      let dateFormat = require('dateformat');
+      let newDate = new Date(date);
+      return dateFormat(newDate, "dddd, mmmm dS, yyyy, h:MM:ss TT");
+    }
   },
   data() {
     return {
@@ -108,7 +114,6 @@ export default {
       })
       .then(response => {
         this.items = response.data
-        store.commit('getTotal', response.data.Questions.length)
       })
       .catch(error => {
         console.log(error)
