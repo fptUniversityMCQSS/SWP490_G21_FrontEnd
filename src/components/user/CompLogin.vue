@@ -7,7 +7,7 @@
       <div class="banner_inner d-flex align-items-center">
         <div class="container">
           <div class="banner_content text-center">
-            <h2>Login/Register</h2>
+            <h2>login to your account</h2>
             <div class="page_link">
               <router-link to="/index">Home</router-link>
               <router-link to="/login">Login</router-link>

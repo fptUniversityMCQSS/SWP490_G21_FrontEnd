@@ -3,24 +3,13 @@
     <comp-header/>
     <!--================Home Banner Area =================-->
     <section class="home_banner_area">
-      <div class="overlay"></div>
-      <div class="banner_inner d-flex align-items-center">
-        <div class="container">
-          <div class="banner_content row">
-            <div class="offset-lg-2 col-lg-8">
-              <h2>Do you have a high school exam test?<br>
-                Let our AI assistant help you find the solution</h2>
-              <router-link to="/login" class="white_bg_btn">Get Started</router-link>
-            </div>
-          </div>
-        </div>
-      </div>
+      <comp-slider-image/>
     </section>
     <!--================End Home Banner Area =================-->
 
     <!--================Content Area =================-->
-    <section class="cat_product_area section_gap">
-      <div class="container-fluid">
+    <section class="cat_product_area">
+      <div>
         <div class="row flex-row-reverse">
           <div class="col-lg-10 py-5" style="padding-left: 30px">
             <div class="col-lg-11 mx-auto">
@@ -29,7 +18,7 @@
 
             </div>
           </div>
-          <div class="col-lg-2 py-5">
+          <div class="col-lg-2 fixed-sidebar">
             <comp-left-sider/>
           </div>
         </div>
@@ -47,16 +36,27 @@ import CompHeader from "../frame/CompHeader";
 import CompFooter from "../frame/CompFooter";
 import CompBackToTop from "../frame/CompBackToTop";
 import CompLeftSider from "../frame/CompLeftSider";
+import CompSliderImage from "../frame/CompSliderImage";
 
 export default {
   name: "CompHome",
   components: {
-    CompHeader, CompFooter, CompBackToTop, CompLeftSider
+    CompHeader, CompFooter, CompBackToTop, CompLeftSider, CompSliderImage
   }
 }
 </script>
 
 <style scoped>
+
+.fixed-sidebar {
+  position: -webkit-sticky;
+  position: sticky;
+  height: 600px;
+  color: #fff;
+  top: 80px;
+  z-index: 999;
+}
+
 h2 {
   color: #FFFFFF;
   font-weight: bold;

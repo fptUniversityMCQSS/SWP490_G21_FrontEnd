@@ -18,11 +18,16 @@
     <!--================End Home Banner Area =================-->
 
     <!--================Content Area =================-->
-    <section class="cat_product_area section_gap">
-      <div class="container-fluid">
+    <section class="cat_product_area">
+      <div class="vld-parent">
         <div class="row flex-row-reverse">
           <div class="col-lg-10 py-5">
-            <div class="col-lg-11 mx-auto">
+
+            <loading :active.sync="isLoading"
+                     :can-cancel="true"
+                     :is-full-page="false"></loading>
+
+            <div class="col-lg-10 mx-auto section_gap">
               <div class="card rounded shadow border-0">
                 <div class="tableTl">History Table</div>
                 <div class="card-body bg-white rounded">
@@ -60,6 +65,10 @@
                                     class="mr-1 actionBtn">
                             Review
                           </b-button>
+                          <b-button variant="outline-primary" size="sm" v-on:click="downloadKnowledge(item)"
+                                    class="mr-1 actionBtn">
+                            Download
+                          </b-button>
                         </template>
                       </b-table>
                       <div style="padding-top: 20px">
@@ -72,7 +81,7 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-2 py-5">
+          <div class="col-lg-2 fixed-sidebar">
             <comp-left-sider/>
           </div>
         </div>
@@ -84,17 +93,21 @@
     <comp-footer/>
   </div>
 </template>
+
 <script>
+
 import CompHeader from "../frame/CompHeader";
 import CompFooter from "../frame/CompFooter";
 import CompBackToTop from "../frame/CompBackToTop";
 import CompLeftSider from "../frame/CompLeftSider";
-import store from "../../store";
+import Loading from 'vue-loading-overlay'
+import Vue from "vue";
+Vue.use(Loading)
 
 export default {
   name: "CompHistory",
   components: {
-    CompHeader, CompFooter, CompBackToTop, CompLeftSider
+    CompHeader, CompFooter, CompBackToTop, CompLeftSider, Loading
   },
   data() {
     return {
@@ -103,7 +116,7 @@ export default {
       perPage: 5,
       filter: "",
       totalRows: 1,
-      totalQuestion: store.state.totalQuestion,
+      isLoading: true,
       fields: [
         {
           key: 'historyName',
@@ -141,6 +154,9 @@ export default {
     sendData(item) {
       this.$router.push('/history/'+item.id)
     },
+    downloadKnowledge(item) {
+      window.location.href = "http://localhost:1323/history/" + item.id +"/download"
+    },
     onFiltered(filteredItems) {
       this.totalRows = filteredItems.length
       this.currentPage = 1
@@ -158,6 +174,7 @@ export default {
       .then(response => {
         this.items = response.data
         this.totalRows = response.data.length
+        this.isLoading = false;
       })
       .catch(error => {
         console.log(error)
@@ -167,6 +184,16 @@ export default {
 </script>
 
 <style scoped>
+
+.fixed-sidebar {
+  position: -webkit-sticky;
+  position: sticky;
+  height: 600px;
+  color: #fff;
+  top: 80px;
+  z-index: 999;
+}
+
 .tableTl {
   text-align: center;
   font-weight: bold;

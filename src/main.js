@@ -28,6 +28,7 @@ import './assets/vendors/counter-up/jquery.waypoints.min.js'
 import './assets/vendors/counter-up/jquery.counterup.js'
 import './assets/vendors/lightbox/simpleLightbox.min'
 import './assets/js/theme.js'
+import 'vue-loading-overlay/dist/vue-loading.css';
 
 import router from './router'
 import VueAxios from 'vue-axios'
@@ -38,7 +39,9 @@ import VueMeta from "vue-meta"
 import 'bootstrap-vue/dist/bootstrap-vue-icons.min.css'
 import VeeValidate from "vee-validate";
 import Vuex from 'vuex'
+import Loading from 'vue-loading-overlay'
 
+Vue.use(Loading)
 Vue.use(BootstrapVue, axios, VueAxios, VueMeta)
 Vue.use(BootstrapVueIcons)
 const options = {
@@ -59,6 +62,8 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  linkActiveClass: "active",
+  linkExactActiveClass: "exact-active",
   components: {App},
   template: '<App/>'
 })

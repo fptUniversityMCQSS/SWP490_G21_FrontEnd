@@ -18,11 +18,11 @@
     <!--================End Home Banner Area =================-->
 
     <!--================Content Area =================-->
-    <section class="cat_product_area section_gap">
-      <div class="container-fluid">
+    <section class="cat_product_area">
+      <div>
         <div class="row flex-row-reverse">
           <div class="col-lg-10">
-            <div class="col-lg-8 mx-auto">
+            <div class="col-lg-8 mx-auto section_gap">
               <div class="comment-form">
                 <h4>Create New Account</h4>
                 <form>
@@ -71,7 +71,7 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-2 py-5">
+          <div class="col-lg-2 fixed-sidebar">
             <comp-left-sider/>
           </div>
         </div>
@@ -81,7 +81,7 @@
     <!--================End Content Area =================-->
 
     <comp-back-to-top/>
-    <comp-footer/>
+      <comp-footer/>
   </div>
 </template>
 
@@ -140,6 +140,16 @@ export default {
 </script>
 
 <style scoped>
+
+.fixed-sidebar {
+  position: -webkit-sticky;
+  position: sticky;
+  height: 600px;
+  color: #fff;
+  top: 80px;
+  z-index: 999;
+}
+
 .btnUpload {
   width: 180px;
   height: 45px;

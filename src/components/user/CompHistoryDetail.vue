@@ -18,11 +18,10 @@
     <!--================End Home Banner Area =================-->
 
     <!--================Content Area =================-->
-    <section class="cat_product_area section_gap">
-      <div class="container-fluid">
+    <section class="cat_product_area">
+      <div>
         <div class="row flex-row-reverse">
-          <div class="col-lg-2 py-5">
-
+          <div class="col-lg-1 py-5 left">
             <b-table striped hover :items="items.Questions" :fields="fields">
               <template #cell(Number)="{item}">
                 {{ item.Number }}
@@ -31,7 +30,6 @@
                 {{ item.Answer }}
               </template>
             </b-table>
-
           </div>
           <div class="col-lg-8 py-5">
             <div class="wrappers textColor">
@@ -53,7 +51,7 @@
               </router-link>
             </div>
           </div>
-          <div class="col-lg-2 py-5">
+          <div class="col-lg-2  fixed-sidebar">
             <comp-left-sider/>
           </div>
         </div>
@@ -124,14 +122,29 @@ export default {
 
 <style scoped>
 
+.fixed-sidebar {
+  position: -webkit-sticky;
+  position: sticky;
+  height: 600px;
+  color: #fff;
+  top: 80px;
+  z-index: 999;
+}
+
 .textColor {
   color: #2c3e50;
 }
 
 .wrappers {
   max-width: 700px;
-  margin: 10px auto;
+  margin: auto;
   font-size: 15px;
+}
+
+.left {
+  width: 100%;
+  padding-right: 50px;
+  margin-right: auto;
 }
 
 b {

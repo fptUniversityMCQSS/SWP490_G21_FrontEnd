@@ -18,11 +18,14 @@
     <!--================End Home Banner Area =================-->
 
     <!--================Content Area =================-->
-    <section class="cat_product_area section_gap">
-      <div class="container-fluid">
+    <section class="cat_product_area">
+      <div class="vld-parent">
         <div class="row flex-row-reverse">
           <div class="col-lg-10 py-5">
-            <div class="col-lg-11 mx-auto">
+            <loading :active.sync="isLoading"
+                     :can-cancel="true"
+                     :is-full-page="false"></loading>
+            <div class="col-lg-10 mx-auto section_gap">
               <div class="card rounded shadow border-0">
                 <div class="tableTl">User Table</div>
                 <div class="card-body bg-white rounded">
@@ -73,7 +76,7 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-2 py-5">
+          <div class="col-lg-2 fixed-sidebar">
             <comp-left-sider/>
           </div>
         </div>
@@ -91,11 +94,14 @@ import CompFooter from "../frame/CompFooter";
 import CompBackToTop from "../frame/CompBackToTop";
 import CompLeftSider from "../frame/CompLeftSider";
 import store from "../../store";
+import Loading from 'vue-loading-overlay'
+import Vue from "vue";
+Vue.use(Loading)
 
 export default {
   name: 'CompAD_ListUser',
   components: {
-    CompHeader, CompFooter, CompBackToTop, CompLeftSider
+    CompHeader, CompFooter, CompBackToTop, CompLeftSider, Loading
   },
   data() {
     return {
@@ -104,6 +110,7 @@ export default {
       perPage: 5,
       filter: "",
       totalRows: 1,
+      isLoading: true,
       fields: [
         {
           key: 'username',
@@ -168,6 +175,7 @@ export default {
       .then(response => {
         this.items = response.data
         this.totalRows = response.data.length
+        this.isLoading = false
       })
       .catch(error => {
         console.log(error)
@@ -177,6 +185,16 @@ export default {
 </script>
 
 <style scoped>
+
+.fixed-sidebar {
+  position: -webkit-sticky;
+  position: sticky;
+  height: 600px;
+  color: #fff;
+  top: 80px;
+  z-index: 999;
+}
+
 .tableTl {
   text-align: center;
   font-weight: bold;

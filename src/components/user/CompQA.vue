@@ -18,11 +18,14 @@
     <!--================End Home Banner Area =================-->
 
     <!--================Content Area =================-->
-    <section class="cat_product_area section_gap">
-      <div class="container-fluid">
+    <section class="cat_product_area">
+      <div class="vld-parent">
+        <loading :active.sync="isLoading"
+                 :can-cancel="true"
+                 :is-full-page="false"></loading>
         <div class="row flex-row-reverse">
           <div class="col-lg-10">
-            <div class="col-lg-11 mx-auto">
+            <div class="col-lg-11 mx-auto section_gap">
               <div class="wrapper">
                 <div class="cont">
                   <h1>Upload a file</h1>
@@ -41,11 +44,18 @@
                   </div>
                 </div>
                 <br>
-                <b-button variant="outline-primary" class="btnUpload" v-on:click="submitFiles()">Upload</b-button>
+                <b-button v-if="btnUpload===false" variant="outline-primary" class="btnUpload"
+                          v-on:click="submitFiles()">
+                  Upload
+                </b-button>
+                <b-button v-if="btnUpload===true" variant="outline-primary" class="btnUpload"
+                          v-on:click="submitFiles()">
+                  <i class="fa fa-spinner fa-spin" style="font-size: 25px"/>
+                </b-button>
               </div>
             </div>
           </div>
-          <div class="col-lg-2 py-5">
+          <div class="col-lg-2 fixed-sidebar">
             <comp-left-sider/>
           </div>
         </div>
@@ -65,17 +75,24 @@ import CompHeader from "../frame/CompHeader";
 import CompFooter from "../frame/CompFooter";
 import CompBackToTop from "../frame/CompBackToTop";
 import CompLeftSider from "../frame/CompLeftSider";
+import Loading from 'vue-loading-overlay'
+import Vue from "vue";
+
+Vue.use(Loading)
 
 export default {
 
   name: "CompQA",
   components: {
-    CompHeader, CompFooter, CompBackToTop, CompLeftSider
+    CompHeader, CompFooter, CompBackToTop, CompLeftSider, Loading
   },
   data() {
     return {
       files: '',
-      fileName: ''
+      fileName: '',
+      isLoading: false,
+      btnUpload: false,
+      hasFile: false
     }
   },
   /*
@@ -92,6 +109,9 @@ export default {
       Submits files to the server
     */
     submitFiles() {
+      if (this.hasFile) {
+        this.btnUpload = true
+      }
       /*
         Initialize the form data
       */
@@ -109,8 +129,8 @@ export default {
           }
         }
       ).then(response => {
+        this.isLoading = false
         alert("UPLOAD SUCCESS!")
-        console.log(response)
         this.$router.push('/history/' + response.data.id)
       })
         .catch((er) => {
@@ -123,6 +143,9 @@ export default {
     handleFilesUpload() {
       this.files = this.$refs.file.files[0];
       this.fileName = event.target.files[0].name;
+      if (this.files !== null) {
+        this.hasFile = true
+      }
     },
     /*
       Removes a select file the user has uploaded
@@ -132,6 +155,16 @@ export default {
 </script>
 
 <style scoped>
+
+.fixed-sidebar {
+  position: -webkit-sticky;
+  position: sticky;
+  height: 600px;
+  color: #fff;
+  top: 80px;
+  z-index: 999;
+}
+
 * {
   box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -145,7 +178,7 @@ body {
 
 .wrapper {
   margin: auto;
-  max-width: 640px;
+  max-width: 800px;
   padding-top: 60px;
   padding-bottom: 60px;
   text-align: center;

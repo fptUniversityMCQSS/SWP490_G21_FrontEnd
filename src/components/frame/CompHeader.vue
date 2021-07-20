@@ -6,7 +6,7 @@
         <div class="container-fluid">
           <!-- Brand and toggle get grouped for better mobile display -->
           <router-link to="/home" class="navbar-brand logo_h">
-            <img src="../../assets/img/logo/logo17.png" alt="">
+            <img src="../../assets/img/logo/lg4.png" alt="">
           </router-link>
           <!-- Collect the nav links, forms, and other content for toggling -->
           <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
@@ -24,7 +24,7 @@
                   </li>
                   <li class="nav-item submenu dropdown" v-if="role === 'user' || role === 'staff' || role==='admin'">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                       aria-expanded="false">Welcome, {{ currentUser }}</a>
+                       aria-expanded="false">{{ currentUser }}</a>
                     <ul class="dropdown-menu">
                       <li class="nav-item">
                         <router-link to="/home" class="nav-link" href="login.html"><i class="fa fa-user"/>&nbsp;&nbsp;My
@@ -32,9 +32,6 @@
                         </router-link>
                       </li>
                       <li class="nav-item">
-<!--                        <router-link to="/login" class="nav-link" v-on:click="logout()">-->
-<!--                          <i class="fa fa-sign-out"/>LOGOUT-->
-<!--                        </router-link>-->
                         <button v-on:click="logout()" class="header_btn1 nav-link"><i class="fa fa-sign-out"/>&nbsp;&nbsp;LOGOUT
                         </button>
                       </li>
@@ -76,6 +73,11 @@ export default {
 </script>
 
 <style scoped>
+
+a.active{
+  color: #ba8b00;
+}
+
 .header_btn {
   font-size: 12px;
   font-weight: bold;

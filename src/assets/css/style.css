@@ -144,8 +144,9 @@ a:hover, a:focus {
 }
 
 .section_gap1 {
-  padding: 40px 0px;
+  padding: 50px 0px;
   background-color: #f9f9ff;
+  z-index: 999;
 }
 
 @media (max-width: 1224px) {
@@ -222,7 +223,7 @@ a:hover, a:focus {
   width: 100%;
   top: 0;
   left: 0;
-  z-index: 99;
+  z-index: 1000;
   transition: background 0.4s, all 0.3s linear;
 }
 
@@ -563,7 +564,7 @@ a:hover, a:focus {
 /* Home Banner Area css
 ============================================================================================ */
 .home_banner_area {
-  background: url(../img/banner/bannerhome.jpg) no-repeat center bottom;
+  /*background: url(../img/banner/homebanner2.jpeg) no-repeat center bottom;*/
   position: relative;
   z-index: 1;
   height: 500px;
@@ -684,7 +685,7 @@ a:hover, a:focus {
 
 .banner_area {
   position: relative;
-  z-index: 1;
+  z-index: 999;
   min-height: 395px;
 }
 
@@ -3782,11 +3783,9 @@ h6 {
 }
 
 .hot_deals_area .hot_deal_box .hot_deal_box1 {
-  background: url(../img/product/hot_deals/deal1.jpg);
 }
 
 .hot_deals_area .hot_deal_box .hot_deal_box2 {
-  background: url(../img/product/hot_deals/deal1.jpg);
 }
 
 .hot_deals_area .hot_deal_box img {
@@ -5720,6 +5719,12 @@ h6 {
 /*---------------------------------------------------- */
 /*----------------------------------------------------*/
 /*============== footer-area css ===============*/
+
+.footer-area {
+  z-index: 99;
+  position: relative
+}
+
 .single-footer-widget p {
   margin-bottom: 0px;
   color: #777777;
@@ -5821,7 +5826,7 @@ h6 {
 }
 
 .footer-bottom {
-  padding-top: 70px;
+  padding-top: 50px;
 }
 
 .footer-bottom .footer-text {
