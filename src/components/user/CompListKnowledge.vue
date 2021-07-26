@@ -109,6 +109,7 @@ export default {
   data() {
     return {
       items: [],
+      abc: process.env.VUE_APP_LISTKNOWLEDGE,
       currentPage: 1,
       perPage: 5,
       filter: "",
@@ -173,6 +174,7 @@ export default {
         this.items = response.data
         this.totalRows = response.data.length
         this.isLoading = false;
+        console.log('abc', this.abc)
       })
       .catch(error => {
         console.log(error)

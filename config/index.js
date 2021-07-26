@@ -3,10 +3,13 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 
 const path = require('path')
+const Dotenv = require('dotenv-webpack');
 
 module.exports = {
   dev: {
-
+    plugins: [
+      new Dotenv()
+    ],
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
@@ -20,7 +23,7 @@ module.exports = {
     notifyOnErrors: true,
     poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-
 
-    
+
     /**
      * Source Maps
      */
