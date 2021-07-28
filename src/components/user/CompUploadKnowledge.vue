@@ -46,16 +46,16 @@
                       {{ row.value }}
                     </template>
                     <template #cell(action)="{item}">
-                      <p v-if="item.status===true" size="sm" class="mr-1" style="font-weight: bold">
-                        Done&nbsp;<i class="fa fa-check" style="color: #4ABF60"/>
-                      </p>
-                      <b-button v-if="item.status===false" variant="outline-primary" size="sm" class="mr-1 actionBtn">
-                        <i class="fa fa-spinner fa-spin"/>&nbsp;Cancel
-                      </b-button>
+                      <div v-if="item.status===false" size="sm" class="mr-1">
+                        In Progress 📀
+                      </div>
+                      <div v-if="item.status===true" size="sm" class="mr-1">
+                        Successful ✅
+                      </div>
                     </template>
                   </b-table>
-                </div>
 
+                </div>
               </div>
             </div>
           </div>
@@ -79,16 +79,11 @@ import CompHeader from "../frame/CompHeader";
 import CompFooter from "../frame/CompFooter";
 import CompBackToTop from "../frame/CompBackToTop";
 import CompLeftSider from "../frame/CompLeftSider";
-import Loading from 'vue-loading-overlay'
-import Vue from "vue";
-
-Vue.use(Loading)
 
 export default {
-
   name: "CompUploadKnowledge",
   components: {
-    CompHeader, CompFooter, CompBackToTop, CompLeftSider, Loading
+    CompHeader, CompFooter, CompBackToTop, CompLeftSider
   },
   data() {
     return {
@@ -111,7 +106,6 @@ export default {
   /*
     Defines the method used by the component
   */
-
   methods: {
     handleFilesUpload(object) {
       this.files = this.$refs.file.files[0];
@@ -126,20 +120,19 @@ export default {
         }
         this.items.push(newObject)
       }
-
       /*
         Initialize the form data
       */
       let formData = new FormData();
       formData.append('file', this.files)
-
       const axios = require('axios');
+
       axios.put('http://localhost:1323/knowledge',
         formData,
         {
           headers: {
             'Content-Type': 'multipart/form-data',
-            'Authorization': 'Bearer ' + this.$session.get("token")
+            'Authorization': 'Bearer ' + this.$session.get("token"),
           }
         }
       ).then(() => {
