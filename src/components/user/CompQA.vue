@@ -19,10 +19,7 @@
 
     <!--================Content Area =================-->
     <section class="cat_product_area">
-      <div class="vld-parent">
-        <loading :active.sync="isLoading"
-                 :can-cancel="true"
-                 :is-full-page="false"></loading>
+      <div>
         <div class="row flex-row-reverse">
           <div class="col-lg-10">
             <div class="col-lg-11 mx-auto section_gap">
@@ -36,27 +33,42 @@
                           href="../../../static/QB_SWT391_BanTQ.doc"
                           download="The_sample_doc"><u>the sample
                           format</u></a></p>
-                      <!--<input type="file" id="file-upload">-->
                       <p>Drag and drop files here, or
-                        <input type="file" name="file" id="file" ref="file" multiple v-on:change="handleFilesUpload()"/>
+                        <input type="file" name="file" id="fileInput" ref="file"
+                               v-on:change="handleFilesUpload"/>
                       </p>
                     </div>
                   </div>
                 </div>
                 <br>
-                <b-button v-if="btnUpload===false" variant="outline-primary" class="btnUpload"
-                          v-on:click="submitFiles()">
-                  Upload
+
+                <b-button variant="outline-primary" class="btnUpload"
+                          v-on:click="submitFiles()">Upload
                 </b-button>
-                <b-button v-if="btnUpload===true" variant="outline-primary" class="btnUpload"
-                          v-on:click="submitFiles()">
-                  <i class="fa fa-spinner fa-spin" style="font-size: 25px"/>
-                </b-button>
+
+                <div v-if="items.length>0" style="margin-top: 50px">
+                  <b-table striped hover :items="items" :fields="fields">
+                    <template #cell(nameCurrent)="row">
+                      {{ row.value }}
+                    </template>
+                    <template #cell(status)="{item}">
+                      <div v-if="item.status===false" size="sm" class="mr-1">
+                        In Progress 📀
+                      </div>
+                      <b-button v-if="item.status===true" variant="outline-primary" size="sm" v-on:click="reviewQA(item)"
+                                class="mr-1 actionBtn">
+                        Review
+                      </b-button>
+                    </template>
+                  </b-table>
+                </div>
+
               </div>
             </div>
           </div>
           <div class="col-lg-2 fixed-sidebar">
             <comp-left-sider/>
+            <flash-message class="myCustomClass"></flash-message>
           </div>
         </div>
         <!-- code paging here--->
@@ -75,23 +87,28 @@ import CompHeader from "../frame/CompHeader";
 import CompFooter from "../frame/CompFooter";
 import CompBackToTop from "../frame/CompBackToTop";
 import CompLeftSider from "../frame/CompLeftSider";
-import Loading from 'vue-loading-overlay'
-import Vue from "vue";
-
-Vue.use(Loading)
 
 export default {
 
   name: "CompQA",
   components: {
-    CompHeader, CompFooter, CompBackToTop, CompLeftSider, Loading
+    CompHeader, CompFooter, CompBackToTop, CompLeftSider
   },
   data() {
     return {
-      files: '',
+      items: [],
       fileName: '',
-      isLoading: false,
-      btnUpload: false,
+      fields: [
+        {
+          key: 'nameCurrent',
+          label: 'File Name'
+        },
+        {
+          key: 'status',
+          label: 'Status'
+        }
+      ],
+      files: '',
       hasFile: false
     }
   },
@@ -99,18 +116,22 @@ export default {
     Defines the method used by the component
   */
   methods: {
-    /*
-      Adds a file
-    */
-    addFiles() {
-      this.$refs.file.click();
+    reviewQA(object){
+      this.$router.push('/history/' + object.id)
     },
-    /*
-      Submits files to the server
-    */
+    handleFilesUpload(object) {
+      this.files = this.$refs.file.files[0];
+      this.fileName = object.target.files[0].name
+    },
     submitFiles() {
-      if (this.hasFile) {
-        this.btnUpload = true
+      let newObject
+      if (document.getElementById("fileInput").files.length !== 0) {
+        newObject = {
+          id:'',
+          nameCurrent: this.fileName,
+          status: false
+        }
+        this.items.push(newObject)
       }
       /*
         Initialize the form data
@@ -120,7 +141,7 @@ export default {
       formData.append('file', this.files)
 
       const axios = require('axios');
-      axios.put('http://localhost:1323/qa',
+      axios.put(process.env.VUE_APP_LOCAL + process.env.VUE_APP_QA,
         formData,
         {
           headers: {
@@ -129,32 +150,31 @@ export default {
           }
         }
       ).then(response => {
-        this.isLoading = false
-        alert("UPLOAD SUCCESS!")
-        this.$router.push('/history/' + response.data.id)
+        newObject.status = true;
+        newObject.id = response.data.id
+        this.flash('Upload successfully', 'success', {
+          timeout: 3000
+        });
       })
         .catch((er) => {
           console.log(er);
         });
-    },
-    /*
-      Handles the uploading of files
-    */
-    handleFilesUpload() {
-      this.files = this.$refs.file.files[0];
-      this.fileName = event.target.files[0].name;
-      if (this.files !== null) {
-        this.hasFile = true
-      }
-    },
-    /*
-      Removes a select file the user has uploaded
-    */
+    }
   }
 }
 </script>
 
 <style scoped>
+.actionBtn {
+  background-color: #95999c;
+  color: #FFFFFF;
+  font-weight: bold;
+  border: none;
+}
+
+.actionBtn:hover {
+  background-color: #229bebad
+}
 
 .fixed-sidebar {
   position: -webkit-sticky;

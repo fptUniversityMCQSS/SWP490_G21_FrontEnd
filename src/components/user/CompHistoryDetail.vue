@@ -105,7 +105,7 @@ export default {
     const self = this;
     const axios = require('axios');
     axios
-      .get('http://localhost:1323/history/' + self.$route.params.id, {
+      .get(process.env.VUE_APP_LOCAL + process.env.VUE_APP_HISTORY_DETAIL + self.$route.params.id, {
         headers: {
           'Authorization': 'Bearer ' + self.$session.get("token")
         }

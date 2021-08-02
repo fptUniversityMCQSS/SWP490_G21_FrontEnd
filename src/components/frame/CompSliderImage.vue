@@ -1,5 +1,5 @@
 <template>
-  <b-carousel
+  <b-carousel v-if="!this.$session.get('token')"
     :interval="3000"
     controls
     indicators
@@ -40,6 +40,24 @@
         <img
           class="d-block img-fluid w-100"
           src="../../assets/img/banner/homebanner2.jpeg"
+          alt="image slot"/>
+      </template>
+    </b-carousel-slide>
+
+  </b-carousel>
+
+  <b-carousel v-else-if="this.$session.get('token')"
+    :interval="3000"
+    background="#ababab"
+    class="carousel">
+
+    <b-carousel-slide class="carousel">
+      <h2 style="padding-bottom: 100px">Do you have a high school exam test?<br>
+        Let our AI assistant help you find the solution</h2>
+      <template #img>
+        <img
+          class="d-block img-fluid w-100"
+          src="../../assets/img/banner/homebanner11.jpg"
           alt="image slot"/>
       </template>
     </b-carousel-slide>

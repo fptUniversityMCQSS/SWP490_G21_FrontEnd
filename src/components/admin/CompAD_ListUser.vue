@@ -49,7 +49,9 @@
                         </b-form-group>
 
                         <b-form-group class="col-2">
-                          <b-button variant="outline-primary" size="sm" class="addButton" v-on:click="addUser()">Add User</b-button>
+                          <b-button variant="outline-primary" size="sm" class="addButton" v-on:click="addUser()">Add
+                            User
+                          </b-button>
                         </b-form-group>
 
                       </div>
@@ -58,10 +60,12 @@
                                :per-page="perPage" :filter="filter" :fields="fields" id="my-table"
                                @filtered="onFiltered">
                         <template #cell(actions)="{item}">
-                          <b-button variant="outline-primary" size="sm" v-on:click="editUser(item)" class="mr-1 actionBtn">
+                          <b-button variant="outline-primary" size="sm" v-on:click="editUser(item)"
+                                    class="mr-1 actionBtn" :disabled="item.status">
                             Edit Account
                           </b-button>
-                          <b-button variant="outline-primary" size="sm" v-on:click="deleteUser(item)" class="actionBtn">
+                          <b-button variant="outline-primary" size="sm"
+                                    v-on:click="deleteUser(item)" class="actionBtn" :disabled="item.status">
                             Delete Account
                           </b-button>
                         </template>
@@ -78,6 +82,7 @@
           </div>
           <div class="col-lg-2 fixed-sidebar">
             <comp-left-sider/>
+            <flash-message class="myCustomClass"></flash-message>
           </div>
         </div>
       </div>
@@ -93,9 +98,9 @@ import CompHeader from "../frame/CompHeader";
 import CompFooter from "../frame/CompFooter";
 import CompBackToTop from "../frame/CompBackToTop";
 import CompLeftSider from "../frame/CompLeftSider";
-import store from "../../store";
 import Loading from 'vue-loading-overlay'
 import Vue from "vue";
+
 Vue.use(Loading)
 
 export default {
@@ -131,28 +136,45 @@ export default {
   },
   methods: {
     editUser(item) {
-      this.$router.push('/admin/user/'+item.id)
+      this.$router.push('/admin/user/' + item.id)
     },
     deleteUser(item) {
       const self = this
-      if (confirm('Do you really want to delete this account? You will not be able to restore this data again!"')) {
-        const axios = require('axios');
-        axios
-          .delete('http://localhost:1323/admin/user/' + item.id, {
-            headers: {
-              'Authorization': 'Bearer ' + self.$session.get("token")
-            }
-          })
-          .then(() => {
-            alert("DELETE SUCCESS!")
-            let index = this.items.indexOf(item)
-            this.items.splice(index, 1)
-            this.totalRows--
-          })
-          .catch(error => {
-            console.log(error)
-          })
-      }
+      let message = "<p style='text-align: center; padding-top: 5px'><b style='font-size: 20px'>Delete Account</b>" +
+        "<br><br>Are you sure you want to delete this account?</p>";
+      let options = {
+        html: true,
+        okText: 'Continue',
+        cancelText: 'Close',
+      };
+      this.$dialog
+        .confirm(message, options)
+        .then(() => {
+          item.status = true
+          const axios = require('axios');
+          axios
+            .delete(process.env.VUE_APP_LOCAL + process.env.VUE_APP_DELETE_USER + item.id, {
+              headers: {
+                'Authorization': 'Bearer ' + self.$session.get("token")
+              }
+            })
+            .then(response => {
+              if (response.status === 200) {
+                this.flash('Delete successfully', 'success', {
+                  timeout: 3000
+                });
+                let index = this.items.indexOf(item)
+                this.items.splice(index, 1)
+                this.totalRows--
+              }
+            })
+            .catch(error => {
+              console.log(error)
+            })
+        })
+        .catch(function () {
+          console.log('Clicked on cancel');
+        })
     },
     addUser() {
       this.$router.push('/admin/add')
@@ -167,13 +189,21 @@ export default {
     const self = this
     const axios = require('axios');
     axios
-      .get('http://localhost:1323/admin/user', {
+      .get(process.env.VUE_APP_LOCAL + process.env.VUE_APP_LIST_USER, {
         headers: {
           'Authorization': 'Bearer ' + self.$session.get("token")
         }
       })
       .then(response => {
-        this.items = response.data
+        response.data.forEach((value) => {
+          let object = {
+            id: value.id,
+            role: value.role,
+            username: value.username,
+            status: false
+          }
+          this.items.push(object)
+        });
         this.totalRows = response.data.length
         this.isLoading = false
       })

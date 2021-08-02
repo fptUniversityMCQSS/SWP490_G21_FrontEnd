@@ -29,6 +29,7 @@ import './assets/vendors/counter-up/jquery.counterup.js'
 import './assets/vendors/lightbox/simpleLightbox.min'
 import './assets/js/theme.js'
 import 'vue-loading-overlay/dist/vue-loading.css';
+import 'vue-flash-message/dist/vue-flash-message.min.css'
 
 import router from './router'
 import VueAxios from 'vue-axios'
@@ -40,7 +41,12 @@ import 'bootstrap-vue/dist/bootstrap-vue-icons.min.css'
 import VeeValidate from "vee-validate";
 import Vuex from 'vuex'
 import Loading from 'vue-loading-overlay'
+import VueFlashMessage from 'vue-flash-message';
+import VuejsDialog from 'vuejs-dialog';
+import 'vuejs-dialog/dist/vuejs-dialog.min.css';
 
+Vue.use(VuejsDialog);
+Vue.use(VueFlashMessage);
 Vue.use(Loading)
 Vue.use(BootstrapVue, axios, VueAxios, VueMeta)
 Vue.use(BootstrapVueIcons)
@@ -67,3 +73,12 @@ new Vue({
   components: {App},
   template: '<App/>'
 })
+
+String.format = function() {
+  var s = arguments[0];
+  for (var i = 0; i < arguments.length - 1; i++) {
+    var reg = new RegExp("\\{" + i + "\\}", "gm");
+    s = s.replace(reg, arguments[i + 1]);
+  }
+  return s;
+}

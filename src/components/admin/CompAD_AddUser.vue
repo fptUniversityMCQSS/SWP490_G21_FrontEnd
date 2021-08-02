@@ -73,6 +73,7 @@
           </div>
           <div class="col-lg-2 fixed-sidebar">
             <comp-left-sider/>
+            <flash-message class="myCustomClass"></flash-message>
           </div>
         </div>
         <!-- code paging here--->
@@ -81,7 +82,7 @@
     <!--================End Content Area =================-->
 
     <comp-back-to-top/>
-      <comp-footer/>
+    <comp-footer/>
   </div>
 </template>
 
@@ -119,14 +120,16 @@ export default {
           form.append('username', this.username);
           form.append('password', this.password);
           form.append('role', this.role);
-          axios.post('http://localhost:1323/admin/user', form, {
+          axios.post(process.env.VUE_APP_LOCAL + process.env.VUE_APP_ADD_USER, form, {
             headers: {
               'Authorization': 'Bearer ' + self.$session.get("token")
             }
           })
-            .then(function (response) {
+            .then(response => {
               if (response.status === 200) {
-                alert("ADD SUCCESS!")
+                this.flash('Add account successfully', 'success', {
+                  timeout: 3000
+                });
                 self.$router.push('/admin/user');
               }
             }).catch(error => {

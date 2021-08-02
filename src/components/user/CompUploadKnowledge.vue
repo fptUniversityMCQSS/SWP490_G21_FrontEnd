@@ -45,7 +45,7 @@
                     <template #cell(nameCurrent)="row">
                       {{ row.value }}
                     </template>
-                    <template #cell(action)="{item}">
+                    <template #cell(status)="{item}">
                       <div v-if="item.status===false" size="sm" class="mr-1">
                         In Progress 📀
                       </div>
@@ -54,13 +54,14 @@
                       </div>
                     </template>
                   </b-table>
-
                 </div>
+
               </div>
             </div>
           </div>
           <div class="col-lg-2 fixed-sidebar">
             <comp-left-sider/>
+            <flash-message class="myCustomClass"></flash-message>
           </div>
         </div>
         <!-- code paging here--->
@@ -80,6 +81,7 @@ import CompFooter from "../frame/CompFooter";
 import CompBackToTop from "../frame/CompBackToTop";
 import CompLeftSider from "../frame/CompLeftSider";
 
+
 export default {
   name: "CompUploadKnowledge",
   components: {
@@ -92,11 +94,11 @@ export default {
       fields: [
         {
           key: 'nameCurrent',
-          label: 'Name'
+          label: 'File Name'
         },
         {
-          key: 'action',
-          label: 'Action'
+          key: 'status',
+          label: 'Status'
         }
       ],
       files: '',
@@ -127,7 +129,7 @@ export default {
       formData.append('file', this.files)
       const axios = require('axios');
 
-      axios.put('http://localhost:1323/knowledge',
+      axios.put(process.env.VUE_APP_LOCAL + process.env.VUE_APP_UPLOAD_KNOWLEDGE,
         formData,
         {
           headers: {
@@ -137,7 +139,9 @@ export default {
         }
       ).then(() => {
         newObject.status = true;
-        alert("UPLOAD SUCCESS!");
+        this.flash('Upload successfully', 'success', {
+          timeout: 3000
+        });
       })
         .catch((er) => {
           console.log(er);
@@ -213,11 +217,6 @@ h1 {
   opacity: 0.65;
 }
 
-.icons {
-  color: #95afc0;
-  opacity: 0.55;
-}
-
 .btnUpload {
   width: 200px;
   height: 50px;
@@ -236,14 +235,4 @@ h1 {
   background-color: #229bebad
 }
 
-.actionBtn {
-  background-color: #95999c;
-  color: #FFFFFF;
-  font-weight: bold;
-  border: none;
-}
-
-.actionBtn:hover {
-  background-color: #229bebad
-}
 </style>

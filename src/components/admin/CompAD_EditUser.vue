@@ -81,6 +81,7 @@
           </div>
           <div class="col-lg-2 fixed-sidebar">
             <comp-left-sider/>
+            <flash-message class="myCustomClass"></flash-message>
           </div>
         </div>
         <!-- code paging here--->
@@ -119,7 +120,7 @@ export default {
   created() {
     const self = this;
     const axios = require('axios');
-    axios.get('http://localhost:1323/admin/user/' + self.$route.params.id, {
+    axios.get(process.env.VUE_APP_LOCAL + process.env.VUE_APP_USER  + self.$route.params.id, {
       headers: {
         'Authorization': 'Bearer ' + self.$session.get("token")
       }
@@ -144,14 +145,16 @@ export default {
           form.append('password', this.password);
           form.append('role', this.role);
           form.append('change_password', this.checked);
-          axios.patch('http://localhost:1323/admin/user/' + self.$route.params.id, form, {
+          axios.patch(process.env.VUE_APP_LOCAL + process.env.VUE_APP_EDIT_USER + self.$route.params.id, form, {
             headers: {
               'Authorization': 'Bearer ' + self.$session.get("token")
             }
           })
             .then(response => {
               if (response.status === 200) {
-                alert("EDIT SUCCESS!")
+                this.flash('Edit account successfully', 'success', {
+                  timeout: 3000
+                });
                 self.$router.push('/admin/user');
               }
             }).catch(error => {

@@ -41,6 +41,13 @@
                           </b-form-select>
                         </b-form-group>
 
+                        <b-form-group label="Knowledge view mode:" class="col-3">
+                          <b-form-select size="sm" v-on:change="changeMode"
+                                         :options="[{text:'Knowledge of current account',value:'current'},{text:'All knowledge',value:'all'}]"
+                                         v-model="optionView">
+                          </b-form-select>
+                        </b-form-group>
+
                         <b-form-group label="Search:" class="col-4 searchTab">
                           <b-input-group size="sm">
                             <b-form-input v-model="filter" type="search" placeholder="Type to Search"></b-form-input>
@@ -51,13 +58,14 @@
                         </b-form-group>
 
                       </div>
-                      <!-- Main table element -->
-                      <b-table striped hover :items="items" :current-page="currentPage" stacked="md"
+                      <!-- Main table current -->
+                      <b-table v-if="optionView === 'current'" striped hover :items="items" :current-page="currentPage"
+                               stacked="md"
                                show-empty
                                :per-page="perPage" :filter="filter" :fields="fields" id="my-table"
                                @filtered="onFiltered">
                         <template #cell(knowledgeDate)="row">
-                         {{formatDate(row.value)}}
+                          {{ formatDate(row.value) }}
                         </template>
                         <template #cell(actions)="{item}">
                           <b-button variant="outline-primary" size="sm" v-on:click="downloadKnowledge(item)"
@@ -70,6 +78,24 @@
                           </b-button>
                         </template>
                       </b-table>
+
+                      <!--Main table all -->
+                      <b-table v-if="optionView ==='all'" striped hover :items="itemAll" :current-page="currentPage"
+                               stacked="md"
+                               show-empty
+                               :per-page="perPage" :filter="filter" :fields="fields" id="my-table"
+                               @filtered="onFiltered">
+                        <template #cell(knowledgeDate)="row">
+                          {{ formatDate(row.value) }}
+                        </template>
+                        <template #cell(actions)="{item}">
+                          <b-button variant="outline-primary" size="sm" v-on:click="downloadKnowledge(item)"
+                                    class="mr-1 actionBtn">
+                            Download
+                          </b-button>
+                        </template>
+                      </b-table>
+
                       <div style="padding-top: 20px">
                         <b-pagination size="md" :total-rows="totalRows" :per-page="perPage"
                                       v-model="currentPage" aria-controls="my-table"/>
@@ -82,6 +108,7 @@
           </div>
           <div class="col-lg-2 fixed-sidebar">
             <comp-left-sider/>
+            <flash-message class="myCustomClass"></flash-message>
           </div>
         </div>
       </div>
@@ -99,6 +126,7 @@ import CompBackToTop from "../frame/CompBackToTop";
 import CompLeftSider from "../frame/CompLeftSider";
 import Loading from 'vue-loading-overlay'
 import Vue from "vue";
+
 Vue.use(Loading)
 
 export default {
@@ -109,12 +137,14 @@ export default {
   data() {
     return {
       items: [],
-      abc: process.env.VUE_APP_LISTKNOWLEDGE,
+      itemAll: [],
       currentPage: 1,
       perPage: 5,
       filter: "",
       totalRows: 1,
+      totalRowAll: 1,
       isLoading: true,
+      optionView: 'current',
       fields: [
         {
           key: 'knowledgeName',
@@ -139,20 +169,30 @@ export default {
     }
   },
   methods: {
+    changeMode() {
+      this.currentPage = 1
+      if (this.optionView === 'current') {
+        this.totalRows = this.items.length
+      } else {
+        this.totalRows = this.itemAll.length
+      }
+    },
     formatDate(date) {
       let dateFormat = require('dateformat');
       let newDate = new Date(date);
       return dateFormat(newDate, "dddd, mmmm dS, yyyy, h:MM:ss TT");
     },
     downloadKnowledge(item) {
-      window.location.href = "http://localhost:1323/knowledge/" + item.knowledgeId
+      window.location.href = process.env.VUE_APP_LOCAL + process.env.VUE_APP_DOWNLOAD_KNOWLEDGE + item.knowledgeId
     },
     deleteKnowledge(item) {
       const axios = require('axios');
       axios
-        .delete('http://localhost:1323/knowledge/' + item.knowledgeId)
+        .delete(process.env.VUE_APP_LOCAL + process.env.VUE_APP_DELETE_KNOWLEDGE + item.knowledgeId)
         .then(() => {
-          alert("DELETE SUCCESS!")
+          this.flash('Delete successfully', 'success', {
+            timeout: 3000
+          });
           let index = this.items.indexOf(item)
           this.items.splice(index, 1)
           this.totalRows--
@@ -169,12 +209,23 @@ export default {
   created() {
     const axios = require('axios');
     axios
-      .get('http://localhost:1323/knowledge')
+      .get(process.env.VUE_APP_LOCAL + process.env.VUE_APP_LIST_KNOWLEDGE)
       .then(response => {
-        this.items = response.data
-        this.totalRows = response.data.length
+        response.data.forEach((value) => {
+          if (this.$session.get('username') === value.Username) {
+            let object = {
+              username: value.Username,
+              knowledgeDate: value.knowledgeDate,
+              knowledgeId: value.knowledgeId,
+              knowledgeName: value.knowledgeName
+            }
+            this.items.push(object)
+          }
+        });
+        this.itemAll = response.data
+        this.totalRowAll = this.itemAll.length
+        this.totalRows = this.items.length
         this.isLoading = false;
-        console.log('abc', this.abc)
       })
       .catch(error => {
         console.log(error)
@@ -203,7 +254,7 @@ export default {
 }
 
 .searchTab {
-  margin-left: 390px;
+  margin-left: 200px;
 }
 
 .actionBtn {

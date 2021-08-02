@@ -58,7 +58,7 @@
                                :per-page="perPage" :filter="filter" :fields="fields" id="my-table"
                                @filtered="onFiltered">
                         <template #cell(historyDate)="row">
-                         {{formatDate(row.value)}}
+                          {{ formatDate(row.value) }}
                         </template>
                         <template #cell(action)="{item}">
                           <b-button variant="outline-primary" size="sm" v-on:click="sendData(item)"
@@ -102,6 +102,7 @@ import CompBackToTop from "../frame/CompBackToTop";
 import CompLeftSider from "../frame/CompLeftSider";
 import Loading from 'vue-loading-overlay'
 import Vue from "vue";
+
 Vue.use(Loading)
 
 export default {
@@ -152,10 +153,11 @@ export default {
       return dateFormat(newDate, "dddd, mmmm dS, yyyy, h:MM:ss TT");
     },
     sendData(item) {
-      this.$router.push('/history/'+item.id)
+      this.$router.push('/history/' + item.id)
     },
     downloadKnowledge(item) {
-      window.location.href = "http://localhost:1323/history/" + item.id +"/download"
+      let api = process.env.VUE_APP_HISTORY_DOWNLOAD.slice(0, 9)+item.id+ process.env.VUE_APP_HISTORY_DOWNLOAD.slice(12)
+      window.location.href = process.env.VUE_APP_LOCAL + api
     },
     onFiltered(filteredItems) {
       this.totalRows = filteredItems.length
@@ -166,7 +168,7 @@ export default {
     const self = this
     const axios = require('axios');
     axios
-      .get('http://localhost:1323/history', {
+      .get(process.env.VUE_APP_LOCAL + process.env.VUE_APP_LIST_HISTORY, {
         headers: {
           'Authorization': 'Bearer ' + self.$session.get("token")
         }

@@ -99,7 +99,7 @@ export default {
       const form = new FormData();
       form.append('username', this.username);
       form.append('password', this.password);
-      axios.post('http://localhost:1323/login', form)
+      axios.post(process.env.VUE_APP_LOCAL + process.env.VUE_APP_LOGIN, form)
         .then(response=> {
           if (response.status === 200) {
             self.$session.start()

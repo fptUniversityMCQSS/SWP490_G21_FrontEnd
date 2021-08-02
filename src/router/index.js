@@ -19,17 +19,17 @@ export default new Router({
   mode: "history",
   routes: [
     {
-      path: '/',
+      path: "/",
       component: CompHome,
       meta: {title: 'Home'},
     },
     {
-      path: '/home',
+      path: "/home",
       component: CompHome,
       meta: {title: 'Home'},
     },
     {
-      path: '/knowledge',
+      path: "/knowledge",
       component: CompListKnowledge,
       meta: {title: 'Knowledge'},
       beforeEnter: (to, from, next) => {
@@ -47,7 +47,7 @@ export default new Router({
       meta: {title: 'Upload Knowledge'},
       beforeEnter: (to, from, next) => {
         let role = Vue.prototype.$session.get('role')
-        if (role === 'staff' || role === 'admin') {
+        if (role === 'user' || role === 'admin') {
           next()
         } else {
           next('/error')
