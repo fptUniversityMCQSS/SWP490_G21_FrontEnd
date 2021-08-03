@@ -34,8 +34,11 @@
           <div class="col-lg-8 py-5">
             <div class="wrappers textColor">
               <h3>{{ items.Name }}</h3>
-              <p>{{ formatDate(items.Date) }}</p>
-
+              <p>{{ formatDate(items.Date) }}&nbsp;&nbsp;&nbsp;&nbsp;
+                <b-button variant="outline-primary" size="sm" v-on:click="downloadDetail"
+                          class="mr-1 actionBtn">
+                  Download
+                </b-button>
               <div v-for="item in items.Questions" :key="item.id">
                 <p class="text-justify h5 pb-2 font-weight-bold" style="white-space: pre-line">
                   {{ item.Number + '. ' + item.Content }}</p>
@@ -80,6 +83,10 @@ export default {
       let dateFormat = require('dateformat');
       let newDate = new Date(date);
       return dateFormat(newDate, "dddd, mmmm dS, yyyy, h:MM:ss TT");
+    },
+    downloadDetail() {
+      let api = process.env.VUE_APP_HISTORY_DOWNLOAD.slice(0, 9) + this.$route.params.id + process.env.VUE_APP_HISTORY_DOWNLOAD.slice(12)
+      window.location.href = process.env.VUE_APP_LOCAL + api
     }
   },
   data() {

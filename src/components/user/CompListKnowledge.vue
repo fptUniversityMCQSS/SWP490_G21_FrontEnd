@@ -186,19 +186,30 @@ export default {
       window.location.href = process.env.VUE_APP_LOCAL + process.env.VUE_APP_DOWNLOAD_KNOWLEDGE + item.knowledgeId
     },
     deleteKnowledge(item) {
-      const axios = require('axios');
-      axios
-        .delete(process.env.VUE_APP_LOCAL + process.env.VUE_APP_DELETE_KNOWLEDGE + item.knowledgeId)
+      let message = "<p style='text-align: center; padding-top: 5px'><b style='font-size: 20px'>Delete Knowledge</b>" +
+        "<br><br>Are you sure you want to delete this knowledge?</p>";
+      let options = {
+        html: true,
+        okText: 'Continue',
+        cancelText: 'Close',
+      };
+      this.$dialog
+        .confirm(message, options)
         .then(() => {
-          this.flash('Delete successfully', 'success', {
-            timeout: 3000
-          });
-          let index = this.items.indexOf(item)
-          this.items.splice(index, 1)
-          this.totalRows--
-        })
-        .catch(error => {
-          console.log(error)
+          const axios = require('axios');
+          axios
+            .delete(process.env.VUE_APP_LOCAL + process.env.VUE_APP_DELETE_KNOWLEDGE + item.knowledgeId)
+            .then(() => {
+              this.flash('Delete successfully', 'success', {
+                timeout: 3000
+              });
+              let index = this.items.indexOf(item)
+              this.items.splice(index, 1)
+              this.totalRows--
+            })
+            .catch(error => {
+              console.log(error)
+            })
         })
     },
     onFiltered(filteredItems) {
@@ -209,7 +220,13 @@ export default {
   created() {
     const axios = require('axios');
     axios
-      .get(process.env.VUE_APP_LOCAL + process.env.VUE_APP_LIST_KNOWLEDGE)
+      .get(process.env.VUE_APP_LOCAL + process.env.VUE_APP_LIST_KNOWLEDGE,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': 'Bearer ' + this.$session.get("token"),
+          }
+        })
       .then(response => {
         response.data.forEach((value) => {
           if (this.$session.get('username') === value.Username) {

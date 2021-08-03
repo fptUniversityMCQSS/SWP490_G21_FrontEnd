@@ -139,7 +139,6 @@ export default {
       this.$router.push('/admin/user/' + item.id)
     },
     deleteUser(item) {
-      const self = this
       let message = "<p style='text-align: center; padding-top: 5px'><b style='font-size: 20px'>Delete Account</b>" +
         "<br><br>Are you sure you want to delete this account?</p>";
       let options = {
@@ -155,7 +154,7 @@ export default {
           axios
             .delete(process.env.VUE_APP_LOCAL + process.env.VUE_APP_DELETE_USER + item.id, {
               headers: {
-                'Authorization': 'Bearer ' + self.$session.get("token")
+                'Authorization': 'Bearer ' + this.$session.get("token")
               }
             })
             .then(response => {

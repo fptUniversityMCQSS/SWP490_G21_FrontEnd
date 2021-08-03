@@ -46,10 +46,13 @@
                       {{ row.value }}
                     </template>
                     <template #cell(status)="{item}">
-                      <div v-if="item.status===false" size="sm" class="mr-1">
+                      <div v-if="item.status==='Processing'" size="sm" class="mr-1">
+                        In Progress
+                      </div>
+                      <div v-if="item.status==='Encoding'" size="sm" class="mr-1">
                         In Progress 📀
                       </div>
-                      <div v-if="item.status===true" size="sm" class="mr-1">
+                      <div v-if="item.status==='Ready'" size="sm" class="mr-1">
                         Successful ✅
                       </div>
                     </template>
@@ -105,9 +108,11 @@ export default {
       hasFile: false
     }
   },
-  /*
-    Defines the method used by the component
-  */
+  created() {
+    if(this.$session.has('listKnowledge')){
+      this.items = this.$session.get('listKnowledge')
+    }
+  },
   methods: {
     handleFilesUpload(object) {
       this.files = this.$refs.file.files[0];
@@ -115,20 +120,21 @@ export default {
     },
     submitFiles() {
       let newObject
+
       if (document.getElementById("fileInput").files.length !== 0) {
         newObject = {
           nameCurrent: this.fileName,
-          status: false
+          status: 'Processing'
         }
         this.items.push(newObject)
       }
+      this.$session.set('listKnowledge', this.items)
       /*
         Initialize the form data
       */
       let formData = new FormData();
       formData.append('file', this.files)
       const axios = require('axios');
-
       axios.put(process.env.VUE_APP_LOCAL + process.env.VUE_APP_UPLOAD_KNOWLEDGE,
         formData,
         {
@@ -137,11 +143,18 @@ export default {
             'Authorization': 'Bearer ' + this.$session.get("token"),
           }
         }
-      ).then(() => {
-        newObject.status = true;
+      ).then(response => {
+        newObject.status = 'Ready'
+        this.$session.set('listKnowledge', this.items)
         this.flash('Upload successfully', 'success', {
           timeout: 3000
         });
+        // if (response.data.status === 'Encoding') {
+        //   newObject.status = 'Encoding';
+        // }
+        // if (response.data.status === 'Ready') {
+        //   newObject.status = 'Ready';
+        // }
       })
         .catch((er) => {
           console.log(er);
