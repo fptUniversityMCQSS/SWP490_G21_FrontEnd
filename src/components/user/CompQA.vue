@@ -52,10 +52,13 @@
                       {{ row.value }}
                     </template>
                     <template #cell(status)="{item}">
-                      <div v-if="item.status===false" size="sm" class="mr-1">
+                      <div v-if="item.status==='Processing'" size="sm" class="mr-1">
                         In Progress 📀
                       </div>
-                      <b-button v-if="item.status===true" variant="outline-primary" size="sm" v-on:click="reviewQA(item)"
+                      <div v-if="item.status==='Encoding'" size="sm" class="mr-1">
+                        In Progress 📀
+                      </div>
+                      <b-button v-if="item.status==='Ready'" variant="outline-primary" size="sm" v-on:click="reviewQA(item)"
                                 class="mr-1 actionBtn">
                         Review
                       </b-button>
@@ -94,6 +97,11 @@ export default {
   components: {
     CompHeader, CompFooter, CompBackToTop, CompLeftSider
   },
+  created() {
+    if(this.$session.has('listQA')){
+      this.items = this.$session.get('listQA')
+    }
+  },
   data() {
     return {
       items: [],
@@ -129,10 +137,11 @@ export default {
         newObject = {
           id:'',
           nameCurrent: this.fileName,
-          status: false
+          status: 'Processing'
         }
         this.items.push(newObject)
       }
+      this.$session.set('listQA', this.items)
       /*
         Initialize the form data
       */
@@ -150,8 +159,9 @@ export default {
           }
         }
       ).then(response => {
-        newObject.status = true;
+        newObject.status = 'Ready'
         newObject.id = response.data.id
+        this.$session.set('listQA', this.items)
         this.flash('Upload successfully', 'success', {
           timeout: 3000
         });

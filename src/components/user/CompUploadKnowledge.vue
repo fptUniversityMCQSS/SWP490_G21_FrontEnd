@@ -47,7 +47,7 @@
                     </template>
                     <template #cell(status)="{item}">
                       <div v-if="item.status==='Processing'" size="sm" class="mr-1">
-                        In Progress
+                        In Progress 📀
                       </div>
                       <div v-if="item.status==='Encoding'" size="sm" class="mr-1">
                         In Progress 📀
