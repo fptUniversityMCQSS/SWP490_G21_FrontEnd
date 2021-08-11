@@ -46,22 +46,48 @@
                           v-on:click="submitFiles()">Upload
                 </b-button>
 
+                <p id="noticeUpload" style="color: red; font-size: 17px; margin-top: 20px"></p>
+
                 <div v-if="items.length>0" style="margin-top: 50px">
-                  <b-table striped hover :items="items" :fields="fields">
-                    <template #cell(nameCurrent)="row">
-                      {{ row.value }}
+                  <b-table striped :items="items.slice().reverse()" :fields="fields" class="text-center">
+                    <template #cell(historyName)="row">
+                      <div>{{ row.value }}</div>
                     </template>
                     <template #cell(status)="{item}">
-                      <div v-if="item.status==='Processing'" size="sm" class="mr-1">
-                        In Progress 📀
-                      </div>
-                      <div v-if="item.status==='Encoding'" size="sm" class="mr-1">
-                        In Progress 📀
-                      </div>
-                      <b-button v-if="item.status==='Ready'" variant="outline-primary" size="sm" v-on:click="reviewQA(item)"
-                                class="mr-1 actionBtn">
-                        Review
+                      <div v-if="item.message === 'Fail to receive response from AI server'">Error in processing</div>
+                      <b-progress v-else-if="item.message === 'DONE'" :max="item.questions_number">
+                        <b-progress-bar style="background-color: #4ABF60" :value="item.questions.length"
+                                        :label="`Done`"></b-progress-bar>
+                      </b-progress>
+                      <b-progress v-else :max="item.questions_number">
+                        <b-progress-bar class="progress-bar-animated" striped :value="item.questions.length"
+                                        :label="`${((item.questions.length / item.questions_number) * 100).toFixed(0)}%`"></b-progress-bar>
+                      </b-progress>
+                      {{ item.questions.length + "/" + item.questions_number }}
+                    </template>
+                    <template #cell(view)="row">
+                      <b-button variant="outline-primary" size="sm" @click="row.toggleDetails"
+                                class="actionBtn">
+                        {{ row.detailsShowing ? 'Hide' : 'Show' }} Details
                       </b-button>
+                      &nbsp;&nbsp;
+                      <b-button
+                        v-if="row.item.message === 'DONE' || row.item.message === 'Fail to receive response from AI server'"
+                        variant="outline-primary" size="sm"
+                        v-on:click="viewQA(row.item.id)"
+                        class="actionBtn">
+                        View
+                      </b-button>
+                    </template>
+                    <template #row-details="row">
+                      <b-card class="scrollbar">
+                        <ul v-for="ob in row.item.questions" :key="ob.Number">
+                          <li>{{ ob.Number + ". " + ob.Content }}</li>
+                          <li>{{ "=> " + ob.Answer+". "+ob.AnswerContent }}</li>
+                        </ul>
+                        <p v-if="row.item.questions.length !== row.item.questions_number &&
+                        row.item.message !=='Fail to receive response from AI server'">Processing...</p>
+                      </b-card>
                     </template>
                   </b-table>
                 </div>
@@ -91,16 +117,12 @@ import CompFooter from "../frame/CompFooter";
 import CompBackToTop from "../frame/CompBackToTop";
 import CompLeftSider from "../frame/CompLeftSider";
 
+let self
 export default {
 
   name: "CompQA",
   components: {
     CompHeader, CompFooter, CompBackToTop, CompLeftSider
-  },
-  created() {
-    if(this.$session.has('listQA')){
-      this.items = this.$session.get('listQA')
-    }
   },
   data() {
     return {
@@ -108,73 +130,150 @@ export default {
       fileName: '',
       fields: [
         {
-          key: 'nameCurrent',
+          key: 'historyName',
           label: 'File Name'
         },
         {
           key: 'status',
           label: 'Status'
+        },
+        {
+          key: 'view',
+          label: ''
         }
       ],
-      files: '',
-      hasFile: false
+      files: ''
     }
   },
   /*
     Defines the method used by the component
   */
+  created() {
+    self = this
+    if (!this.$session.has('listQA')) {
+      this.$session.set('listQA', [])
+      this.items = this.$session.get('listQA')
+    } else {
+      this.items = this.$session.get('listQA')
+    }
+  },
   methods: {
-    reviewQA(object){
-      this.$router.push('/history/' + object.id)
+    viewQA(id) {
+      self.$router.push('/history/' + id)
     },
     handleFilesUpload(object) {
       this.files = this.$refs.file.files[0];
       this.fileName = object.target.files[0].name
+      document.getElementById("noticeUpload").innerHTML = "";
     },
     submitFiles() {
-      let newObject
-      if (document.getElementById("fileInput").files.length !== 0) {
-        newObject = {
-          id:'',
-          nameCurrent: this.fileName,
-          status: 'Processing'
+      if (document.getElementById("fileInput").files.length > 0) {
+        let objectQA = {
+          id: '',
+          historyName: this.fileName,
+          historyDate: '',
+          message: 'Processing',
+          questions_number: 1,
+          subject: '',
+          questions: []
         }
-        this.items.push(newObject)
-      }
-      this.$session.set('listQA', this.items)
-      /*
+
+        this.items = this.$session.get('listQA')
+        let index = this.items.push(objectQA) - 1
+        this.$session.set('listQA', this.items)
+        /*
         Initialize the form data
       */
-      let self = this
-      let formData = new FormData();
-      formData.append('file', this.files)
-
-      const axios = require('axios');
-      axios.put(process.env.VUE_APP_LOCAL + process.env.VUE_APP_QA,
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            'Authorization': 'Bearer ' + self.$session.get("token")
+        let formData = new FormData();
+        formData.append('file', this.files)
+        fetch(process.env.VUE_APP_LOCAL + process.env.VUE_APP_QA,
+          {
+            method: "PUT",
+            headers: {
+              // 'Content-Type': 'multipart/form-data',
+              'Authorization': 'Bearer ' + self.$session.get("token"),
+            },
+            body: formData
           }
-        }
-      ).then(response => {
-        newObject.status = 'Ready'
-        newObject.id = response.data.id
-        this.$session.set('listQA', this.items)
-        this.flash('Upload successfully', 'success', {
-          timeout: 3000
-        });
-      })
-        .catch((er) => {
-          console.log(er);
-        });
+        )
+          // Retrieve its body as ReadableStream
+          .then(response => response.body)
+          .then(rs => {
+            const reader = rs.getReader();
+            let read = async function () {
+              while (true) {
+                const {done, value} = await reader.read();
+                // When no more data needs to be consumed, break the reading
+                if (done) {
+                  break;
+                }
+                // Enqueue the next data chunk into our target stream
+                let string = new TextDecoder().decode(value);
+                let res = JSON.parse(string);
+                self.items = self.$session.get('listQA')
+
+                if ("id" in res) {
+                  self.items[index].id = res.id
+                  self.items[index].historyDate = res.historyDate
+                  self.items[index].historyName = res.historyName
+                  self.items[index].questions_number = res.questions_number
+                  self.items[index].subject = res.subject
+                } else if ("message" in res) {
+                  self.items[index].message = res.message
+                } else {
+                  let question = {
+                    Answer: res.Answer,
+                    AnswerContent: '',
+                    Content: res.Content,
+                    Number: res.Number,
+                    Options: res.Options
+                  }
+                  res.Options.forEach((value) => {
+                    if (value.OptionKey === res.Answer) {
+                      question.AnswerContent = value.OptionContent
+                    }
+                  })
+                  self.items[index].questions.push(question)
+                }
+                self.$session.set('listQA', self.items)
+                console.log(res);
+                console.log(self.items[index])
+              }
+              reader.releaseLock();
+            }
+            read();
+          })
+          .catch(console.error);
+      } else {
+        document.getElementById("noticeUpload").innerHTML = "Please choose file to upload!";
+      }
     }
   }
 }
 </script>
 
 <style scoped>
+.scrollbar {
+  height: 200px;
+  overflow: auto;
+  display: block;
+}
+
+ul {
+  list-style: none;
+  text-align: left;
+}
+
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+table.table {
+  table-layout: fixed;
+}
+
 .actionBtn {
   background-color: #95999c;
   color: #FFFFFF;

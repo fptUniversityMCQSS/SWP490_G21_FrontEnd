@@ -22,11 +22,9 @@
       <div class="vld-parent">
         <div class="row flex-row-reverse">
           <div class="col-lg-10 py-5">
-
             <loading :active.sync="isLoading"
                      :can-cancel="true"
                      :is-full-page="false"></loading>
-
             <div class="col-lg-10 mx-auto section_gap">
               <div class="card rounded shadow border-0">
                 <div class="tableTl">History Table</div>
@@ -41,7 +39,6 @@
                                          v-model="perPage">
                           </b-form-select>
                         </b-form-group>
-
                         <b-form-group label="Search:" class="col-4 searchTab">
                           <b-input-group size="sm">
                             <b-form-input v-model="filter" type="search" placeholder="Type to Search"></b-form-input>
@@ -50,15 +47,17 @@
                             </b-input-group-append>
                           </b-input-group>
                         </b-form-group>
-
                       </div>
                       <!-- Main table element -->
-                      <b-table striped hover :items="items" :current-page="currentPage" stacked="md"
+                      <b-table striped hover :items="items.slice().reverse()" :current-page="currentPage" stacked="md"
                                show-empty
                                :per-page="perPage" :filter="filter" :fields="fields" id="my-table"
                                @filtered="onFiltered">
+                        <template #cell(historyName)="row">
+                          <div>{{ row.value }}</div>
+                        </template>
                         <template #cell(historyDate)="row">
-                          {{ formatDate(row.value) }}
+                          <div>{{ formatDate(row.value) }}</div>
                         </template>
                         <template #cell(action)="{item}">
                           <b-button variant="outline-primary" size="sm" v-on:click="sendData(item)"
@@ -135,11 +134,6 @@ export default {
           sortable: true
         },
         {
-          key: 'total',
-          label: 'Total',
-          sortable: true
-        },
-        {
           key: 'action',
           label: 'Action'
         }
@@ -156,7 +150,7 @@ export default {
       this.$router.push('/history/' + item.id)
     },
     downloadKnowledge(item) {
-      let api = process.env.VUE_APP_HISTORY_DOWNLOAD.slice(0, 9)+item.id+ process.env.VUE_APP_HISTORY_DOWNLOAD.slice(12)
+      let api = process.env.VUE_APP_HISTORY_DOWNLOAD.slice(0, 9) + item.id + process.env.VUE_APP_HISTORY_DOWNLOAD.slice(12)
       window.location.href = process.env.VUE_APP_LOCAL + api
     },
     onFiltered(filteredItems) {
@@ -174,9 +168,11 @@ export default {
         }
       })
       .then(response => {
-        this.items = response.data
-        this.totalRows = response.data.length
-        this.isLoading = false;
+        if (response.status === 200) {
+          this.items = response.data
+          this.totalRows = response.data.length
+          this.isLoading = false;
+        }
       })
       .catch(error => {
         console.log(error)
@@ -186,7 +182,15 @@ export default {
 </script>
 
 <style scoped>
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
+table.table {
+  table-layout: fixed;
+}
 .fixed-sidebar {
   position: -webkit-sticky;
   position: sticky;

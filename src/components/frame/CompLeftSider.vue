@@ -6,10 +6,10 @@
     <ul class="list-unstyled">
       <li>
         <router-link to="/qa">
-          Question and Answer
+          Question Answer
         </router-link>
       </li>
-      <li>
+      <li v-if="this.$session.get('role') === 'admin' || this.$session.get('role') === 'staff'">
         <router-link to="/knowledge/upload" exact-active-class="exact-active">
           Upload Knowledge
         </router-link>
@@ -21,10 +21,10 @@
       </li>
       <li>
         <router-link to="/history">
-          History
+          Question Answer History
         </router-link>
       </li>
-      <li>
+      <li v-if="this.$session.get('role') === 'admin'">
         <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Account
           Management</a>
         <ul class="collapse list-unstyled" id="pageSubmenu">
@@ -94,7 +94,6 @@ h3 {
 .sticky ul li a {
   padding: 20px;
   display: block;
-  padding-left: 30px;
 }
 
 .sticky ul li a:hover {

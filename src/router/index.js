@@ -34,7 +34,7 @@ export default new Router({
       meta: {title: 'Knowledge'},
       beforeEnter: (to, from, next) => {
         let role = Vue.prototype.$session.get('role')
-        if (role === 'staff' || role === 'admin') {
+        if (role === 'user' || role === 'staff' || role === 'admin') {
           next()
         } else {
           next('/error')

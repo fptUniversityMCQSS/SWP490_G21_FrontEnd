@@ -564,14 +564,15 @@ a:hover, a:focus {
 /* Home Banner Area css
 ============================================================================================ */
 .home_banner_area {
-  /*background: url(../img/banner/homebanner2.jpeg) no-repeat center bottom;*/
+  background: url(../img/banner/bannerhome.jpg) no-repeat center bottom;
   position: relative;
   z-index: 1;
   height: 500px;
+  width: 100%;
+  background-size: 100%;
 }
 
 .home_banner_area .overlay {
-  background: rgba(0, 0, 0, 0.33);
   position: absolute;
   left: 0;
   right: 0;
@@ -687,6 +688,7 @@ a:hover, a:focus {
   position: relative;
   z-index: 999;
   min-height: 395px;
+  width: 100%;
 }
 
 .banner_area .banner_inner {
@@ -695,7 +697,7 @@ a:hover, a:focus {
   width: 100%;
   min-height: 395px;
   background: url(../img/banner/banner.jpg) no-repeat center bottom;
-  background-size: contain;
+  background-size: 100%;
   z-index: 1;
 }
 

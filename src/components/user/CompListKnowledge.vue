@@ -41,14 +41,16 @@
                           </b-form-select>
                         </b-form-group>
 
-                        <b-form-group label="Knowledge view mode:" class="col-3">
+                        <b-form-group v-if="this.$session.get('role') === 'staff'" label="Knowledge view mode:"
+                                      class="col-3">
                           <b-form-select size="sm" v-on:change="changeMode"
                                          :options="[{text:'Knowledge of current account',value:'current'},{text:'All knowledge',value:'all'}]"
                                          v-model="optionView">
                           </b-form-select>
                         </b-form-group>
 
-                        <b-form-group label="Search:" class="col-4 searchTab">
+                        <b-form-group v-if="this.$session.get('role') === 'staff'" label="Search:"
+                                      class="col-4 searchTab">
                           <b-input-group size="sm">
                             <b-form-input v-model="filter" type="search" placeholder="Type to Search"></b-form-input>
                             <b-input-group-append>
@@ -57,44 +59,114 @@
                           </b-input-group>
                         </b-form-group>
 
+                        <b-form-group
+                          v-if="this.$session.get('role') === 'admin' || this.$session.get('role') === 'user'"
+                          label="Search:" class="col-4 searchTab1">
+                          <b-input-group size="sm">
+                            <b-form-input v-model="filter" type="search" placeholder="Type to Search"></b-form-input>
+                            <b-input-group-append>
+                              <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>
+                            </b-input-group-append>
+                          </b-input-group>
+                        </b-form-group>
                       </div>
-                      <!-- Main table current -->
-                      <b-table v-if="optionView === 'current'" striped hover :items="items" :current-page="currentPage"
-                               stacked="md"
-                               show-empty
-                               :per-page="perPage" :filter="filter" :fields="fields" id="my-table"
-                               @filtered="onFiltered">
-                        <template #cell(knowledgeDate)="row">
-                          {{ formatDate(row.value) }}
-                        </template>
-                        <template #cell(actions)="{item}">
-                          <b-button variant="outline-primary" size="sm" v-on:click="downloadKnowledge(item)"
-                                    class="mr-1 actionBtn">
-                            Download
-                          </b-button>
-                          <b-button variant="outline-primary" size="sm" v-on:click="deleteKnowledge(item)"
-                                    class="actionBtn">
-                            Delete
-                          </b-button>
-                        </template>
-                      </b-table>
 
-                      <!--Main table all -->
-                      <b-table v-if="optionView ==='all'" striped hover :items="itemAll" :current-page="currentPage"
-                               stacked="md"
-                               show-empty
-                               :per-page="perPage" :filter="filter" :fields="fields" id="my-table"
-                               @filtered="onFiltered">
-                        <template #cell(knowledgeDate)="row">
-                          {{ formatDate(row.value) }}
-                        </template>
-                        <template #cell(actions)="{item}">
-                          <b-button variant="outline-primary" size="sm" v-on:click="downloadKnowledge(item)"
-                                    class="mr-1 actionBtn">
-                            Download
-                          </b-button>
-                        </template>
-                      </b-table>
+                      <div v-if="this.$session.get('role') === 'user'">
+                        <b-table striped hover :items="itemAll" :current-page="currentPage"
+                                 stacked="md"
+                                 show-empty
+                                 :per-page="perPage" :filter="filter" :fields="fields" id="my-table"
+                                 @filtered="onFiltered">
+                          <template #cell(knowledgeName)="row">
+                            <div class="w-100 truncate">{{ row.value }}</div>
+                          </template>
+
+                          <template #cell(knowledgeDate)="row">
+                            <div class="w-100 truncate"> {{ formatDate(row.value) }}</div>
+                          </template>
+                          <template #cell(actions)="{item}">
+                            <b-button variant="outline-primary" size="sm" v-on:click="downloadKnowledge(item)"
+                                      class="mr-1 actionBtn">
+                              Download
+                            </b-button>
+                          </template>
+                        </b-table>
+                      </div>
+                      <div v-if="this.$session.get('role') === 'staff'">
+                        <!-- Main table current -->
+                        <b-table v-if="optionView === 'current'" striped hover :items="items"
+                                 :current-page="currentPage"
+                                 stacked="md"
+                                 show-empty
+                                 :per-page="perPage" :filter="filter" :fields="fields" id="my-table"
+                                 @filtered="onFiltered">
+
+                          <template #cell(knowledgeName)="row">
+                            <div class="w-100 truncate">{{ row.value }}</div>
+                          </template>
+
+                          <template #cell(knowledgeDate)="row">
+                            <div class="w-100 truncate"> {{ formatDate(row.value) }}</div>
+                          </template>
+                          <template #cell(actions)="{item}">
+                            <col :style="{ width: '50px' }">
+                            <b-button variant="outline-primary" size="sm" v-on:click="downloadKnowledge(item)"
+                                      class="mr-1 actionBtn">
+                              Download
+                            </b-button>
+                            <b-button variant="outline-primary" size="sm" v-on:click="deleteKnowledge(item)"
+                                      class="actionBtn">
+                              Delete
+                            </b-button>
+                          </template>
+                        </b-table>
+                        <!--Main table all -->
+                        <b-table v-if="optionView ==='all'" striped hover :items="itemAll" :current-page="currentPage"
+                                 stacked="md"
+                                 show-empty
+                                 :per-page="perPage" :filter="filter" :fields="fields" id="my-table"
+                                 @filtered="onFiltered">
+                          <template #cell(knowledgeName)="row">
+                            <div class="w-100 truncate">{{ row.value }}</div>
+                          </template>
+
+                          <template #cell(knowledgeDate)="row">
+                            <div class="w-100 truncate"> {{ formatDate(row.value) }}</div>
+                          </template>
+                          <template #cell(actions)="{item}">
+                            <b-button variant="outline-primary" size="sm" v-on:click="downloadKnowledge(item)"
+                                      class="mr-1 actionBtn">
+                              Download
+                            </b-button>
+                          </template>
+                        </b-table>
+                      </div>
+                      <div v-if="this.$session.get('role') === 'admin'">
+                        <b-table striped hover :items="itemAll" :current-page="currentPage"
+                                 stacked="md"
+                                 show-empty
+                                 :per-page="perPage" :filter="filter" :fields="fields" id="my-table"
+                                 @filtered="onFiltered">
+
+                          <template #cell(knowledgeName)="row">
+                            <div>{{ row.value }}</div>
+                          </template>
+
+                          <template #cell(knowledgeDate)="row">
+                            <div> {{ formatDate(row.value) }}</div>
+                          </template>
+                          <template #cell(actions)="{item}">
+                            <b-button variant="outline-primary" size="sm" v-on:click="downloadKnowledge(item)"
+                                      class="mr-1 actionBtn">
+                              Download
+                            </b-button>
+                            <b-button variant="outline-primary" size="sm" v-on:click="deleteKnowledge(item)"
+                                      class="actionBtn">
+                              Delete
+                            </b-button>
+                          </template>
+                        </b-table>
+                      </div>
 
                       <div style="padding-top: 20px">
                         <b-pagination size="md" :total-rows="totalRows" :per-page="perPage"
@@ -142,7 +214,6 @@ export default {
       perPage: 5,
       filter: "",
       totalRows: 1,
-      totalRowAll: 1,
       isLoading: true,
       optionView: 'current',
       fields: [
@@ -155,11 +226,6 @@ export default {
           key: 'knowledgeDate',
           label: 'Date',
           sortable: true
-        },
-        {
-          key: 'Username',
-          label: 'Username',
-          sortable: true,
         },
         {
           key: 'actions',
@@ -198,14 +264,28 @@ export default {
         .then(() => {
           const axios = require('axios');
           axios
-            .delete(process.env.VUE_APP_LOCAL + process.env.VUE_APP_DELETE_KNOWLEDGE + item.knowledgeId)
-            .then(() => {
-              this.flash('Delete successfully', 'success', {
-                timeout: 3000
-              });
-              let index = this.items.indexOf(item)
-              this.items.splice(index, 1)
-              this.totalRows--
+            .delete(process.env.VUE_APP_LOCAL + process.env.VUE_APP_DELETE_KNOWLEDGE + item.knowledgeId,
+              {
+                headers: {
+                  'Content-Type': 'multipart/form-data',
+                  'Authorization': 'Bearer ' + this.$session.get("token"),
+                }
+              })
+            .then(response => {
+              if (response.status === 200) {
+                this.flash('Delete successfully', 'success', {
+                  timeout: 3000
+                });
+                let indexCurrent = this.items.indexOf(item)
+                this.items.splice(indexCurrent, 1)
+                this.itemAll.forEach((value) => {
+                  if (value.knowledgeId === item.knowledgeId) {
+                    let indexAll = this.itemAll.indexOf(value)
+                    this.itemAll.splice(indexAll, 1)
+                  }
+                })
+                this.totalRows--
+              }
             })
             .catch(error => {
               console.log(error)
@@ -219,6 +299,7 @@ export default {
   },
   created() {
     const axios = require('axios');
+    let self = this;
     axios
       .get(process.env.VUE_APP_LOCAL + process.env.VUE_APP_LIST_KNOWLEDGE,
         {
@@ -228,21 +309,27 @@ export default {
           }
         })
       .then(response => {
-        response.data.forEach((value) => {
-          if (this.$session.get('username') === value.Username) {
-            let object = {
-              username: value.Username,
-              knowledgeDate: value.knowledgeDate,
-              knowledgeId: value.knowledgeId,
-              knowledgeName: value.knowledgeName
+        if (response.status === 200) {
+          console.log(response.data)
+          response.data.forEach((value) => {
+            if (this.$session.get('username') === value.Username) {
+              let object = {
+                username: value.Username,
+                knowledgeDate: value.knowledgeDate,
+                knowledgeId: value.knowledgeId,
+                knowledgeName: value.knowledgeName
+              }
+              this.items.push(object)
             }
-            this.items.push(object)
+          });
+          this.itemAll = response.data
+          if (self.$session.get('role') === 'admin' || self.$session.get('role') === 'user') {
+            this.totalRows = this.itemAll.length
+          } else {
+            this.totalRows = this.items.length
           }
-        });
-        this.itemAll = response.data
-        this.totalRowAll = this.itemAll.length
-        this.totalRows = this.items.length
-        this.isLoading = false;
+          this.isLoading = false;
+        }
       })
       .catch(error => {
         console.log(error)
@@ -252,6 +339,16 @@ export default {
 </script>
 
 <style scoped>
+
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+table.table {
+  table-layout: fixed;
+}
 
 .fixed-sidebar {
   position: -webkit-sticky;
@@ -272,6 +369,10 @@ export default {
 
 .searchTab {
   margin-left: 200px;
+}
+
+.searchTab1 {
+  margin-left: 390px;
 }
 
 .actionBtn {

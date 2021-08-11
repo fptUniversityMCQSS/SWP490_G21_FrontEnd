@@ -21,8 +21,8 @@
     <section class="cat_product_area">
       <div>
         <div class="row flex-row-reverse">
-          <div class="col-lg-1 py-5 left">
-            <b-table striped hover :items="items.Questions" :fields="fields">
+          <div class="col-lg-1 py-5 tblAns">
+            <b-table striped hover :items="items.Questions" :fields="fields" class="scrollbar">
               <template #cell(Number)="{item}">
                 {{ item.Number }}
               </template>
@@ -31,8 +31,8 @@
               </template>
             </b-table>
           </div>
-          <div class="col-lg-8 py-5">
-            <div class="wrappers textColor">
+          <div class="col-lg-7 py-5">
+            <div class="wrappers detailAns">
               <h3>{{ items.Name }}</h3>
               <p>{{ formatDate(items.Date) }}&nbsp;&nbsp;&nbsp;&nbsp;
                 <b-button variant="outline-primary" size="sm" v-on:click="downloadDetail"
@@ -46,7 +46,7 @@
                   <label class="rounded p-2 option" v-for="option in item.Options">{{ option.OptionKey }}.
                     {{ option.OptionContent }}</label>
                   <b>Correct Answer</b>
-                  <p class="mt-2 mb-4 pl-2 text-justify">{{ item.Answer }}</p>
+                  <p class="mt-2 mb-4 pl-2 text-justify">{{ item.Answer.toUpperCase()    + ". " + item.AnswerContent}}</p>
                 </div>
               </div>
               <router-link to="/history">
@@ -54,7 +54,7 @@
               </router-link>
             </div>
           </div>
-          <div class="col-lg-2  fixed-sidebar">
+          <div class="col-lg-2 fixed-sidebar">
             <comp-left-sider/>
           </div>
         </div>
@@ -99,11 +99,13 @@ export default {
       fields: [
         {
           key: 'Number',
-          label: 'Question'
+          label: 'Question',
+          thStyle: {background: '#7386D5', color: '#ffffff'}
         },
         {
           key: 'Answer',
-          label: 'Answer'
+          label: 'Answer',
+          thStyle: {background: '#7386D5', color: '#ffffff'}
         }
       ],
     }
@@ -118,7 +120,35 @@ export default {
         }
       })
       .then(response => {
-        this.items = response.data
+        if (response.status === 200) {
+
+          let historyDetail = {
+            Date: response.data.Date,
+            Id: response.data.Id,
+            Name: response.data.Name,
+            NumberOfQuestions: response.data.NumberOfQuestions,
+            Questions: [],
+            Subject: response.data.Subject,
+            User: response.data.User
+          }
+          response.data.Questions.forEach((value) => {
+            let question = {
+              Answer: value.Answer,
+              Content: value.Content,
+              Number: value.Number,
+              Options: value.Options,
+              AnswerContent: ''
+            }
+            question.Options.forEach((value1) => {
+              if (value1.OptionKey === question.Answer.toUpperCase()) {
+                question.AnswerContent = value1.OptionContent
+              }
+            })
+            historyDetail.Questions.push(question)
+          })
+          this.items = historyDetail
+          console.log(historyDetail)
+        }
       })
       .catch(error => {
         console.log(error)
@@ -138,20 +168,35 @@ export default {
   z-index: 999;
 }
 
-.textColor {
+.tblAns {
+  position: -webkit-sticky;
+  position: sticky;
+  height: 600px;
+  color: #fff;
+  top: 60px;
+  z-index: 999;
+  padding-left: 70px;
+  margin-right: auto;
+}
+
+.scrollbar {
+  position: relative;
+  height: 510px;
+  width: 170px;
+  overflow: auto;
+  display: block;
+}
+
+.detailAns {
   color: #2c3e50;
+  padding-left: 30px;
+  float: right;
 }
 
 .wrappers {
   max-width: 700px;
   margin: auto;
   font-size: 15px;
-}
-
-.left {
-  width: 100%;
-  padding-right: 50px;
-  margin-right: auto;
 }
 
 b {

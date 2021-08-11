@@ -194,17 +194,19 @@ export default {
         }
       })
       .then(response => {
-        response.data.forEach((value) => {
-          let object = {
-            id: value.id,
-            role: value.role,
-            username: value.username,
-            status: false
-          }
-          this.items.push(object)
-        });
-        this.totalRows = response.data.length
-        this.isLoading = false
+        if (response.status === 200) {
+          response.data.forEach((value) => {
+            let object = {
+              id: value.id,
+              role: value.role,
+              username: value.username,
+              status: false
+            }
+            this.items.push(object)
+          });
+          this.totalRows = response.data.length
+          this.isLoading = false
+        }
       })
       .catch(error => {
         console.log(error)

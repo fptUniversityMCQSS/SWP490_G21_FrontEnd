@@ -40,17 +40,17 @@
                           v-on:click="submitFiles()">Upload
                 </b-button>
 
-                <div v-if="items.length>0" style="margin-top: 50px">
-                  <b-table striped hover :items="items" :fields="fields">
+                <div v-if="this.items.length > 0" style="margin-top: 50px">
+                  <b-table striped hover :items="this.items.slice().reverse()" :fields="fields">
                     <template #cell(nameCurrent)="row">
-                      {{ row.value }}
+                      <div>{{ row.value }}</div>
                     </template>
                     <template #cell(status)="{item}">
                       <div v-if="item.status==='Processing'" size="sm" class="mr-1">
                         In Progress 📀
                       </div>
                       <div v-if="item.status==='Encoding'" size="sm" class="mr-1">
-                        In Progress 📀
+                        Encoding 📀
                       </div>
                       <div v-if="item.status==='Ready'" size="sm" class="mr-1">
                         Successful ✅
@@ -83,7 +83,7 @@ import CompHeader from "../frame/CompHeader";
 import CompFooter from "../frame/CompFooter";
 import CompBackToTop from "../frame/CompBackToTop";
 import CompLeftSider from "../frame/CompLeftSider";
-
+let self
 
 export default {
   name: "CompUploadKnowledge",
@@ -101,7 +101,8 @@ export default {
         },
         {
           key: 'status',
-          label: 'Status'
+          label: 'Status',
+          // thStyle: {background: '#7386D5', color: '#ffffff'}
         }
       ],
       files: '',
@@ -109,7 +110,12 @@ export default {
     }
   },
   created() {
-    if(this.$session.has('listKnowledge')){
+    console.log('abc')
+    self = this
+    if (!this.$session.has('listKnowledge')) {
+      this.$session.set('listKnowledge', [])
+      this.items = this.$session.get('listKnowledge')
+    } else {
       this.items = this.$session.get('listKnowledge')
     }
   },
@@ -119,52 +125,74 @@ export default {
       this.fileName = object.target.files[0].name
     },
     submitFiles() {
-      let newObject
-
-      if (document.getElementById("fileInput").files.length !== 0) {
-        newObject = {
+      if (document.getElementById("fileInput").files.length > 0) {
+        let newObject = {
           nameCurrent: this.fileName,
           status: 'Processing'
         }
-        this.items.push(newObject)
-      }
-      this.$session.set('listKnowledge', this.items)
-      /*
-        Initialize the form data
-      */
-      let formData = new FormData();
-      formData.append('file', this.files)
-      const axios = require('axios');
-      axios.put(process.env.VUE_APP_LOCAL + process.env.VUE_APP_UPLOAD_KNOWLEDGE,
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            'Authorization': 'Bearer ' + this.$session.get("token"),
-          }
-        }
-      ).then(response => {
-        newObject.status = 'Ready'
+
+        this.items = this.$session.get('listKnowledge')
+        let index = this.items.push(newObject) - 1
         this.$session.set('listKnowledge', this.items)
-        this.flash('Upload successfully', 'success', {
-          timeout: 3000
-        });
-        // if (response.data.status === 'Encoding') {
-        //   newObject.status = 'Encoding';
-        // }
-        // if (response.data.status === 'Ready') {
-        //   newObject.status = 'Ready';
-        // }
-      })
-        .catch((er) => {
-          console.log(er);
-        });
+
+        /*
+          Initialize the form data
+        */
+        let formData = new FormData();
+        formData.append('file', this.files)
+        fetch(process.env.VUE_APP_LOCAL + process.env.VUE_APP_UPLOAD_KNOWLEDGE,
+          {
+            method: "PUT",
+            headers: {
+              // 'Content-Type': 'multipart/form-data',
+              'Authorization': 'Bearer ' + self.$session.get("token"),
+            },
+            body: formData
+          }
+        )
+          // Retrieve its body as ReadableStream
+          .then(response => response.body)
+          .then(rs => {
+            const reader = rs.getReader();
+            let read = async function () {
+              while (true) {
+                const {done, value} = await reader.read();
+                // When no more data needs to be consumed, break the reading
+                if (done) {
+                  break;
+                }
+                // Enqueue the next data chunk into our target stream
+                let string = new TextDecoder().decode(value);
+                let parseJSON = JSON.parse(string);
+                console.log(parseJSON);
+                self.items = self.$session.get('listKnowledge')
+                self.items[index].status = parseJSON.status
+                self.$session.set('listKnowledge', self.items)
+              }
+              reader.releaseLock();
+            }
+            read();
+          })
+          .catch(console.error);
+      }
     }
   }
 }
+
+
 </script>
 
 <style scoped>
+
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+table.table {
+  table-layout: fixed;
+}
 
 .fixed-sidebar {
   position: -webkit-sticky;
