@@ -144,7 +144,7 @@ a:hover, a:focus {
 }
 
 .section_gap1 {
-  padding: 50px 0px;
+  padding: 40px 0px;
   background-color: #f9f9ff;
   z-index: 999;
 }
@@ -5767,11 +5767,9 @@ h6 {
   border: 1px solid #fff;
   font-size: 13px;
   line-height: 30px;
-  padding-right: 40px;
   height: 40px;
   color: #999999;
   background: white;
-  padding-left: 20px;
 }
 
 .single-footer-widget input.placeholder {
@@ -5828,7 +5826,7 @@ h6 {
 }
 
 .footer-bottom {
-  padding-top: 50px;
+  padding-top: 30px;
 }
 
 .footer-bottom .footer-text {

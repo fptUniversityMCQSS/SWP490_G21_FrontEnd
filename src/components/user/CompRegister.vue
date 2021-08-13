@@ -45,7 +45,7 @@
                 </div>
                 <div class="col-md-12 form-group">
                   <input type="password" class="form-control" name="password" placeholder="Password" required
-                         v-model="password" v-validate="{ required: true, min: 4}"
+                         v-model="password" v-validate="{ required: true, min: 8, max:24}"
                          :class="{ 'is-invalid': submitted && errors.has('password') }" ref="password">
                   <div v-if="submitted && errors.has('password')" class="invalid-feedback">
                     {{

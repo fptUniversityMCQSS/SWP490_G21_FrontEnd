@@ -17,17 +17,14 @@
                     <router-link to="/" class="nav-link">Home</router-link>
                   </li>
                   <li class="nav-item">
-                    <router-link to="/login" class="nav-link">API Library</router-link>
-                  </li>
-                  <li class="nav-item">
-                    <router-link to="/login" class="nav-link">About</router-link>
+                    <router-link to="/about" class="nav-link">About</router-link>
                   </li>
                   <li class="nav-item submenu dropdown" v-if="role === 'user' || role === 'staff' || role==='admin'">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false">{{ currentUser }}</a>
                     <ul class="dropdown-menu">
                       <li class="nav-item">
-                        <router-link to="/home" class="nav-link" href="login.html"><i class="fa fa-user"/>&nbsp;&nbsp;My
+                        <router-link to="/user" class="nav-link" href="login.html"><i class="fa fa-user"/>&nbsp;&nbsp;My
                           Account
                         </router-link>
                       </li>

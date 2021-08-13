@@ -12,6 +12,8 @@ import CompAD_EditUser from "../components/admin/CompAD_EditUser";
 import CompQA from "../components/user/CompQA";
 import CompAD_AddUser from "../components/admin/CompAD_AddUser";
 import CompError from "../components/user/CompError";
+import CompMyAccount from "../components/user/CompMyAccount";
+import CompAbout from "../components/user/CompAbout";
 
 Vue.use(Router)
 
@@ -27,6 +29,39 @@ export default new Router({
       path: "/home",
       component: CompHome,
       meta: {title: 'Home'},
+    },
+    {
+      path: "/home",
+      component: CompHome,
+      meta: {title: 'Home'},
+    },
+    {
+      path: '/login',
+      component: CompLogin,
+      meta: {title: 'Login'}
+    },
+    {
+      path: '/register',
+      component: CompRegister,
+      meta: {title: 'Register'}
+    },
+    {
+      path: '/about',
+      component: CompAbout,
+      meta: {title: 'About us'}
+    },
+    {
+      path: '/user',
+      component: CompMyAccount,
+      meta: {title: 'Account'},
+      beforeEnter: (to, from, next) => {
+        let role = Vue.prototype.$session.get('role')
+        if (role === 'staff' || role === 'admin' || role === 'user') {
+          next()
+        } else {
+          next('/error')
+        }
+      }
     },
     {
       path: "/knowledge",
@@ -66,16 +101,6 @@ export default new Router({
           next('/error')
         }
       }
-    },
-    {
-      path: '/login',
-      component: CompLogin,
-      meta: {title: 'Login'}
-    },
-    {
-      path: '/register',
-      component: CompRegister,
-      meta: {title: 'Register'}
     },
     {
       path: '/history',

@@ -57,7 +57,7 @@
                   </div>
                   <div class="form-group col-lg-9">
                     <input type="password" class="form-control bd-r" name="password" placeholder="Password" required
-                           v-model="password" v-validate="{ required: true, min: 4}"
+                           v-model="password" v-validate="{ required: true, min: 8, max:24}"
                            :class="{ 'is-invalid': submitted && errors.has('password') }" ref="password"
                            :disabled="!checked">
                     <div v-if="submitted && errors.has('password')" class="invalid-feedback">
