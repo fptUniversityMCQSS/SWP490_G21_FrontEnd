@@ -261,10 +261,10 @@ h1 {
 .btnUpload {
   width: 200px;
   height: 50px;
-  background-color: #229aeb;
+  background-color: #87CEFA;
   border: none;
   outline: none;
-  color: #fff;
+  color: black;
   font-weight: 600;
   cursor: pointer;
   text-align: center;
@@ -273,7 +273,7 @@ h1 {
 .btnUpload:hover {
   border: none;
   outline: none;
-  background-color: #229bebad
+  background-color: #00BFFF;
 }
 
 </style>

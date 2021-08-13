@@ -54,7 +54,7 @@
                           <b-input-group size="sm">
                             <b-form-input v-model="filter" type="search" placeholder="Type to Search"></b-form-input>
                             <b-input-group-append>
-                              <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>
+                              <b-button  @click="filter = ''" variant="outline-primary" class="actionBtn">Clear</b-button>
                             </b-input-group-append>
                           </b-input-group>
                         </b-form-group>
@@ -65,36 +65,16 @@
                           <b-input-group size="sm">
                             <b-form-input v-model="filter" type="search" placeholder="Type to Search"></b-form-input>
                             <b-input-group-append>
-                              <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>
+                              <b-button  @click="filter = ''" variant="outline-primary" class="actionBtn">Clear</b-button>
                             </b-input-group-append>
                           </b-input-group>
                         </b-form-group>
                       </div>
 
-                      <div v-if="this.$session.get('role') === 'user'">
-                        <b-table striped hover :items="itemAll" :current-page="currentPage"
-                                 stacked="md"
-                                 show-empty
-                                 :per-page="perPage" :filter="filter" :fields="fields" id="my-table"
-                                 @filtered="onFiltered">
-                          <template #cell(knowledgeName)="row">
-                            <div class="w-100 truncate">{{ row.value }}</div>
-                          </template>
 
-                          <template #cell(knowledgeDate)="row">
-                            <div class="w-100 truncate"> {{ formatDate(row.value) }}</div>
-                          </template>
-                          <template #cell(actions)="{item}">
-                            <b-button variant="outline-primary" size="sm" v-on:click="downloadKnowledge(item)"
-                                      class="mr-1 actionBtn">
-                              Download
-                            </b-button>
-                          </template>
-                        </b-table>
-                      </div>
-                      <div v-if="this.$session.get('role') === 'staff'">
+                      <div v-if="checkRole === 'staff'">
                         <!-- Main table current -->
-                        <b-table v-if="optionView === 'current'" striped hover :items="items"
+                        <b-table v-if="optionView === 'current'" :bordered="true" :borderless="true" :items="items"
                                  :current-page="currentPage"
                                  stacked="md"
                                  show-empty
@@ -141,8 +121,8 @@
                           </template>
                         </b-table>
                       </div>
-                      <div v-if="this.$session.get('role') === 'admin'">
-                        <b-table striped hover :items="itemAll" :current-page="currentPage"
+                      <div v-else>
+                        <b-table :bordered="true" :borderless="true" :items="itemAll" :current-page="currentPage"
                                  stacked="md"
                                  show-empty
                                  :per-page="perPage" :filter="filter" :fields="fields" id="my-table"
@@ -160,7 +140,7 @@
                                       class="mr-1 actionBtn">
                               Download
                             </b-button>
-                            <b-button variant="outline-primary" size="sm" v-on:click="deleteKnowledge(item)"
+                            <b-button v-if="checkRole === 'admin'" variant="outline-primary" size="sm" v-on:click="deleteKnowledge(item)"
                                       class="actionBtn">
                               Delete
                             </b-button>
@@ -210,6 +190,7 @@ export default {
     return {
       items: [],
       itemAll: [],
+      checkRole: this.$session.get('role'),
       currentPage: 1,
       perPage: 5,
       filter: "",
@@ -220,16 +201,24 @@ export default {
         {
           key: 'knowledgeName',
           label: 'Name',
-          sortable: true
+          sortable: true,
+          thStyle: {background: '#87CEFA', color: 'black'}
         },
         {
           key: 'knowledgeDate',
           label: 'Date',
-          sortable: true
+          sortable: true,
+          thStyle: {background: '#87CEFA', color: 'black'}
+        },
+        {
+          key: 'status',
+          label: 'Status',
+          thStyle: {background: '#87CEFA', color: 'black'}
         },
         {
           key: 'actions',
-          label: 'Actions'
+          label: 'Actions',
+          thStyle: {background: '#87CEFA', color: 'black'}
         }
       ],
     }
@@ -249,7 +238,23 @@ export default {
       return dateFormat(newDate, "dddd, mmmm dS, yyyy, h:MM:ss TT");
     },
     downloadKnowledge(item) {
-      window.location.href = process.env.VUE_APP_LOCAL + process.env.VUE_APP_DOWNLOAD_KNOWLEDGE + item.knowledgeId
+      const axios = require('axios');
+      axios
+        .get(process.env.VUE_APP_LOCAL + process.env.VUE_APP_DOWNLOAD_KNOWLEDGE + item.knowledgeId,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              'Authorization': 'Bearer ' + this.$session.get("token"),
+            }, responseType: 'blob'
+          })
+        .then(response => {
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', item.knowledgeName);
+          document.body.appendChild(link);
+          link.click();
+        })
     },
     deleteKnowledge(item) {
       let message = "<p style='text-align: center; padding-top: 5px'><b style='font-size: 20px'>Delete Knowledge</b>" +
@@ -339,6 +344,15 @@ export default {
 </script>
 
 <style scoped>
+.btnClear {
+  background-color: #87CEFA;
+  color: black;
+  font-weight: bold;
+}
+
+.btnClear:hover {
+  background-color: #00BFFF;
+}
 
 .truncate {
   white-space: nowrap;
@@ -376,13 +390,13 @@ table.table {
 }
 
 .actionBtn {
-  background-color: #95999c;
-  color: #FFFFFF;
+  background-color: #87CEFA;
+  color: black;
   font-weight: bold;
   border: none;
 }
 
 .actionBtn:hover {
-  background-color: #229bebad
+  background-color: #00BFFF
 }
 </style>

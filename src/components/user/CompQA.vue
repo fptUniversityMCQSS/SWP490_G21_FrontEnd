@@ -83,10 +83,10 @@
                       <b-card class="scrollbar">
                         <ul v-for="ob in row.item.questions" :key="ob.Number">
                           <li>{{ ob.Number + ". " + ob.Content }}</li>
-                          <li>{{ "=> " + ob.Answer+". "+ob.AnswerContent }}</li>
+                          <li>{{ "=> " + ob.Answer + ". " + ob.AnswerContent }}</li>
                         </ul>
                         <p v-if="row.item.questions.length !== row.item.questions_number &&
-                        row.item.message !=='Fail to receive response from AI server'">Processing...</p>
+                        row.item.message !=='Fail to receive response from AI server'">Thinking...</p>
                       </b-card>
                     </template>
                   </b-table>
@@ -237,7 +237,6 @@ export default {
                 }
                 self.$session.set('listQA', self.items)
                 console.log(res);
-                console.log(self.items[index])
               }
               reader.releaseLock();
             }

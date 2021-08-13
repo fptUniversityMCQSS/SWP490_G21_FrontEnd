@@ -151,7 +151,23 @@ export default {
     },
     downloadKnowledge(item) {
       let api = process.env.VUE_APP_HISTORY_DOWNLOAD.slice(0, 9) + item.id + process.env.VUE_APP_HISTORY_DOWNLOAD.slice(12)
-      window.location.href = process.env.VUE_APP_LOCAL + api
+      const axios = require('axios');
+      axios
+        .get(process.env.VUE_APP_LOCAL + api,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              'Authorization': 'Bearer ' + this.$session.get("token"),
+            }, responseType: 'blob'
+          })
+        .then(response => {
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', item.historyName);
+          document.body.appendChild(link);
+          link.click();
+        })
     },
     onFiltered(filteredItems) {
       this.totalRows = filteredItems.length

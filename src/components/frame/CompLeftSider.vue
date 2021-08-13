@@ -57,7 +57,7 @@ export default {
 
 a.router-link-active,
 a.router-link-exact-active {
-  background: #2faae6;
+  background: #00BFFF;
 }
 
 .sticky {
@@ -67,8 +67,8 @@ a.router-link-exact-active {
   float: left;
   min-width: 250px;
   max-width: 250px;
-  background: #7386D5;
-  color: #fff;
+  background: #87CEFA;
+  color:black;
   transition: all 0.3s;
   position: absolute;
   height: 600px;
@@ -76,7 +76,7 @@ a.router-link-exact-active {
 
 .sticky .sidebar-header {
   padding: 20px;
-  background: #6d7fcc;
+  background: #00BFFF;
 }
 
 a,
@@ -97,14 +97,14 @@ h3 {
 }
 
 .sticky ul li a:hover {
-  color: #7386D5;
-  background: #fff;
+  color: 	black;
+  background: #00BFFF;
 }
 
 .sticky ul li.active > a,
 a[aria-expanded="true"] {
-  color: #fff;
-  background: #6d7fcc;
+  color: black;
+  background: 	#00BFFF;
 }
 
 a[data-toggle="collapse"] {
@@ -122,7 +122,7 @@ a[data-toggle="collapse"] {
 ul ul a {
   font-size: 0.9em !important;
   padding-left: 30px !important;
-  background: #6d7fcc;
-  color: #FFFFFF;
+  background: #87CEFA;
+  color: black;
 }
 </style>

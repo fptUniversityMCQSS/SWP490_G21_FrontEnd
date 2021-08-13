@@ -32,7 +32,7 @@
             </b-table>
           </div>
           <div class="col-lg-7 py-5">
-            <div class="wrappers detailAns">
+            <div class="detailAns">
               <h3>{{ items.Name }}</h3>
               <p>{{ formatDate(items.Date) }}&nbsp;&nbsp;&nbsp;&nbsp;
                 <b-button variant="outline-primary" size="sm" v-on:click="downloadDetail"
@@ -86,7 +86,23 @@ export default {
     },
     downloadDetail() {
       let api = process.env.VUE_APP_HISTORY_DOWNLOAD.slice(0, 9) + this.$route.params.id + process.env.VUE_APP_HISTORY_DOWNLOAD.slice(12)
-      window.location.href = process.env.VUE_APP_LOCAL + api
+      const axios = require('axios');
+      axios
+        .get(process.env.VUE_APP_LOCAL + api,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              'Authorization': 'Bearer ' + this.$session.get("token"),
+            }, responseType: 'blob'
+          })
+        .then(response => {
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', this.items.Name);
+          document.body.appendChild(link);
+          link.click();
+        })
     }
   },
   data() {
@@ -189,8 +205,7 @@ export default {
 
 .detailAns {
   color: #2c3e50;
-  padding-left: 30px;
-  float: right;
+  padding-left: 100px;
 }
 
 .wrappers {
