@@ -88,7 +88,7 @@ export default {
       let api = process.env.VUE_APP_HISTORY_DOWNLOAD.slice(0, 9) + this.$route.params.id + process.env.VUE_APP_HISTORY_DOWNLOAD.slice(12)
       const axios = require('axios');
       axios
-        .get(process.env.VUE_APP_LOCAL + api,
+        .get(globalURL.host + api,
           {
             headers: {
               'Content-Type': 'multipart/form-data',
@@ -130,7 +130,7 @@ export default {
     const self = this;
     const axios = require('axios');
     axios
-      .get(process.env.VUE_APP_LOCAL + process.env.VUE_APP_HISTORY_DETAIL + self.$route.params.id, {
+      .get(globalURL.host + process.env.VUE_APP_HISTORY_DETAIL + self.$route.params.id, {
         headers: {
           'Authorization': 'Bearer ' + self.$session.get("token")
         }

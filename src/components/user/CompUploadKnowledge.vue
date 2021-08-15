@@ -55,6 +55,9 @@
                       <div v-if="item.status==='Ready'" size="sm" class="mr-1">
                         Successful ✅
                       </div>
+                      <div v-if="item.status==='Error'" size="sm" class="mr-1">
+                        Fail
+                      </div>
                     </template>
                   </b-table>
                 </div>
@@ -110,7 +113,6 @@ export default {
     }
   },
   created() {
-    console.log('abc')
     self = this
     if (!this.$session.has('listKnowledge')) {
       this.$session.set('listKnowledge', [])
@@ -130,17 +132,15 @@ export default {
           nameCurrent: this.fileName,
           status: 'Processing'
         }
-
         this.items = this.$session.get('listKnowledge')
         let index = this.items.push(newObject) - 1
         this.$session.set('listKnowledge', this.items)
-
         /*
           Initialize the form data
         */
         let formData = new FormData();
         formData.append('file', this.files)
-        fetch(process.env.VUE_APP_LOCAL + process.env.VUE_APP_UPLOAD_KNOWLEDGE,
+        fetch(globalURL.host + process.env.VUE_APP_UPLOAD_KNOWLEDGE,
           {
             method: "PUT",
             headers: {
@@ -166,7 +166,12 @@ export default {
                 let parseJSON = JSON.parse(string);
                 console.log(parseJSON);
                 self.items = self.$session.get('listKnowledge')
-                self.items[index].status = parseJSON.status
+                if("message" in parseJSON){
+                  self.items[index].status = "Error"
+                }
+                else {
+                  self.items[index].status = parseJSON.status
+                }
                 self.$session.set('listKnowledge', self.items)
               }
               reader.releaseLock();

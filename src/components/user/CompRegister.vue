@@ -113,7 +113,7 @@ export default {
           form.append('password', this.password);
           form.append('re-password', this.rePassword);
           console.log(this.username, this.password)
-          axios.post(process.env.VUE_APP_LOCAL + process.env.VUE_APP_REGISTER, form)
+          axios.post(globalURL.host + process.env.VUE_APP_REGISTER, form)
             .then(response => {
               if (response.status === 200) {
                 self.$router.push('/login');

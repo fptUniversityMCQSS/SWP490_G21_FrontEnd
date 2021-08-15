@@ -120,7 +120,7 @@ export default {
   created() {
     const self = this;
     const axios = require('axios');
-    axios.get(process.env.VUE_APP_LOCAL + process.env.VUE_APP_USER + self.$route.params.id, {
+    axios.get(globalURL.host + process.env.VUE_APP_USER + self.$route.params.id, {
       headers: {
         'Authorization': 'Bearer ' + self.$session.get("token")
       }
@@ -147,7 +147,7 @@ export default {
           form.append('password', this.password);
           form.append('role', this.role);
           form.append('change_password', this.checked);
-          axios.patch(process.env.VUE_APP_LOCAL + process.env.VUE_APP_EDIT_USER + self.$route.params.id, form, {
+          axios.patch(globalURL.host + process.env.VUE_APP_EDIT_USER + self.$route.params.id, form, {
             headers: {
               'Authorization': 'Bearer ' + self.$session.get("token")
             }

@@ -53,11 +53,8 @@ Vue.use(BootstrapVueIcons)
 const options = {
   persist: true
 }
-
 Vue.use(VueSession, options)
-
 Vue.use(Vuex)
-
 Vue.use(VeeValidate, {
   inject: true,
   fieldsBagName: 'veeFields'

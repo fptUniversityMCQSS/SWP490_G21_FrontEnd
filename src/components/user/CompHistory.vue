@@ -150,10 +150,14 @@ export default {
       this.$router.push('/history/' + item.id)
     },
     downloadKnowledge(item) {
-      let api = process.env.VUE_APP_HISTORY_DOWNLOAD.slice(0, 9) + item.id + process.env.VUE_APP_HISTORY_DOWNLOAD.slice(12)
+      let api = process.env.VUE_APP_HISTORY_DOWNLOAD.replace(/%\w+%/g, function (all) {
+        return {"%id%": item.id}[all] || all;
+      });
+    console.log(api)
+
       const axios = require('axios');
       axios
-        .get(process.env.VUE_APP_LOCAL + api,
+        .get(globalURL.host + api,
           {
             headers: {
               'Content-Type': 'multipart/form-data',
@@ -178,7 +182,7 @@ export default {
     const self = this
     const axios = require('axios');
     axios
-      .get(process.env.VUE_APP_LOCAL + process.env.VUE_APP_LIST_HISTORY, {
+      .get(globalURL.host + process.env.VUE_APP_LIST_HISTORY, {
         headers: {
           'Authorization': 'Bearer ' + self.$session.get("token")
         }
@@ -207,6 +211,7 @@ export default {
 table.table {
   table-layout: fixed;
 }
+
 .fixed-sidebar {
   position: -webkit-sticky;
   position: sticky;

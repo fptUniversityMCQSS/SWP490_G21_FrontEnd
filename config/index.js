@@ -5,6 +5,7 @@
 const path = require('path')
 
 module.exports = {
+  // globalURL: window.globalURL,
   dev: {
     // Paths
     assetsSubDirectory: 'static',
@@ -18,8 +19,6 @@ module.exports = {
     errorOverlay: true,
     notifyOnErrors: true,
     poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-
-
-
     /**
      * Source Maps
      */

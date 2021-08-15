@@ -49,11 +49,7 @@
                   </div>
                   <div>
                     <i class="fa fa-phone" aria-hidden="true" style="color: #2faae6"></i>&nbsp;
-                    <span>19001568</span>
-                  </div>
-                  <div>
-                    <i class="fa fa-phone" aria-hidden="true" style="color: #2faae6"></i>&nbsp;
-                    <span>0904886095</span>
+                    <span>0364716284</span>
                   </div>
                   <div>
                     <i class="fa fa-envelope" aria-hidden="true" style="color: #2faae6"></i>&nbsp;

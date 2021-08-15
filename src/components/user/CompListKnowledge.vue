@@ -240,7 +240,7 @@ export default {
     downloadKnowledge(item) {
       const axios = require('axios');
       axios
-        .get(process.env.VUE_APP_LOCAL + process.env.VUE_APP_DOWNLOAD_KNOWLEDGE + item.knowledgeId,
+        .get(globalURL.host + process.env.VUE_APP_DOWNLOAD_KNOWLEDGE + item.knowledgeId,
           {
             headers: {
               'Content-Type': 'multipart/form-data',
@@ -269,7 +269,7 @@ export default {
         .then(() => {
           const axios = require('axios');
           axios
-            .delete(process.env.VUE_APP_LOCAL + process.env.VUE_APP_DELETE_KNOWLEDGE + item.knowledgeId,
+            .delete(globalURL.host + process.env.VUE_APP_DELETE_KNOWLEDGE + item.knowledgeId,
               {
                 headers: {
                   'Content-Type': 'multipart/form-data',
@@ -291,6 +291,9 @@ export default {
                 })
                 this.totalRows--
               }
+              else{
+
+              }
             })
             .catch(error => {
               console.log(error)
@@ -306,7 +309,7 @@ export default {
     const axios = require('axios');
     let self = this;
     axios
-      .get(process.env.VUE_APP_LOCAL + process.env.VUE_APP_LIST_KNOWLEDGE,
+      .get(globalURL.host + process.env.VUE_APP_LIST_KNOWLEDGE,
         {
           headers: {
             'Content-Type': 'multipart/form-data',

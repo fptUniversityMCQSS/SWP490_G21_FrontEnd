@@ -6,8 +6,8 @@
 
         <div class="col-lg-3" style="margin-left: 30px">
           <img src="../../assets/img/logo/lg3.png"><br><br>
-          A web application developed by the SWP409_G21 team. With useful features of AI artificial intelligence
-          technology, we hope to provide users with a great experience when coming to the website.
+          A web application developed by SWP409_G21 team. With useful features of AI artificial intelligence technology,
+          we hope to provide users great experiences when coming to the website.
           <div class="single-footer-widget">
           </div>
         </div>
@@ -22,11 +22,7 @@
             </div>
             <div>
               <i class="fa fa-phone" aria-hidden="true"></i>&nbsp;
-              <span>19001568</span>
-            </div>
-            <div>
-              <i class="fa fa-phone" aria-hidden="true"></i>&nbsp;
-              <span>0904886095</span>
+              <span>0365716284</span>
             </div>
             <div>
               <i class="fa fa-envelope" aria-hidden="true"></i>&nbsp;

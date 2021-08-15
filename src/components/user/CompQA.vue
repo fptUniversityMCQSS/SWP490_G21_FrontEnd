@@ -186,7 +186,7 @@ export default {
       */
         let formData = new FormData();
         formData.append('file', this.files)
-        fetch(process.env.VUE_APP_LOCAL + process.env.VUE_APP_QA,
+        fetch(globalURL.host + process.env.VUE_APP_QA,
           {
             method: "PUT",
             headers: {
