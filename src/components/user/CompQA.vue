@@ -49,7 +49,8 @@
                 <p id="noticeUpload" style="color: red; font-size: 17px; margin-top: 20px"></p>
 
                 <div v-if="items.length>0" style="margin-top: 50px">
-                  <b-table striped :items="items.slice().reverse()" :fields="fields" class="text-center">
+                  <b-table striped :items="items.slice().reverse()" :fields="fields" class="text-center"
+                           responsive="sm">
                     <template #cell(historyName)="row">
                       <div>{{ row.value }}</div>
                     </template>
@@ -85,7 +86,8 @@
                           <li>{{ ob.Number + ". " + ob.Content }}</li>
                           <li>{{ "=> " + ob.Answer + ". " + ob.AnswerContent }}</li>
                         </ul>
-                        <p v-if="row.item.message === ''"><img style="max-height: 100px; max-width: 200px " src="../../assets/img/product/thinking.gif"></p>
+                        <p v-if="row.item.message === ''"><img style="max-height: 100px; max-width: 200px "
+                                                               src="../../assets/img/product/thinking.gif"></p>
                       </b-card>
                     </template>
                   </b-table>
@@ -116,9 +118,14 @@ import CompFooter from "../frame/CompFooter";
 import CompBackToTop from "../frame/CompBackToTop";
 import CompLeftSider from "../frame/CompLeftSider";
 
+function convertToJSONArray(string) {
+  let regex = /\}\n\{/g
+  let newString = '[' + string.replaceAll(regex, '},{') + ']'
+  return JSON.parse(newString)
+}
+
 let self
 export default {
-
   name: "CompQA",
   components: {
     CompHeader, CompFooter, CompBackToTop, CompLeftSider
@@ -208,40 +215,33 @@ export default {
                 }
                 // Enqueue the next data chunk into our target stream
                 let string = new TextDecoder().decode(value);
-                // console.log(string)
-                const regex = /\{.*\}/
-                const matches = re.find('}+', string)
-                console.log(matches)
-                matches.forEach((value) => {
-                  console.log(value)
-                })
-                let res = JSON.parse(string)
-
+                let res = convertToJSONArray(string)
                 self.items = self.$session.get('listQA')
-
-                if ("id" in res) {
-                  self.items[index].id = res.id
-                  self.items[index].historyDate = res.historyDate
-                  self.items[index].historyName = res.historyName
-                  self.items[index].questions_number = res.questions_number
-                  self.items[index].subject = res.subject
-                } else if ("message" in res) {
-                  self.items[index].message = res.message
-                } else {
-                  let question = {
-                    Answer: res.Answer,
-                    AnswerContent: '',
-                    Content: res.Content,
-                    Number: res.Number,
-                    Options: res.Options
-                  }
-                  res.Options.forEach((value) => {
-                    if (value.OptionKey === res.Answer) {
-                      question.AnswerContent = value.OptionContent
+                res.forEach((value) => {
+                  if ("id" in value) {
+                    self.items[index].id = value.id
+                    self.items[index].historyDate = value.historyDate
+                    self.items[index].historyName = value.historyName
+                    self.items[index].questions_number = value.questions_number
+                    self.items[index].subject = value.subject
+                  } else if ("message" in value) {
+                    self.items[index].message = value.message
+                  } else {
+                    let question = {
+                      Answer: value.Answer,
+                      AnswerContent: '',
+                      Content: value.Content,
+                      Number: value.Number,
+                      Options: value.Options
                     }
-                  })
-                  self.items[index].questions.push(question)
-                }
+                    value.Options.forEach((value) => {
+                      if (value.OptionKey === value.Answer) {
+                        question.AnswerContent = value.OptionContent
+                      }
+                    })
+                    self.items[index].questions.push(question)
+                  }
+                })
                 self.$session.set('listQA', self.items)
               }
               reader.releaseLock();
