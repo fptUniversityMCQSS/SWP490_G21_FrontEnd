@@ -25,7 +25,7 @@
             <div class="col-lg-11 mx-auto section_gap">
               <div class="wrapper">
                 <div class="cont">
-                  <h1>Upload a file</h1>
+                  <h2>Upload Knowledge</h2>
                   <div class="upload-container">
                     <div class="border-container">
                       <p>Drag and drop files here, or
@@ -40,6 +40,8 @@
                           v-on:click="submitFiles()">Upload
                 </b-button>
 
+                <p id="noticeUpload" style="color: red; font-size: 17px; margin-top: 20px"></p>
+
                 <div v-if="this.items.length > 0" style="margin-top: 50px">
                   <b-table striped hover :items="this.items.slice().reverse()" :fields="fields">
                     <template #cell(nameCurrent)="row">
@@ -47,16 +49,16 @@
                     </template>
                     <template #cell(status)="{item}">
                       <div v-if="item.status==='Processing'" size="sm" class="mr-1">
-                        In Progress 📀
+                        In Progress &nbsp;<i class="fa fa-spinner fa-spin"/>
                       </div>
                       <div v-if="item.status==='Encoding'" size="sm" class="mr-1">
-                        Encoding 📀
+                        Encoding &nbsp;<i class="fa fa-spinner fa-spin"/>
                       </div>
-                      <div v-if="item.status==='Ready'" size="sm" class="mr-1">
-                        Successful ✅
+                      <div v-if="item.status==='Ready'" size="sm" class="mr-1" style="color: #4ABF60">
+                        Successful &nbsp;<i class="fa fa-check"/>
                       </div>
-                      <div v-if="item.status==='Error'" size="sm" class="mr-1">
-                        Fail
+                      <div v-if="item.status==='Error'" size="sm" class="mr-1" style="color: red">
+                        Fail &nbsp;<i class="fa fa-warning"/>
                       </div>
                     </template>
                   </b-table>
@@ -86,6 +88,7 @@ import CompHeader from "../frame/CompHeader";
 import CompFooter from "../frame/CompFooter";
 import CompBackToTop from "../frame/CompBackToTop";
 import CompLeftSider from "../frame/CompLeftSider";
+
 let self
 
 export default {
@@ -166,10 +169,9 @@ export default {
                 let parseJSON = JSON.parse(string);
                 console.log(parseJSON);
                 self.items = self.$session.get('listKnowledge')
-                if("message" in parseJSON){
+                if ("message" in parseJSON) {
                   self.items[index].status = "Error"
-                }
-                else {
+                } else {
                   self.items[index].status = parseJSON.status
                 }
                 self.$session.set('listKnowledge', self.items)
@@ -179,6 +181,9 @@ export default {
             read();
           })
           .catch(console.error);
+      }
+      else {
+        document.getElementById("noticeUpload").innerHTML = "Please choose file to upload!";
       }
     }
   }
@@ -233,7 +238,7 @@ body {
   border-radius: 10px;
 }
 
-h1 {
+h2 {
   color: #130f40;
   font-family: 'Varela Round', sans-serif;
   letter-spacing: -.5px;

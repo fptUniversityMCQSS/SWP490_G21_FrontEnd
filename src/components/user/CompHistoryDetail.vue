@@ -46,7 +46,7 @@
                   <label class="rounded p-2 option" v-for="option in item.Options">{{ option.OptionKey }}.
                     {{ option.OptionContent }}</label>
                   <b>Correct Answer</b>
-                  <p class="mt-2 mb-4 pl-2 text-justify">{{ item.Answer.toUpperCase()    + ". " + item.AnswerContent}}</p>
+                  <p class="mt-2 mb-4 pl-2 text-justify">{{ item.Answer.toUpperCase() + ". " + item.AnswerContent }}</p>
                 </div>
               </div>
               <router-link to="/history">
@@ -85,7 +85,10 @@ export default {
       return dateFormat(newDate, "dddd, mmmm dS, yyyy, h:MM:ss TT");
     },
     downloadDetail() {
-      let api = process.env.VUE_APP_HISTORY_DOWNLOAD.slice(0, 9) + this.$route.params.id + process.env.VUE_APP_HISTORY_DOWNLOAD.slice(12)
+      let id = this.$route.params.id
+      let api = process.env.VUE_APP_HISTORY_DOWNLOAD.replace(/%\w+%/g, function (all) {
+        return {"%id%": id}[all] || all;
+      });
       const axios = require('axios');
       axios
         .get(globalURL.host + api,

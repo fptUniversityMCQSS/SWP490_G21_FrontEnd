@@ -25,7 +25,7 @@
             <div class="col-lg-11 mx-auto section_gap">
               <div class="wrapper">
                 <div class="cont">
-                  <h1>Upload a file</h1>
+                  <h2>Upload Question</h2>
                   <div class="upload-container">
                     <div class="border-container">
                       <p>To make this feature available,
@@ -66,13 +66,13 @@
                       {{ item.questions.length + "/" + item.questions_number }}
                     </template>
                     <template #cell(view)="row">
-                      <b-button variant="outline-primary" size="sm" @click="row.toggleDetails"
+                      <b-button variant="outline-primary" size="sm" v-on:click="row.toggleDetails"
                                 class="actionBtn">
                         {{ row.detailsShowing ? 'Hide' : 'Show' }} Details
                       </b-button>
                       &nbsp;&nbsp;
                       <b-button
-                        v-if="row.item.message === 'DONE' || row.item.message === 'Fail to receive response from AI server'"
+                        v-if="row.item.message !== ''"
                         variant="outline-primary" size="sm"
                         v-on:click="viewQA(row.item.id)"
                         class="actionBtn">
@@ -85,8 +85,7 @@
                           <li>{{ ob.Number + ". " + ob.Content }}</li>
                           <li>{{ "=> " + ob.Answer + ". " + ob.AnswerContent }}</li>
                         </ul>
-                        <p v-if="row.item.questions.length !== row.item.questions_number &&
-                        row.item.message !=='Fail to receive response from AI server'">Thinking...</p>
+                        <p v-if="row.item.message === ''"><img style="max-height: 100px; max-width: 200px " src="../../assets/img/product/thinking.gif"></p>
                       </b-card>
                     </template>
                   </b-table>
@@ -172,7 +171,7 @@ export default {
           id: '',
           historyName: this.fileName,
           historyDate: '',
-          message: 'Processing',
+          message: '',
           questions_number: 1,
           subject: '',
           questions: []
@@ -209,7 +208,15 @@ export default {
                 }
                 // Enqueue the next data chunk into our target stream
                 let string = new TextDecoder().decode(value);
-                let res = JSON.parse(string);
+                // console.log(string)
+                const regex = /\{.*\}/
+                const matches = re.find('}+', string)
+                console.log(matches)
+                matches.forEach((value) => {
+                  console.log(value)
+                })
+                let res = JSON.parse(string)
+
                 self.items = self.$session.get('listQA')
 
                 if ("id" in res) {
@@ -236,7 +243,6 @@ export default {
                   self.items[index].questions.push(question)
                 }
                 self.$session.set('listQA', self.items)
-                console.log(res);
               }
               reader.releaseLock();
             }
@@ -318,7 +324,7 @@ body {
   border-radius: 10px;
 }
 
-h1 {
+h2 {
   color: #130f40;
   font-family: 'Varela Round', sans-serif;
   letter-spacing: -.5px;
