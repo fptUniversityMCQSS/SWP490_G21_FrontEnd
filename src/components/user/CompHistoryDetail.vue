@@ -46,7 +46,10 @@
                   <label class="rounded p-2 option" v-for="option in item.Options">{{ option.OptionKey }}.
                     {{ option.OptionContent }}</label>
                   <b>Correct Answer</b>
-                  <p class="mt-2 mb-4 pl-2 text-justify">{{ item.Answer.toUpperCase() + ". " + item.AnswerContent }}</p>
+                  <p v-if="item.Answer === ''" class="mt-2 mb-4 pl-2 text-justify">Thinking...</p>
+                  <p v-else class="mt-2 mb-4 pl-2 text-justify">{{
+                      item.Answer.toUpperCase() + ". " + item.AnswerContent
+                    }}</p>
                 </div>
               </div>
               <router-link to="/history">
@@ -82,7 +85,11 @@ export default {
     formatDate(date) {
       let dateFormat = require('dateformat');
       let newDate = new Date(date);
-      return dateFormat(newDate, "dddd, mmmm dS, yyyy, h:MM:ss TT");
+      try {
+        return dateFormat(newDate, "dddd, mmmm dS, yyyy, hh:MM:ss TT");
+      } catch (e) {
+      }
+      return ""
     },
     downloadDetail() {
       let id = this.$route.params.id
@@ -166,7 +173,6 @@ export default {
             historyDetail.Questions.push(question)
           })
           this.items = historyDetail
-          console.log(historyDetail)
         }
       })
       .catch(error => {

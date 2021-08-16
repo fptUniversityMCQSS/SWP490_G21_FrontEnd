@@ -318,7 +318,6 @@ export default {
         })
       .then(response => {
         if (response.status === 200) {
-          console.log(response.data)
           response.data.forEach((value) => {
             if (this.$session.get('username') === value.Username) {
               let object = {

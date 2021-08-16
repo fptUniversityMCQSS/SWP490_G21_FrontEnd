@@ -67,7 +67,7 @@
                       {{ item.questions.length + "/" + item.questions_number }}
                     </template>
                     <template #cell(view)="row">
-                      <b-button variant="outline-primary" size="sm" v-on:click="row.toggleDetails"
+                      <b-button variant="outline-primary" size="sm" @click="row.toggleDetails"
                                 class="actionBtn">
                         {{ row.detailsShowing ? 'Hide' : 'Show' }} Details
                       </b-button>
@@ -86,8 +86,9 @@
                           <li>{{ ob.Number + ". " + ob.Content }}</li>
                           <li>{{ "=> " + ob.Answer + ". " + ob.AnswerContent }}</li>
                         </ul>
-                        <p v-if="row.item.message === ''"><img style="max-height: 100px; max-width: 200px "
-                                                               src="../../assets/img/product/thinking.gif"></p>
+                        <p v-if="row.item.message === ''">
+                          <img style="max-height: 50px; max-width: 100px " src="../../assets/img/product/thinking.gif">
+                        </p>
                       </b-card>
                     </template>
                   </b-table>
@@ -181,7 +182,8 @@ export default {
           message: '',
           questions_number: 1,
           subject: '',
-          questions: []
+          questions: [],
+          _showDetails: false
         }
 
         this.items = this.$session.get('listQA')
@@ -216,7 +218,17 @@ export default {
                 // Enqueue the next data chunk into our target stream
                 let string = new TextDecoder().decode(value);
                 let res = convertToJSONArray(string)
+                let arrIndex = []
+                self.items.forEach((item) => {
+                  arrIndex.push({
+                    index: self.items.indexOf(item),
+                    showDetail: item._showDetails ? true : false
+                  })
+                })
                 self.items = self.$session.get('listQA')
+                arrIndex.forEach((item) => {
+                  self.items[item.index]._showDetails = item.showDetail
+                })
                 res.forEach((value) => {
                   if ("id" in value) {
                     self.items[index].id = value.id
@@ -234,9 +246,9 @@ export default {
                       Number: value.Number,
                       Options: value.Options
                     }
-                    value.Options.forEach((value) => {
-                      if (value.OptionKey === value.Answer) {
-                        question.AnswerContent = value.OptionContent
+                    question.Options.forEach((value1) => {
+                      if (value1.OptionKey === question.Answer) {
+                        question.AnswerContent = value1.OptionContent
                       }
                     })
                     self.items[index].questions.push(question)
