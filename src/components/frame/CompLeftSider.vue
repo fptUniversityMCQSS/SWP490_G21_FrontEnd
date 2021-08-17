@@ -1,5 +1,5 @@
 <template>
-  <nav class="sticky">
+  <nav class="sticky  shadow">
     <div class="sidebar-header">
       <h3>DeepQuiz Feature</h3>
     </div>
@@ -40,6 +40,11 @@
           </li>
         </ul>
       </li>
+      <li v-if="this.$session.get('role') === 'admin'">
+        <router-link to="/admin/log" exact-active-class="exact-active">
+          Logging
+        </router-link>
+      </li>
     </ul>
   </nav>
 </template>
@@ -57,7 +62,8 @@ export default {
 
 a.router-link-active,
 a.router-link-exact-active {
-  background: #00BFFF;
+  /*background: #00BFFF;*/
+  background-color: #92c3f9;
 }
 
 .sticky {
@@ -67,17 +73,19 @@ a.router-link-exact-active {
   float: left;
   min-width: 250px;
   max-width: 250px;
-  background: #87CEFA;
+  /*background: #87CEFA;*/
   color:black;
   transition: all 0.3s;
   position: absolute;
   height: 600px;
+  background: #e8f1f8;
 }
 
 .sticky .sidebar-header {
   padding: 20px;
-  background: #00BFFF;
+  background: #79b4f1;
 }
+
 
 a,
 a:hover,
@@ -98,7 +106,7 @@ h3 {
 
 .sticky ul li a:hover {
   color: 	black;
-  background: #00BFFF;
+  background: #cdd3d9;
 }
 
 .sticky ul li.active > a,

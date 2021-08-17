@@ -34,39 +34,64 @@
           <div class="col-lg-6">
             <div class="login_form_inner reg_form">
               <h3>Create an Account</h3>
+              <div class="errNotice">{{ err }}</div>
               <form class="row login_form" @submit.prevent="register()" method="post">
                 <div class="col-md-12 form-group">
-                  <input type="text" class="form-control" name="username" placeholder="Username" required
-                         v-model="username" v-validate="'required'"
-                         :class="{ 'is-invalid': submitted && errors.has('username') }">
-                  <div v-if="submitted && errors.has('username')" class="invalid-feedback">
-                    {{ errors.first('username') }}
+                  <input type="text" class="form-control" name="Full Name" placeholder="Full Name"
+                         v-model="fullName" v-validate="{ required: true, min: 8, max: 50, regex: /^(.)+$/ }"
+                         :class="{ 'is-invalid': submitted && errors.has('Full Name') }">
+                  <div v-if="submitted && errors.has('Full Name')" class="invalid-feedback">
+                    {{ errors.first('Full Name') }}
                   </div>
                 </div>
                 <div class="col-md-12 form-group">
-                  <input type="password" class="form-control" name="password" placeholder="Password" required
-                         v-model="password" v-validate="{ required: true, min: 8, max:24}"
-                         :class="{ 'is-invalid': submitted && errors.has('password') }" ref="password">
-                  <div v-if="submitted && errors.has('password')" class="invalid-feedback">
+                  <input type="text" class="form-control" name="Username" placeholder="Username"
+                         v-model="username" v-validate="{ required: true, min: 8, max: 30, regex: /^\w+$/ }"
+                         :class="{ 'is-invalid': submitted && errors.has('Username') }">
+                  <div v-if="submitted && errors.has('Username')" class="invalid-feedback">
+                    {{ errors.first('Username') }}
+                  </div>
+                </div>
+                <div class="col-md-12 form-group">
+                  <input type="text" class="form-control" name="Email" placeholder="Email"
+                         v-model="email" v-validate:email="'required|email'"
+                         :class="{ 'is-invalid': submitted && errors.has('Email') }">
+                  <div v-if="submitted && errors.has('Email')" class="invalid-feedback">
+                    {{ errors.first('Email') }}
+                  </div>
+                </div>
+                <div class="col-md-12 form-group">
+                  <input type="text" class="form-control" name="Phone Number" placeholder="Phone Number"
+                         v-model="phoneNumber" v-validate="{ required: true, length: 10, regex: /[0-9]+/ }"
+                         :class="{ 'is-invalid': submitted && errors.has('Phone Number') }">
+                  <div v-if="submitted && errors.has('Phone Number')" class="invalid-feedback">
+                    {{ errors.first('Phone Number') }}
+                  </div>
+                </div>
+                <div class="col-md-12 form-group">
+                  <input type="password" class="form-control" name="Password" placeholder="Password"
+                         v-model="password" v-validate="{ required: true, min: 8, max:30, regex: /^\S*$/}"
+                         :class="{ 'is-invalid': submitted && errors.has('Password') }" ref="Password">
+                  <div v-if="submitted && errors.has('Password')" class="invalid-feedback">
                     {{
-                      errors.first('password')
+                      errors.first('Password')
                     }}
                   </div>
                 </div>
                 <div class="col-md-12 form-group">
-                  <input type="password" class="form-control" placeholder="Confirm password" required
-                         v-model="rePassword" v-validate="'required|confirmed:password'"
-                         name="confirm" :class="{ 'is-invalid': submitted && errors.has('confirm') }">
-                  <div v-if="submitted && errors.has('confirm')" class="invalid-feedback">
+                  <input type="password" class="form-control" placeholder="Confirm Password"
+                         v-model="rePassword" v-validate="'required|confirmed:Password'"
+                         name="Confirm Password" :class="{ 'is-invalid': submitted && errors.has('Confirm Password') }">
+                  <div v-if="submitted && errors.has('Confirm Password')" class="invalid-feedback">
                     {{
-                      errors.first('confirm')
+                      errors.first('Confirm Password')
                     }}
                   </div>
                 </div>
                 <div class="col-md-12 form-group">
                   <div class="creat_account">
-                    <input type="checkbox" id="f-option2" name="selector">
-                    <label for="f-option2">Keep me logged in</label>
+<!--                    <input type="checkbox" id="f-option2" name="selector">-->
+<!--                    <label for="f-option2">Keep me logged in</label>-->
                   </div>
                 </div>
                 <div class="col-md-12 form-group">
@@ -94,9 +119,13 @@ export default {
   components: {CompFooter, CompHeader, CompBackToTop},
   data() {
     return {
+      fullName: '',
       username: '',
+      email: '',
+      phoneNumber: '',
       password: '',
       rePassword: '',
+      err: '',
       submitted: false
     }
   },
@@ -109,17 +138,18 @@ export default {
           const axios = require('axios');
           const FormData = require('form-data');
           const form = new FormData();
+          form.append('fullName', this.fullName);
+          form.append('email', this.email);
+          form.append('phone', this.phoneNumber);
           form.append('username', this.username);
           form.append('password', this.password);
-          form.append('re-password', this.rePassword);
-          console.log(this.username, this.password)
           axios.post(globalURL.host + process.env.VUE_APP_REGISTER, form)
             .then(response => {
               if (response.status === 200) {
                 self.$router.push('/login');
               }
             }).catch(error => {
-            console.log(error)
+            this.err = error.response.data.message
           })
         }
       });
@@ -129,5 +159,9 @@ export default {
 </script>
 
 <style scoped>
-
+.errNotice {
+  color: red;
+  font-weight: bold;
+  font-size: 15px;
+}
 </style>

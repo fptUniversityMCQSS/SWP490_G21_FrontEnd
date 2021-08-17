@@ -39,28 +39,37 @@
               <div class="errNotice">{{ err }}</div>
               <form class="row login_form" @submit.prevent="loginData()" method="post">
                 <div class="col-md-12 form-group">
-                  <input type="text" class="form-control" name="username" placeholder="Username" required
-                         v-model="username">
+                  <input type="text" class="form-control" name="Username" placeholder="Username"
+                         v-model="username" v-validate="'required'"
+                         :class="{ 'is-invalid': submitted && errors.has('Username') }">
+                  <div v-if="submitted && errors.has('Username')" class="invalid-feedback">
+                    {{ errors.first('Username') }}
+                  </div>
                 </div>
+
                 <div class="col-md-12 form-group">
-                  <input v-bind:type="[showPassword ? 'text' : 'password']" class="form-control" name="password"
-                         placeholder="Password" required
-                         v-model="password">
+                  <input v-bind:type="[showPassword ? 'text' : 'password']" class="form-control" name="Password"
+                         placeholder="Password"
+                         v-model="password" v-validate="'required'"
+                         :class="{ 'is-invalid': submitted && errors.has('Password') }">
                   <div class="input-group-append">
                     <span class="input-group-text" @click="showPassword = !showPassword" style="margin-left: 315px">
                         <i class="fa" :class="[showPassword ? 'fa-eye' : 'fa-eye-slash']" aria-hidden="true"></i>
                     </span>
                   </div>
+                  <div v-if="submitted && errors.has('Password')" class="invalid-feedback">
+                    {{ errors.first('Password') }}
+                  </div>
                 </div>
                 <div class="col-md-12 form-group">
                   <div class="creat_account">
-                    <input type="checkbox" id="f-option2" name="selector">
-                    <label for="f-option2">Keep me logged in</label>
+<!--                    <input type="checkbox" id="f-option2" name="selector">-->
+<!--                    <label for="f-option2">Keep me logged in</label>-->
                   </div>
                 </div>
                 <div class="col-md-12 form-group">
                   <button type="submit" value="submit" class="btn submit_btn">Log In</button>
-                  <a href="#">Forgot Password?</a>
+<!--                  <a href="#">Forgot Password?</a>-->
                 </div>
               </form>
             </div>
@@ -88,30 +97,35 @@ export default {
       username: '',
       password: '',
       showPassword: false,
+      submitted: false,
       err: ''
     }
   },
   methods: {
     loginData() {
       const self = this;
-      const axios = require('axios');
-      const FormData = require('form-data');
-      const form = new FormData();
-      form.append('username', this.username);
-      form.append('password', this.password);
-      axios.post(globalURL.host + process.env.VUE_APP_LOGIN, form)
-        .then(response=> {
-          if (response.status === 200) {
-            self.$session.start()
-            self.$session.set('token', response.data.token)
-            self.$session.set('username', response.data.username)
-            self.$session.set('role', response.data.role)
-            self.$router.push('/');
-          }
-        }).catch(error => {
-        console.log(error)
-        this.err = 'Username or password invalid'
-      })
+      this.submitted = true;
+      this.$validator.validate().then(valid => {
+        if (valid) {
+          const axios = require('axios');
+          const FormData = require('form-data');
+          const form = new FormData();
+          form.append('username', this.username);
+          form.append('password', this.password);
+          axios.post(globalURL.host + process.env.VUE_APP_LOGIN, form)
+            .then(response => {
+              if (response.status === 200) {
+                self.$session.start()
+                self.$session.set('token', response.data.token)
+                self.$session.set('username', response.data.username)
+                self.$session.set('role', response.data.role)
+                self.$router.push('/');
+              }
+            }).catch(error => {
+            this.err = error.response.data.message
+          })
+        }
+      });
     }
   }
 }

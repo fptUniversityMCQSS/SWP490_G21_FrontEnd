@@ -109,6 +109,9 @@ export default {
   },
   data() {
     return {
+      fullName: '',
+      email: '',
+      phone: '',
       username: '',
       password: '',
       confirmPassword: '',
@@ -120,7 +123,7 @@ export default {
   created() {
     const self = this;
     const axios = require('axios');
-    axios.get(globalURL.host + process.env.VUE_APP_USER + self.$route.params.id, {
+    axios.get(globalURL.host + process.env.VUE_APP_ADMIN_USER + "/" + self.$route.params.id, {
       headers: {
         'Authorization': 'Bearer ' + self.$session.get("token")
       }
@@ -128,6 +131,9 @@ export default {
       .then(response => {
         if (response.status === 200) {
           this.username = response.data.username
+          this.fullName = response.data.fullName
+          this.email = response.data.email
+          this.phone = response.data.phone
           this.role = response.data.role
         }
       }).catch(error => {
@@ -147,7 +153,7 @@ export default {
           form.append('password', this.password);
           form.append('role', this.role);
           form.append('change_password', this.checked);
-          axios.patch(globalURL.host + process.env.VUE_APP_EDIT_USER + self.$route.params.id, form, {
+          axios.patch(globalURL.host + process.env.VUE_APP_ADMIN_USER + "/" + self.$route.params.id, form, {
             headers: {
               'Authorization': 'Bearer ' + self.$session.get("token")
             }

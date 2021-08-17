@@ -55,7 +55,8 @@
                       <div>{{ row.value }}</div>
                     </template>
                     <template #cell(status)="{item}">
-                      <div v-if="item.message === 'Fail to receive response from AI server'">Error in processing</div>
+                      <div v-if="item.message === 'Fail to receive response from AI server'" style="color: red">
+                        Error in processing</div>
                       <b-progress v-else-if="item.message === 'DONE'" :max="item.questions_number">
                         <b-progress-bar style="background-color: #4ABF60" :value="item.questions.length"
                                         :label="`Done`"></b-progress-bar>

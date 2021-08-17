@@ -27,11 +27,11 @@
                      :can-cancel="true"
                      :is-full-page="false"></loading>
 
-            <div class="col-lg-10 mx-auto section_gap">
-              <div class="card rounded shadow border-0">
+            <div class="col-lg-10 mx-auto section_gap" >
+              <div class="card rounded shadow border-0" style="background-color: #f9f9ff">
                 <div class="tableTl">Knowledge Table</div>
-                <div class="card-body bg-white rounded">
-                  <div class="table-responsive">
+                <div class="card-body  rounded" >
+                  <div class="table-responsive" style="background-color: #f9f9ff">
                     <div style="padding: 20px;">
                       <div class="justify-content-centermy-1 row">
                         <b-form-group horizontal label="Rows per page:" class="col-2">
@@ -54,7 +54,8 @@
                           <b-input-group size="sm">
                             <b-form-input v-model="filter" type="search" placeholder="Type to Search"></b-form-input>
                             <b-input-group-append>
-                              <b-button  @click="filter = ''" variant="outline-primary" class="actionBtn">Clear</b-button>
+                              <b-button @click="filter = ''" variant="outline-primary" class="actionBtn">Clear
+                              </b-button>
                             </b-input-group-append>
                           </b-input-group>
                         </b-form-group>
@@ -65,13 +66,12 @@
                           <b-input-group size="sm">
                             <b-form-input v-model="filter" type="search" placeholder="Type to Search"></b-form-input>
                             <b-input-group-append>
-                              <b-button  @click="filter = ''" variant="outline-primary" class="actionBtn">Clear</b-button>
+                              <b-button @click="filter = ''" variant="outline-primary" class="actionBtn">Clear
+                              </b-button>
                             </b-input-group-append>
                           </b-input-group>
                         </b-form-group>
                       </div>
-
-
                       <div v-if="checkRole === 'staff'">
                         <!-- Main table current -->
                         <b-table v-if="optionView === 'current'" :bordered="true" :borderless="true" :items="items"
@@ -140,14 +140,14 @@
                                       class="mr-1 actionBtn">
                               Download
                             </b-button>
-                            <b-button v-if="checkRole === 'admin'" variant="outline-primary" size="sm" v-on:click="deleteKnowledge(item)"
+                            <b-button v-if="checkRole === 'admin'" variant="outline-primary" size="sm"
+                                      v-on:click="deleteKnowledge(item)"
                                       class="actionBtn">
                               Delete
                             </b-button>
                           </template>
                         </b-table>
                       </div>
-
                       <div style="padding-top: 20px">
                         <b-pagination size="md" :total-rows="totalRows" :per-page="perPage"
                                       v-model="currentPage" aria-controls="my-table"/>
@@ -158,6 +158,7 @@
               </div>
             </div>
           </div>
+
           <div class="col-lg-2 fixed-sidebar">
             <comp-left-sider/>
             <flash-message class="myCustomClass"></flash-message>
@@ -202,23 +203,23 @@ export default {
           key: 'knowledgeName',
           label: 'Name',
           sortable: true,
-          thStyle: {background: '#87CEFA', color: 'black'}
+          thStyle: {background: '#92c3f9', color: 'black'}
         },
         {
           key: 'knowledgeDate',
           label: 'Date',
           sortable: true,
-          thStyle: {background: '#87CEFA', color: 'black'}
+          thStyle: {background: '#92c3f9', color: 'black'}
         },
         {
           key: 'status',
           label: 'Status',
-          thStyle: {background: '#87CEFA', color: 'black'}
+          thStyle: {background: '#92c3f9', color: 'black'}
         },
         {
           key: 'actions',
           label: 'Actions',
-          thStyle: {background: '#87CEFA', color: 'black'}
+          thStyle: {background: '#92c3f9', color: 'black'}
         }
       ],
     }
@@ -240,7 +241,7 @@ export default {
     downloadKnowledge(item) {
       const axios = require('axios');
       axios
-        .get(globalURL.host + process.env.VUE_APP_DOWNLOAD_KNOWLEDGE + item.knowledgeId,
+        .get(globalURL.host + process.env.VUE_APP_KNOWLEDGE + "/" + item.knowledgeId,
           {
             headers: {
               'Content-Type': 'multipart/form-data',
@@ -269,7 +270,7 @@ export default {
         .then(() => {
           const axios = require('axios');
           axios
-            .delete(globalURL.host + process.env.VUE_APP_DELETE_KNOWLEDGE + item.knowledgeId,
+            .delete(globalURL.host + process.env.VUE_APP_KNOWLEDGE + "/" + item.knowledgeId,
               {
                 headers: {
                   'Content-Type': 'multipart/form-data',
@@ -290,8 +291,7 @@ export default {
                   }
                 })
                 this.totalRows--
-              }
-              else{
+              } else {
 
               }
             })
@@ -309,7 +309,7 @@ export default {
     const axios = require('axios');
     let self = this;
     axios
-      .get(globalURL.host + process.env.VUE_APP_LIST_KNOWLEDGE,
+      .get(globalURL.host + process.env.VUE_APP_KNOWLEDGE,
         {
           headers: {
             'Content-Type': 'multipart/form-data',
@@ -346,15 +346,6 @@ export default {
 </script>
 
 <style scoped>
-.btnClear {
-  background-color: #87CEFA;
-  color: black;
-  font-weight: bold;
-}
-
-.btnClear:hover {
-  background-color: #00BFFF;
-}
 
 .truncate {
   white-space: nowrap;
@@ -378,7 +369,7 @@ table.table {
 .tableTl {
   text-align: center;
   font-weight: bold;
-  font-size: 23px;
+  font-size: 20px;
   margin-top: 30px;
   color: #2c3e50;
 }
@@ -392,7 +383,7 @@ table.table {
 }
 
 .actionBtn {
-  background-color: #87CEFA;
+  background-color: #92c3f9;
   color: black;
   font-weight: bold;
   border: none;

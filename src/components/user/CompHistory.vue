@@ -182,7 +182,7 @@ export default {
     const self = this
     const axios = require('axios');
     axios
-      .get(globalURL.host + process.env.VUE_APP_LIST_HISTORY, {
+      .get(globalURL.host + process.env.VUE_APP_HISTORY, {
         headers: {
           'Authorization': 'Bearer ' + self.$session.get("token")
         }
@@ -224,7 +224,7 @@ table.table {
 .tableTl {
   text-align: center;
   font-weight: bold;
-  font-size: 23px;
+  font-size: 20px;
   margin-top: 30px;
   color: #2c3e50;
 }

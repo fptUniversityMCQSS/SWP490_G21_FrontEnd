@@ -1,11 +1,11 @@
 <template>
   <!--================Header Menu Area =================-->
-  <header class="header_area">
+  <header class="header_area shadow">
     <div class="main_menu">
       <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container-fluid">
           <!-- Brand and toggle get grouped for better mobile display -->
-          <router-link to="/home" class="navbar-brand logo_h">
+          <router-link to="/" class="navbar-brand logo_h">
             <img src="../../assets/img/logo/lg4.png" alt="">
           </router-link>
           <!-- Collect the nav links, forms, and other content for toggling -->

@@ -14,6 +14,7 @@ import CompAD_AddUser from "../components/admin/CompAD_AddUser";
 import CompError from "../components/user/CompError";
 import CompMyAccount from "../components/user/CompMyAccount";
 import CompAbout from "../components/user/CompAbout";
+import CompAD_Log from "../components/admin/CompAD_Log";
 
 Vue.use(Router)
 
@@ -158,6 +159,19 @@ export default new Router({
       path: '/admin/add',
       component: CompAD_AddUser,
       meta: {title: 'Add User'},
+      beforeEnter: (to, from, next) => {
+        let role = Vue.prototype.$session.get('role')
+        if (role === 'admin') {
+          next()
+        } else {
+          next('/error')
+        }
+      }
+    },
+    {
+      path: '/admin/log',
+      component: CompAD_Log,
+      meta: {title: 'Logging'},
       beforeEnter: (to, from, next) => {
         let role = Vue.prototype.$session.get('role')
         if (role === 'admin') {
