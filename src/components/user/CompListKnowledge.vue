@@ -348,11 +348,6 @@ export default {
 
 <style scoped>
 
-.page-item.active .page-link {
-  background-color: red !important;
-  border-color: red !important;
-}
-
 .truncate {
   white-space: nowrap;
   overflow: hidden;

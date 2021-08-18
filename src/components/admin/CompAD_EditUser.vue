@@ -22,17 +22,29 @@
       <div>
         <div class="row flex-row-reverse">
           <div class="col-lg-10">
-            <div class="col-lg-8 mx-auto section_gap">
+            <div class="col-lg-7 mx-auto section_gap">
               <div class="comment-form">
                 <h4>Edit Account</h4>
                 <form>
-                  <div class="form-group col-lg-9">
-                    <input type="text" class="form-control bd-r" name="username"
+                  <div class="form-group bd-r col-lg-9">
+                    <p class="inline">Username:</p>
+                    <input type="text" class="form-control col-lg-8 inline" name="username"
                            v-model="username" readonly>
                   </div>
                   <div class="form-group bd-r col-lg-9">
-                    <b-form-select class="b-select" v-model="role" required name="role" v-validate="'required'"
-                                   :class="{ 'is-invalid': submitted && errors.has('role') }">
+                    <p class="inline" style="margin-right: 2em">Full name:&nbsp;&nbsp;</p>
+                    <input type="text" class="form-control col-lg-8 inline" name="Full Name" placeholder="Full Name"
+                           v-model="fullName" v-validate="{ required: true, min: 8, max: 50, regex: /^(.)+$/ }"
+                           :class="{ 'is-invalid': submitted && errors.has('Full Name') }">
+                    <div v-if="submitted && errors.has('Full Name')" class="invalid-feedback">
+                      {{ errors.first('Full Name') }}
+                    </div>
+                  </div>
+                  <div class="form-group bd-r col-lg-9">
+                    <p class="inline" style="margin-right: 5em">Role:</p>
+                    <b-form-select style="border-radius: 50px" class="b-select inline col-lg-8" v-model="role"
+                                   name="Role" v-validate="'required'"
+                                   :class="{ 'is-invalid': submitted && errors.has('Role') }">
                       <template v-slot:first>
                         <b-form-select-option :value="null" disabled selected hidden>-- Choose account role --
                         </b-form-select-option>
@@ -41,12 +53,31 @@
                       <b-form-select-option value="staff">Staff</b-form-select-option>
                       <b-form-select-option value="admin">Admin</b-form-select-option>
                     </b-form-select>
-                    <div v-if="submitted && errors.has('role')" class="invalid-feedback" style="padding-right: 170px">
-                      {{ errors.first('role') }}
+                    <div v-if="submitted && errors.has('Role')" class="invalid-feedback" style="padding-right: 170px">
+                      {{ errors.first('Role') }}
                     </div>
                   </div>
-                  <div class="form-group col-lg-12">
-                    <b-col lg="7" class="my-1">
+                  <div class="form-group bd-r col-lg-9">
+                    <p class="inline" style="margin-right: 4em">Email:&nbsp;</p>
+                    <input type="text" class="form-control inline col-lg-8" name="Email" placeholder="Email"
+                           v-model="email" v-validate:email="'required|email'"
+                           :class="{ 'is-invalid': submitted && errors.has('Email') }">
+                    <div v-if="submitted && errors.has('Email')" class="invalid-feedback">
+                      {{ errors.first('Email') }}
+                    </div>
+                  </div>
+                  <div class="form-group bd-r col-lg-9">
+                    <p class="inline" style="margin-right: 4em">Phone:</p>
+                    <input type="text" class="form-control inline col-lg-8" name="Phone Number"
+                           placeholder="Phone Number"
+                           v-model="phone" v-validate="{ required: true, length: 10, regex: /[0-9]+/ }"
+                           :class="{ 'is-invalid': submitted && errors.has('Phone Number') }">
+                    <div v-if="submitted && errors.has('Phone Number')" class="invalid-feedback">
+                      {{ errors.first('Phone Number') }}
+                    </div>
+                  </div>
+                  <div class="form-group col-lg-11">
+                    <b-col lg="8" class="my-1">
                       <b-form-group label="Enable change password:" label-cols-sm="9" label-align-sm="right"
                                     class="mb-0">
                         <b-form-checkbox-group class="mt-2">
@@ -55,25 +86,28 @@
                       </b-form-group>
                     </b-col>
                   </div>
-                  <div class="form-group col-lg-9">
-                    <input type="password" class="form-control bd-r" name="password" placeholder="Password" required
+                  <div class="form-group bd-r col-lg-9">
+                    <p class="inline" style="margin-right: 2em">Password:&nbsp;&nbsp;</p>
+                    <input type="password" class="form-control col-lg-8 inline" name="Password" placeholder="Password"
                            v-model="password" v-validate="{ required: true, min: 8, max:24}"
-                           :class="{ 'is-invalid': submitted && errors.has('password') }" ref="password"
-                           :disabled="!checked">
-                    <div v-if="submitted && errors.has('password')" class="invalid-feedback">
-                      {{ errors.first('password') }}
+                           :class="{ 'is-invalid': submitted && errors.has('Password') }" ref="Password"
+                           :disabled="!changePW">
+                    <div v-if="submitted && errors.has('Password')" class="invalid-feedback">
+                      {{ errors.first('Password') }}
                     </div>
                   </div>
-                  <div class="form-group col-lg-9">
-                    <input type="password" class="form-control bd-r" name="confirm" placeholder="Confirm Password"
-                           required
-                           v-model="confirmPassword" v-validate="'required|confirmed:password'"
-                           :class="{ 'is-invalid': submitted && errors.has('confirm') }"
-                           :disabled="!checked">
-                    <div v-if="submitted && errors.has('confirm')" class="invalid-feedback">
-                      {{ errors.first('confirm') }}
+                  <div class="form-group bd-r col-lg-9">
+                    <p class="inline" style="margin-right: 1em">Re-Password:</p>
+                    <input type="password" class="form-control col-lg-8 inline" name="Confirm Password"
+                           placeholder="Confirm Password"
+                           v-validate="'required|confirmed:Password'"
+                           :class="{ 'is-invalid': submitted && errors.has('Confirm Password') }"
+                           :disabled="!changePW">
+                    <div v-if="submitted && errors.has('Confirm Password')" class="invalid-feedback">
+                      {{ errors.first('Confirm Password') }}
                     </div>
                   </div>
+                  <b-button class="btnUpload" v-on:click="cancelEdit()">Cancel</b-button>
                   <b-button class="btnUpload" v-on:click="editUser()">Submit</b-button>
                 </form>
               </div>
@@ -114,9 +148,8 @@ export default {
       phone: '',
       username: '',
       password: '',
-      confirmPassword: '',
       role: '',
-      checked: true,
+      changePW: true,
       submitted: false
     }
   },
@@ -141,6 +174,9 @@ export default {
     })
   },
   methods: {
+    cancelEdit() {
+      this.$router.push('/admin/user')
+    },
     editUser() {
       const self = this;
       this.submitted = true;
@@ -151,6 +187,9 @@ export default {
           const form = new FormData();
           form.append('username', this.username);
           form.append('password', this.password);
+          form.append('fullName', this.fullName);
+          form.append('email', this.email);
+          form.append('phone', this.phone);
           form.append('role', this.role);
           form.append('change_password', this.checked);
           axios.patch(globalURL.host + process.env.VUE_APP_ADMIN_USER + "/" + self.$route.params.id, form, {
@@ -177,6 +216,10 @@ export default {
 
 <style scoped>
 
+.inline {
+  display: inline-block;
+}
+
 .fixed-sidebar {
   position: -webkit-sticky;
   position: sticky;
@@ -187,7 +230,9 @@ export default {
 }
 
 .btnUpload {
-  width: 180px;
+  margin-right: 30px;
+  margin-left: 30px;
+  width: 130px;
   height: 45px;
   background-color: #229aeb;
   border: none;

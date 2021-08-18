@@ -1663,7 +1663,7 @@ a:hover, a:focus {
   padding: 8px 20px;
   background: #fff;
   border: none;
-  border-radius: 0px;
+  border-radius: 50px;
   width: 100%;
   font-size: 14px;
   color: #777777;

@@ -26,25 +26,77 @@
               <div class="comment-form">
                 <h4>Account profile</h4>
                 <form>
-                  <div class="form-group col-lg-9">
-                    <input type="text" class="form-control bd-r" name="username"
+                  <div class="form-group bd-r col-lg-9">
+                    <input type="text" class="form-control"
+                           name="username"
                            v-model="username" readonly>
                   </div>
+                  <div class="form-group bd-r col-lg-9">
+                    <input type="text" class="form-control" name="Full Name" placeholder="Full Name"
+                           v-model="fullName" v-validate="{ required: true, min: 8, max: 50, regex: /^(.)+$/ }"
+                           :class="{ 'is-invalid': submitted && errors.has('Full Name') }">
+                    <div v-if="submitted && errors.has('Full Name')" class="invalid-feedback">
+                      {{ errors.first('Full Name') }}
+                    </div>
+                  </div>
+                  <div class="form-group bd-r col-lg-9">
+                    <b-form-select class="b-select" v-model="role" name="Role" v-validate="'required'"
+                                   :class="{ 'is-invalid': submitted && errors.has('Role') }">
+                      <template v-slot:first>
+                        <b-form-select-option :value="null" disabled selected hidden>-- Choose account role --
+                        </b-form-select-option>
+                      </template>
+                      <b-form-select-option value="user">User</b-form-select-option>
+                      <b-form-select-option value="staff">Staff</b-form-select-option>
+                      <b-form-select-option value="admin">Admin</b-form-select-option>
+                    </b-form-select>
+                    <div v-if="submitted && errors.has('Role')" class="invalid-feedback" style="padding-right: 170px">
+                      {{ errors.first('Role') }}
+                    </div>
+                  </div>
+                  <div class="form-group bd-r col-lg-9">
+                    <input type="text" class="form-control" name="Email" placeholder="Email"
+                           v-model="email" v-validate:email="'required|email'"
+                           :class="{ 'is-invalid': submitted && errors.has('Email') }">
+                    <div v-if="submitted && errors.has('Email')" class="invalid-feedback">
+                      {{ errors.first('Email') }}
+                    </div>
+                  </div>
+                  <div class="form-group bd-r col-lg-9">
+                    <input type="text" class="form-control" name="Phone Number" placeholder="Phone Number"
+                           v-model="phone" v-validate="{ required: true, length: 10, regex: /[0-9]+/ }"
+                           :class="{ 'is-invalid': submitted && errors.has('Phone Number') }">
+                    <div v-if="submitted && errors.has('Phone Number')" class="invalid-feedback">
+                      {{ errors.first('Phone Number') }}
+                    </div>
+                  </div>
+                  <div class="form-group bd-r col-lg-9">
+                    <b-col lg="7" class="my-1">
+                      <b-form-group label="Enable change password:" label-cols-sm="9" label-align-sm="right"
+                                    class="mb-0">
+                        <b-form-checkbox-group class="mt-2">
+                          <input type="checkbox" value="enable" v-model="checked"/>
+                        </b-form-checkbox-group>
+                      </b-form-group>
+                    </b-col>
+                  </div>
                   <div class="form-group col-lg-9">
-                    <input type="password" class="form-control bd-r" name="password" placeholder="New Password" required
-                           v-model="password" v-validate="{ required: true, min: 8, max: 24}"
-                           :class="{ 'is-invalid': submitted && errors.has('password') }" ref="password">
-                    <div v-if="submitted && errors.has('password')" class="invalid-feedback">
-                      {{ errors.first('password') }}
+                    <input type="password" class="form-control bd-r" name="Password" placeholder="Password"
+                           v-model="password" v-validate="{ required: true, min: 8, max:24}"
+                           :class="{ 'is-invalid': submitted && errors.has('Password') }" ref="Password"
+                           :disabled="!checked">
+                    <div v-if="submitted && errors.has('Password')" class="invalid-feedback">
+                      {{ errors.first('Password') }}
                     </div>
                   </div>
                   <div class="form-group col-lg-9">
-                    <input type="password" class="form-control bd-r" name="confirm" placeholder="Confirm new Password"
-                           required
-                           v-model="confirmPassword" v-validate="'required|confirmed:password'"
-                           :class="{ 'is-invalid': submitted && errors.has('confirm') }">
-                    <div v-if="submitted && errors.has('confirm')" class="invalid-feedback">
-                      {{ errors.first('confirm') }}
+                    <input type="password" class="form-control bd-r" name="Confirm Password"
+                           placeholder="Confirm Password"
+                           v-validate="'required|confirmed:Password'"
+                           :class="{ 'is-invalid': submitted && errors.has('Confirm Password') }"
+                           :disabled="!checked">
+                    <div v-if="submitted && errors.has('Confirm Password')" class="invalid-feedback">
+                      {{ errors.first('Confirm Password') }}
                     </div>
                   </div>
                   <b-button class="btnUpload" v-on:click="editUser()">Submit</b-button>
@@ -84,8 +136,13 @@ export default {
     return {
       username: this.$session.get('username'),
       password: '',
-      confirmPassword: '',
-      submitted: false
+      fullName: '',
+      email: '',
+      phone: '',
+      submitted: false,
+      changePW: true,
+
+
     }
   },
   created() {
@@ -140,7 +197,6 @@ export default {
 </script>
 
 <style scoped>
-
 .fixed-sidebar {
   position: -webkit-sticky;
   position: sticky;

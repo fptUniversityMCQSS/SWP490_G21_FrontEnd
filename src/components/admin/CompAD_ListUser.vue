@@ -82,11 +82,12 @@
           </div>
           <div class="col-lg-2 fixed-sidebar">
             <comp-left-sider/>
-            <flash-message class="myCustomClass"></flash-message>
+
           </div>
         </div>
       </div>
     </section>
+    <div style="z-index: 1001"><flash-message></flash-message></div>
 
     <comp-back-to-top/>
     <comp-footer/>
@@ -160,7 +161,7 @@ export default {
             .then(response => {
               if (response.status === 200) {
                 this.flash('Delete successfully', 'success', {
-                  timeout: 3000
+                  timeout: 10000
                 });
                 let index = this.items.indexOf(item)
                 this.items.splice(index, 1)
