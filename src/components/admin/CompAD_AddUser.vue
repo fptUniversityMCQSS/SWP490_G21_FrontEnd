@@ -9,7 +9,7 @@
             <h2>Create New Account</h2>
             <div class="page_link">
               <router-link to="/home">Home</router-link>
-              <router-link to="/admin/qa">Create New Account</router-link>
+              <router-link to="/admin/add">Create New Account</router-link>
             </div>
           </div>
         </div>
@@ -120,7 +120,7 @@ export default {
           form.append('username', this.username);
           form.append('password', this.password);
           form.append('role', this.role);
-          axios.post(globalURL.host + process.env.VUE_APP_ADD_USER, form, {
+          axios.post(globalURL.host + process.env.VUE_APP_ADMIN_USER, form, {
             headers: {
               'Authorization': 'Bearer ' + self.$session.get("token")
             }

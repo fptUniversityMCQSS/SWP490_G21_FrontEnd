@@ -60,12 +60,18 @@ Table of Content:
 
 /*---------------------------------------------------- */
 /*----------------------------------------------------*/
+
 body {
   line-height: 24px;
   font-size: 14px;
   font-family: "Roboto", sans-serif;
   font-weight: normal;
-  color: #777777;
+}
+
+.page-item.active .page-link {
+  background-color: #86bcf8;
+  color: black;
+  font-weight: bold;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -145,7 +151,7 @@ a:hover, a:focus {
 
 .section_gap1 {
   padding: 40px 0px;
-  background-color: #e8f1f8;
+  background-color: #f9f9ff;
   z-index: 999;
 }
 
@@ -215,7 +221,7 @@ a:hover, a:focus {
 /*---------------------------------------------------- */
 /*----------------------------------------------------*/
 .active {
-  color: #1641ff;
+  color: #92c3f9;
 }
 
 .header_area {
@@ -228,7 +234,7 @@ a:hover, a:focus {
 }
 
 .header_area .main_menu {
-  background: #e8f1f8;
+  background: #f9f9ff;
 }
 
 .header_area .navbar {

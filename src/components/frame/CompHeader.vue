@@ -1,11 +1,11 @@
 <template>
   <!--================Header Menu Area =================-->
-  <header class="header_area">
+  <header class="header_area shadow">
     <div class="main_menu">
       <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container-fluid">
           <!-- Brand and toggle get grouped for better mobile display -->
-          <router-link to="/home" class="navbar-brand logo_h">
+          <router-link to="/" class="navbar-brand logo_h">
             <img src="../../assets/img/logo/lg4.png" alt="">
           </router-link>
           <!-- Collect the nav links, forms, and other content for toggling -->
@@ -14,17 +14,23 @@
               <div class="col-lg-10 pr-0">
                 <ul class="nav navbar-nav center_nav pull-right">
                   <li class="nav-item">
-                    <router-link to="/" class="nav-link">Home</router-link>
+                    <router-link to="/" class="nav-link"><i style="font-size: 17px" class="fa fa-home"
+                                                            aria-hidden="true"></i>&nbsp;&nbsp;Home
+                    </router-link>
                   </li>
                   <li class="nav-item">
-                    <router-link to="/about" class="nav-link">About</router-link>
+                    <router-link to="/about" class="nav-link"><i style="font-size: 15px" class="fa fa-address-book"
+                                                                 aria-hidden="true"></i>&nbsp;&nbsp;About
+                    </router-link>
                   </li>
                   <li class="nav-item submenu dropdown" v-if="role === 'user' || role === 'staff' || role==='admin'">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                       aria-expanded="false">{{ currentUser }}</a>
+                       aria-expanded="false"><i style="font-size: 15px" class="fa fa-user-circle"
+                                                aria-hidden="true"></i>&nbsp;&nbsp;{{ currentUser }}</a>
                     <ul class="dropdown-menu">
                       <li class="nav-item">
-                        <router-link to="/user" class="nav-link" href="login.html"><i class="fa fa-user"/>&nbsp;&nbsp;My
+                        <router-link to="/user" class="nav-link" href="login.html"><i class="fa fa-user-o"
+                                                                                      aria-hidden="true"></i>&nbsp;&nbsp;My
                           Account
                         </router-link>
                       </li>
@@ -56,8 +62,9 @@ export default {
   name: "CompHeader",
   data() {
     return {
+      user: this.$session.get('user'),
       role: this.$session.get('role'),
-      currentUser: this.$session.get('username')
+      currentUser: this.$session.get('fullName')
     }
   },
   methods: {
@@ -71,7 +78,7 @@ export default {
 
 <style scoped>
 
-a.active{
+a.active {
   color: #ba8b00;
 }
 

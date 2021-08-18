@@ -44,6 +44,7 @@ import Loading from 'vue-loading-overlay'
 import VueFlashMessage from 'vue-flash-message';
 import VuejsDialog from 'vuejs-dialog';
 import 'vuejs-dialog/dist/vuejs-dialog.min.css';
+import './assets/font-awesome/css/font-awesome.min.css'
 
 Vue.use(VuejsDialog);
 Vue.use(VueFlashMessage);

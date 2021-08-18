@@ -88,23 +88,23 @@ export default {
       submitted: false
     }
   },
-  // created() {
-  //   const self = this;
-  //   const axios = require('axios');
-  //   axios.get(process.env.VUE_APP_LOCAL + process.env.VUE_APP_USER + self.$route.params.id, {
-  //     headers: {
-  //       'Authorization': 'Bearer ' + self.$session.get("token")
-  //     }
-  //   })
-  //     .then(response => {
-  //       if (response.status === 200) {
-  //         this.username = response.data.username
-  //         this.role = response.data.role
-  //       }
-  //     }).catch(error => {
-  //     console.log(error)
-  //   })
-  // },
+  created() {
+    const self = this;
+    const axios = require('axios');
+    axios.get(globalURL.host + process.env.VUE_APP_USER, {
+      headers: {
+        'Authorization': 'Bearer ' + self.$session.get("token")
+      }
+    })
+      .then(response => {
+        if (response.status === 200) {
+          this.username = response.data.username
+          this.role = response.data.role
+        }
+      }).catch(error => {
+      console.log(error)
+    })
+  },
   methods: {
     editUser() {
       const self = this;
