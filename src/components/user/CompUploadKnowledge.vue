@@ -24,7 +24,7 @@
           <div class="col-lg-10">
             <div class="col-lg-11 mx-auto section_gap">
               <div class="wrapper">
-                <div class="cont">
+                <div class="cont" style="background-color: #f9f9ff">
                   <h2>Upload Knowledge</h2>
                   <div class="upload-container">
                     <div class="border-container">
@@ -55,10 +55,10 @@
                         Encoding &nbsp;<i class="fa fa-spinner fa-spin"/>
                       </div>
                       <div v-if="item.status==='Ready'" size="sm" class="mr-1" style="color: #4ABF60">
-                        Successful &nbsp;<i class="fa fa-check"/>
+                        Successful&nbsp;<i class="fa fa-check-square" aria-hidden="true"></i>
                       </div>
-                      <div v-if="item.status==='Error'" size="sm" class="mr-1" style="color: red">
-                        Fail &nbsp;<i class="fa fa-warning"/>
+                      <div v-if="item.status==='Error'" size="sm" class="mr-1" style="font-weight: bold;color: red">
+                        Fail &nbsp;<i class="fa fa-window-close" aria-hidden="true"></i>
                       </div>
                     </template>
                   </b-table>
@@ -271,7 +271,7 @@ h2 {
 .btnUpload {
   width: 200px;
   height: 50px;
-  background-color: #87CEFA;
+  background-color: #92c3f9;
   border: none;
   outline: none;
   color: black;

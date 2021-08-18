@@ -27,11 +27,11 @@
                      :can-cancel="true"
                      :is-full-page="false"></loading>
 
-            <div class="col-lg-10 mx-auto section_gap" >
+            <div class="col-lg-10 mx-auto section_gap">
               <div class="card rounded shadow border-0" style="background-color: #f9f9ff">
                 <div class="tableTl">Knowledge Table</div>
-                <div class="card-body  rounded" >
-                  <div class="table-responsive" style="background-color: #f9f9ff">
+                <div class="card-body  rounded">
+                  <div class="table-responsive">
                     <div style="padding: 20px;">
                       <div class="justify-content-centermy-1 row">
                         <b-form-group horizontal label="Rows per page:" class="col-2">
@@ -92,11 +92,11 @@
                             <col :style="{ width: '50px' }">
                             <b-button variant="outline-primary" size="sm" v-on:click="downloadKnowledge(item)"
                                       class="mr-1 actionBtn">
-                              Download
+                              Download <i class="fa fa-download" aria-hidden="true"></i>
                             </b-button>
                             <b-button variant="outline-primary" size="sm" v-on:click="deleteKnowledge(item)"
                                       class="actionBtn">
-                              Delete
+                              Delete&nbsp;<i class="fa fa-trash" aria-hidden="true"></i>
                             </b-button>
                           </template>
                         </b-table>
@@ -116,13 +116,14 @@
                           <template #cell(actions)="{item}">
                             <b-button variant="outline-primary" size="sm" v-on:click="downloadKnowledge(item)"
                                       class="mr-1 actionBtn">
-                              Download
+                              Download <i class="fa fa-download" aria-hidden="true"></i>
                             </b-button>
                           </template>
                         </b-table>
                       </div>
                       <div v-else>
-                        <b-table :bordered="true" :borderless="true" :items="itemAll" :current-page="currentPage"
+                        <b-table style="background-color: white" :bordered="true" :borderless="true" :items="itemAll"
+                                 :current-page="currentPage"
                                  stacked="md"
                                  show-empty
                                  :per-page="perPage" :filter="filter" :fields="fields" id="my-table"
@@ -138,17 +139,17 @@
                           <template #cell(actions)="{item}">
                             <b-button variant="outline-primary" size="sm" v-on:click="downloadKnowledge(item)"
                                       class="mr-1 actionBtn">
-                              Download
+                              Download <i class="fa fa-download" aria-hidden="true"></i>
                             </b-button>
                             <b-button v-if="checkRole === 'admin'" variant="outline-primary" size="sm"
                                       v-on:click="deleteKnowledge(item)"
                                       class="actionBtn">
-                              Delete
+                              Delete&nbsp;<i class="fa fa-trash" aria-hidden="true"></i>
                             </b-button>
                           </template>
                         </b-table>
                       </div>
-                      <div style="padding-top: 20px">
+                      <div style="padding-top: 20px;">
                         <b-pagination size="md" :total-rows="totalRows" :per-page="perPage"
                                       v-model="currentPage" aria-controls="my-table"/>
                       </div>
@@ -347,6 +348,11 @@ export default {
 
 <style scoped>
 
+.page-item.active .page-link {
+  background-color: red !important;
+  border-color: red !important;
+}
+
 .truncate {
   white-space: nowrap;
   overflow: hidden;
@@ -392,4 +398,5 @@ table.table {
 .actionBtn:hover {
   background-color: #00BFFF
 }
+
 </style>

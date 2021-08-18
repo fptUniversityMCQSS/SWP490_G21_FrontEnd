@@ -22,9 +22,9 @@
       <div>
         <div class="row flex-row-reverse">
           <div class="col-lg-10">
-            <div class="col-lg-11 mx-auto section_gap">
+            <div class="col-lg-11 mx-auto section_gap" >
               <div class="wrapper">
-                <div class="cont">
+                <div class="cont" style="background-color: #f9f9ff">
                   <h2>Upload Question</h2>
                   <div class="upload-container">
                     <div class="border-container">
@@ -369,10 +369,10 @@ h2 {
 .btnUpload {
   width: 200px;
   height: 50px;
-  background-color: #229aeb;
+  background-color: #92c3f9;
   border: none;
   outline: none;
-  color: #fff;
+  color: black;
   font-weight: 600;
   cursor: pointer;
   text-align: center;
@@ -381,6 +381,7 @@ h2 {
 .btnUpload:hover {
   border: none;
   outline: none;
-  background-color: #229bebad
+  background-color: #00BFFF;
 }
+
 </style>

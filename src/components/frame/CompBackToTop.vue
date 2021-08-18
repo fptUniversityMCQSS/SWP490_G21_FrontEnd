@@ -1,5 +1,5 @@
 <template>
-  <button v-on:click="topFunction()" id="myBtn"></button>
+  <button v-on:click="topFunction()" id="myBtn"><i style="font-size: 25px" class="fa fa-angle-double-up" aria-hidden="true"></i></button>
 </template>
 
 <script>
@@ -35,11 +35,11 @@ export default {
   height: 50px;
   width: 50px;
   background-repeat: no-repeat;
-  background-image: url("../../assets/img/product/top.png");
   background-size: 100%;
+  background-color: #92c3f9;
 }
 
 #myBtn:hover {
-  background-color: #229bebad;
+  background-color: #00BFFF;
 }
 </style>
