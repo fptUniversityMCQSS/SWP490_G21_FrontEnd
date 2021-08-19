@@ -88,6 +88,7 @@ import CompHeader from "../frame/CompHeader";
 import CompFooter from "../frame/CompFooter";
 import CompBackToTop from "../frame/CompBackToTop";
 import CompLeftSider from "../frame/CompLeftSider";
+import * as utility from '../utility/utility';
 
 let self
 
@@ -148,7 +149,7 @@ export default {
             method: "PUT",
             headers: {
               // 'Content-Type': 'multipart/form-data',
-              'Authorization': 'Bearer ' + self.$session.get("token"),
+              'Authorization': 'Bearer ' + self.$session.get("user").token
             },
             body: formData
           }
@@ -166,14 +167,16 @@ export default {
                 }
                 // Enqueue the next data chunk into our target stream
                 let string = new TextDecoder().decode(value);
-                let parseJSON = JSON.parse(string);
-                console.log(parseJSON);
+                let res = utility.convertToJSONArray(string)
+
                 self.items = self.$session.get('listKnowledge')
-                if ("message" in parseJSON) {
-                  self.items[index].status = "Error"
-                } else {
-                  self.items[index].status = parseJSON.status
-                }
+                res.forEach((value) => {
+                  if ("message" in value) {
+                    self.items[index].status = "Error"
+                  } else {
+                    self.items[index].status = value.status
+                  }
+                })
                 self.$session.set('listKnowledge', self.items)
               }
               reader.releaseLock();
@@ -181,8 +184,7 @@ export default {
             read();
           })
           .catch(console.error);
-      }
-      else {
+      } else {
         document.getElementById("noticeUpload").innerHTML = "Please choose file to upload!";
       }
     }

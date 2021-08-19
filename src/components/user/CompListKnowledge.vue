@@ -246,7 +246,7 @@ export default {
           {
             headers: {
               'Content-Type': 'multipart/form-data',
-              'Authorization': 'Bearer ' + this.$session.get("token"),
+              'Authorization': 'Bearer ' + self.$session.get("user").token
             }, responseType: 'blob'
           })
         .then(response => {
@@ -275,7 +275,7 @@ export default {
               {
                 headers: {
                   'Content-Type': 'multipart/form-data',
-                  'Authorization': 'Bearer ' + this.$session.get("token"),
+                  'Authorization': 'Bearer ' + self.$session.get("user").token
                 }
               })
             .then(response => {
@@ -314,7 +314,7 @@ export default {
         {
           headers: {
             'Content-Type': 'multipart/form-data',
-            'Authorization': 'Bearer ' + this.$session.get("token"),
+            'Authorization': 'Bearer ' + self.$session.get("user").token
           }
         })
       .then(response => {

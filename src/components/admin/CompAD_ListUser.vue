@@ -155,7 +155,7 @@ export default {
           axios
             .delete(globalURL.host + process.env.VUE_APP_ADMIN_USER + "/" + item.id, {
               headers: {
-                'Authorization': 'Bearer ' + this.$session.get("token")
+                'Authorization': 'Bearer ' + self.$session.get("user").token
               }
             })
             .then(response => {
@@ -191,7 +191,7 @@ export default {
     axios
       .get(globalURL.host + process.env.VUE_APP_ADMIN_USER, {
         headers: {
-          'Authorization': 'Bearer ' + self.$session.get("token")
+          'Authorization': 'Bearer ' + self.$session.get("user").token
         }
       })
       .then(response => {

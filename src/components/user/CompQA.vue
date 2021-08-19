@@ -22,7 +22,7 @@
       <div>
         <div class="row flex-row-reverse">
           <div class="col-lg-10">
-            <div class="col-lg-11 mx-auto section_gap" >
+            <div class="col-lg-11 mx-auto section_gap">
               <div class="wrapper">
                 <div class="cont" style="background-color: #f9f9ff">
                   <h2>Upload Question</h2>
@@ -55,8 +55,9 @@
                       <div>{{ row.value }}</div>
                     </template>
                     <template #cell(status)="{item}">
-                      <div v-if="item.message === 'Fail to receive response from AI server'" style="color: red">
-                        Error in processing</div>
+                      <div v-if="item.message !== 'DONE' && item.message !== ''" style="color: red">
+                        Error in processing
+                      </div>
                       <b-progress v-else-if="item.message === 'DONE'" :max="item.questions_number">
                         <b-progress-bar style="background-color: #4ABF60" :value="item.questions.length"
                                         :label="`Done`"></b-progress-bar>
@@ -119,12 +120,7 @@ import CompHeader from "../frame/CompHeader";
 import CompFooter from "../frame/CompFooter";
 import CompBackToTop from "../frame/CompBackToTop";
 import CompLeftSider from "../frame/CompLeftSider";
-
-function convertToJSONArray(string) {
-  let regex = /\}\n\{/g
-  let newString = '[' + string.replaceAll(regex, '},{') + ']'
-  return JSON.parse(newString)
-}
+import * as utility from '../utility/utility';
 
 let self
 export default {
@@ -200,7 +196,7 @@ export default {
             method: "PUT",
             headers: {
               // 'Content-Type': 'multipart/form-data',
-              'Authorization': 'Bearer ' + self.$session.get("token"),
+              'Authorization': 'Bearer ' + self.$session.get("user").token
             },
             body: formData
           }
@@ -218,7 +214,7 @@ export default {
                 }
                 // Enqueue the next data chunk into our target stream
                 let string = new TextDecoder().decode(value);
-                let res = convertToJSONArray(string)
+                let res = utility.convertToJSONArray(string)
                 let arrIndex = []
                 self.items.forEach((item) => {
                   arrIndex.push({
@@ -261,7 +257,9 @@ export default {
             }
             read();
           })
-          .catch(console.error);
+          .catch(error => {
+            self.items[index].message = error.response.data.message
+          });
       } else {
         document.getElementById("noticeUpload").innerHTML = "Please choose file to upload!";
       }

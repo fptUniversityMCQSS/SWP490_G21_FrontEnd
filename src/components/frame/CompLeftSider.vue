@@ -6,50 +6,50 @@
     <ul class="list-unstyled">
       <li>
         <router-link to="/qa">
-          <i style="font-size: 17px" class="fa fa-cogs" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;&nbsp;Question Answer
+          <i style="font-size: 16px" class="fa fa-cogs space" aria-hidden="true"></i>Question Answer
         </router-link>
       </li>
-      <li v-if="this.$session.get('role') === 'admin' || this.$session.get('role') === 'staff'">
+      <li v-if="role === 'admin' || role === 'staff'">
         <router-link to="/knowledge/upload" exact-active-class="exact-active">
-          <i style="font-size: 17px" class="fa fa-graduation-cap" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Upload
+          <i style="font-size: 16px" class="fa fa-graduation-cap space1" aria-hidden="true"></i>Upload
           Knowledge
         </router-link>
       </li>
       <li>
         <router-link to="/knowledge" active-class="active">
-          <i style="font-size: 17px" class="fa fa-book" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;&nbsp;List Knowledges
+          <i style="font-size: 16px" class="fa fa-book spaceMenu" aria-hidden="true"></i>List Knowledges
         </router-link>
       </li>
       <li>
         <router-link to="/history">
-          <i style="font-size: 17px" class="fa fa-history" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;&nbsp;Question
+          <i style="font-size: 16px" class="fa fa-history spaceMenu" aria-hidden="true"></i>Question
           Answer History
         </router-link>
       </li>
-      <li v-if="this.$session.get('role') === 'admin'">
+      <li v-if="role === 'admin'">
         <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false"
            @click="dropDown = !dropDown">
-          <i style="font-size: 17px" class="fa fa-cog" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;&nbsp;Account Management&nbsp;&nbsp;
+          <i style="font-size: 16px" class="fa fa-cog spaceMenu" aria-hidden="true"></i>Account Management
           <i class="fa"
              :class="[dropDown ? 'fa-sort-asc' : 'fa-sort-desc']"
              aria-hidden="true"></i></a>
         <ul class="collapse list-unstyled" id="pageSubmenu">
           <li>
             <router-link to="/admin/user">
-              <i style="font-size: 17px" class="fa fa-users" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;&nbsp;List Users
+              <i style="font-size: 16px" class="fa fa-users spaceMenu" aria-hidden="true"></i>List Users
             </router-link>
           </li>
           <li>
             <router-link to="/admin/add">
-              <i style="font-size: 17px" class="fa fa-user-plus" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;&nbsp;Create
+              <i style="font-size: 16px" class="fa fa-user-plus spaceMenu" aria-hidden="true"></i>Create
               Account
             </router-link>
           </li>
         </ul>
       </li>
-      <li v-if="this.$session.get('role') === 'admin'">
+      <li v-if="role === 'admin'">
         <router-link to="/admin/log" exact-active-class="exact-active">
-          <i style="font-size: 17px" class="fa fa-server" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;&nbsp;Logging
+          <i style="font-size: 16px" class="fa fa-server spaceMenu" aria-hidden="true"></i>Logging
         </router-link>
       </li>
     </ul>
@@ -60,12 +60,33 @@
 export default {
   name: "CompLeftSider",
   data() {
-    return {dropDown: false}
+    return {
+      role: '',
+      dropDown: false
+    }
+  },
+  created() {
+    if (this.$session.has('user')) {
+      this.role = this.$session.get('user').role
+    }
   }
 }
 </script>
 
 <style scoped>
+
+
+.spaceMenu {
+  padding-right: 0.7em;
+}
+
+.space {
+  padding-right: 0.45em;
+}
+
+.space1 {
+  padding-right: 0.3em;
+}
 
 a.router-link-active,
 a.router-link-exact-active {
@@ -80,7 +101,6 @@ a.router-link-exact-active {
   float: left;
   min-width: 250px;
   max-width: 250px;
-  /*background: #87CEFA;*/
   color: black;
   transition: all 0.3s;
   position: absolute;

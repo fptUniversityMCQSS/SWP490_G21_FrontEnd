@@ -23,7 +23,7 @@
                                                                  aria-hidden="true"></i>&nbsp;&nbsp;About
                     </router-link>
                   </li>
-                  <li class="nav-item submenu dropdown" v-if="role === 'user' || role === 'staff' || role==='admin'">
+                  <li class="nav-item submenu dropdown" v-if="role !== ''">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false"><i style="font-size: 15px" class="fa fa-user-circle"
                                                 aria-hidden="true"></i>&nbsp;&nbsp;{{ currentUser }}</a>
@@ -40,7 +40,7 @@
                       </li>
                     </ul>
                   </li>
-                  <li class="nav-item" v-if="!role">
+                  <li class="nav-item" v-if="role === ''">
                     <router-link to="/login" class="nav-link">
                       <b-button variant="outline-primary" class="header_btn">LOGIN/REGISTER</b-button>
                     </router-link>
@@ -62,9 +62,14 @@ export default {
   name: "CompHeader",
   data() {
     return {
-      user: this.$session.get('user'),
-      role: this.$session.get('role'),
-      currentUser: this.$session.get('fullName')
+      role: '',
+      currentUser: ''
+    }
+  },
+  created() {
+    if(this.$session.has('user')){
+      this.role = this.$session.get('user').role
+      this.currentUser = this.$session.get('user').fullName
     }
   },
   methods: {

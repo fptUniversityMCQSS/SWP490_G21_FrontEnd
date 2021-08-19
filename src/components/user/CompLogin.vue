@@ -117,9 +117,6 @@ export default {
               if (response.status === 200) {
                 self.$session.start()
                 self.$session.set('user', response.data)
-                self.$session.set('token', response.data.token)
-                self.$session.set('role', response.data.role)
-                self.$session.set('fullName', response.data.fullName)
                 self.$router.push('/');
               }
             }).catch(error => {

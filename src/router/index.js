@@ -56,7 +56,7 @@ export default new Router({
       component: CompMyAccount,
       meta: {title: 'Account'},
       beforeEnter: (to, from, next) => {
-        let role = Vue.prototype.$session.get('role')
+        let role = Vue.prototype.$session.get('user').role
         if (role === 'staff' || role === 'admin' || role === 'user') {
           next()
         } else {
@@ -69,7 +69,7 @@ export default new Router({
       component: CompListKnowledge,
       meta: {title: 'Knowledge'},
       beforeEnter: (to, from, next) => {
-        let role = Vue.prototype.$session.get('role')
+        let role = Vue.prototype.$session.get('user').role
         if (role === 'user' || role === 'staff' || role === 'admin') {
           next()
         } else {
@@ -82,7 +82,7 @@ export default new Router({
       component: CompUploadKnowledge,
       meta: {title: 'Upload Knowledge'},
       beforeEnter: (to, from, next) => {
-        let role = Vue.prototype.$session.get('role')
+        let role = Vue.prototype.$session.get('user').role
         if (role === 'staff' || role === 'admin') {
           next()
         } else {
@@ -95,7 +95,7 @@ export default new Router({
       component: CompQA,
       meta: {title: 'Question & Answer'},
       beforeEnter: (to, from, next) => {
-        let role = Vue.prototype.$session.get('role')
+        let role = Vue.prototype.$session.get('user').role
         if (role === 'user' || role === 'staff' || role==='admin') {
           next()
         } else {
@@ -108,7 +108,7 @@ export default new Router({
       component: CompHistory,
       meta: {title: 'History'},
       beforeEnter: (to, from, next) => {
-        let role = Vue.prototype.$session.get('role')
+        let role = Vue.prototype.$session.get('user').role
         if (role === 'user' || role === 'staff' || role==='admin') {
           next()
         } else {
@@ -121,7 +121,7 @@ export default new Router({
       component: CompHistoryDetail,
       meta: {title: 'History Detail'},
       beforeEnter: (to, from, next) => {
-        let role = Vue.prototype.$session.get('role')
+        let role = Vue.prototype.$session.get('user').role
         if (role === 'user' || role === 'staff' || role==='admin') {
           next()
         } else {
@@ -134,7 +134,7 @@ export default new Router({
       component: CompAD_ListUser,
       meta: {title: 'List User'},
       beforeEnter: (to, from, next) => {
-        let role = Vue.prototype.$session.get('role')
+        let role = Vue.prototype.$session.get('user').role
         if (role === 'admin') {
           next()
         } else {
@@ -147,7 +147,7 @@ export default new Router({
       component: CompAD_EditUser,
       meta: {title: 'Edit User'},
       beforeEnter: (to, from, next) => {
-        let role = Vue.prototype.$session.get('role')
+        let role = Vue.prototype.$session.get('user').role
         if (role === 'admin') {
           next()
         } else {
@@ -160,7 +160,7 @@ export default new Router({
       component: CompAD_AddUser,
       meta: {title: 'Add User'},
       beforeEnter: (to, from, next) => {
-        let role = Vue.prototype.$session.get('role')
+        let role = Vue.prototype.$session.get('user').role
         if (role === 'admin') {
           next()
         } else {
@@ -173,7 +173,7 @@ export default new Router({
       component: CompAD_Log,
       meta: {title: 'Logging'},
       beforeEnter: (to, from, next) => {
-        let role = Vue.prototype.$session.get('role')
+        let role = Vue.prototype.$session.get('user').role
         if (role === 'admin') {
           next()
         } else {

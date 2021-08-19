@@ -88,7 +88,7 @@ export default {
         signal: this.signal,
         headers: {
           // 'Content-Type': 'multipart/form-data',
-          'Authorization': 'Bearer ' + self.$session.get("token"),
+          'Authorization': 'Bearer ' + self.$session.get("user").token
         }
       }
     )

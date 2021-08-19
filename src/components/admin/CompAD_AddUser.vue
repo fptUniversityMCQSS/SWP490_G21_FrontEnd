@@ -122,7 +122,7 @@ export default {
           form.append('role', this.role);
           axios.post(globalURL.host + process.env.VUE_APP_ADMIN_USER, form, {
             headers: {
-              'Authorization': 'Bearer ' + self.$session.get("token")
+              'Authorization': 'Bearer ' + self.$session.get("user").token
             }
           })
             .then(response => {

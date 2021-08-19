@@ -229,7 +229,7 @@ a:hover, a:focus {
   width: 100%;
   top: 0;
   left: 0;
-  z-index: 1000;
+  z-index: 1001;
   transition: background 0.4s, all 0.3s linear;
 }
 
@@ -1626,8 +1626,9 @@ a:hover, a:focus {
   text-align: center;
   border: 1px solid #eee;
   padding: 47px 30px 43px;
-  margin-top: 50px;
+  margin-top: 40px;
   margin-bottom: 40px;
+  font-weight: bold;
 }
 
 .comment-form h4 {
@@ -1663,7 +1664,6 @@ a:hover, a:focus {
   padding: 8px 20px;
   background: #fff;
   border: none;
-  border-radius: 50px;
   width: 100%;
   font-size: 14px;
   color: #777777;
