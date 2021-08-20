@@ -30,27 +30,26 @@
             <div class="col-lg-10 mx-auto section_gap">
               <div class="card rounded shadow border-0" style="background-color: #f9f9ff">
                 <div class="tableTl">Knowledge Table</div>
-                <div class="card-body  rounded">
+                <div class="card-body rounded">
                   <div class="table-responsive">
                     <div style="padding: 20px;">
                       <div class="justify-content-centermy-1 row">
-                        <b-form-group horizontal label="Rows per page:" class="col-2">
-                          <b-form-select size="sm"
+
+                        <b-form-group label="Rows per page:" :class="[role === 'staff' ? 'col-lg-2' : 'col-lg-8']">
+                          <b-form-select size="sm" :class="[role === 'staff' ? 'col-lg-12' : 'col-lg-3']"
                                          :options="[{text:5,value:5},{text:10,value:10},{text:15,value:15},{text:20,value:20}]"
                                          v-model="perPage">
                           </b-form-select>
                         </b-form-group>
-
-                        <b-form-group v-if="this.$session.get('role') === 'staff'" label="Knowledge view mode:"
-                                      class="col-3">
-                          <b-form-select size="sm" v-on:change="changeMode"
+                        <b-form-group v-if="role === 'staff'" label="Knowledge view mode:"
+                                      class="col-lg-6">
+                          <b-form-select size="sm" v-on:change="changeMode" class="col-lg-6"
                                          :options="[{text:'Knowledge of current account',value:'current'},{text:'All knowledge',value:'all'}]"
                                          v-model="optionView">
                           </b-form-select>
                         </b-form-group>
 
-                        <b-form-group v-if="this.$session.get('role') === 'staff'" label="Search:"
-                                      class="col-4 searchTab">
+                        <b-form-group label="Search:" class="col-lg-4">
                           <b-input-group size="sm">
                             <b-form-input v-model="filter" type="search" placeholder="Type to Search"></b-form-input>
                             <b-input-group-append>
@@ -60,19 +59,10 @@
                           </b-input-group>
                         </b-form-group>
 
-                        <b-form-group
-                          v-if="this.$session.get('role') === 'admin' || this.$session.get('role') === 'user'"
-                          label="Search:" class="col-4 searchTab1">
-                          <b-input-group size="sm">
-                            <b-form-input v-model="filter" type="search" placeholder="Type to Search"></b-form-input>
-                            <b-input-group-append>
-                              <b-button @click="filter = ''" variant="outline-primary" class="actionBtn">Clear
-                              </b-button>
-                            </b-input-group-append>
-                          </b-input-group>
-                        </b-form-group>
+
                       </div>
-                      <div v-if="checkRole === 'staff'">
+
+                      <div v-if="role === 'staff'">
                         <!-- Main table current -->
                         <b-table v-if="optionView === 'current'" :bordered="true" :borderless="true" :items="items"
                                  :current-page="currentPage"
@@ -141,7 +131,7 @@
                                       class="mr-1 actionBtn">
                               Download <i class="fa fa-download" aria-hidden="true"></i>
                             </b-button>
-                            <b-button v-if="checkRole === 'admin'" variant="outline-primary" size="sm"
+                            <b-button v-if="role === 'admin'" variant="outline-primary" size="sm"
                                       v-on:click="deleteKnowledge(item)"
                                       class="actionBtn">
                               Delete&nbsp;<i class="fa fa-trash" aria-hidden="true"></i>
@@ -192,11 +182,11 @@ export default {
     return {
       items: [],
       itemAll: [],
-      checkRole: this.$session.get('role'),
       currentPage: 1,
       perPage: 5,
       filter: "",
       totalRows: 1,
+      role: '',
       isLoading: true,
       optionView: 'current',
       fields: [
@@ -240,6 +230,7 @@ export default {
       return dateFormat(newDate, "dddd, mmmm dS, yyyy, h:MM:ss TT");
     },
     downloadKnowledge(item) {
+      const self = this
       const axios = require('axios');
       axios
         .get(globalURL.host + process.env.VUE_APP_KNOWLEDGE + "/" + item.knowledgeId,
@@ -259,6 +250,7 @@ export default {
         })
     },
     deleteKnowledge(item) {
+      const self = this
       let message = "<p style='text-align: center; padding-top: 5px'><b style='font-size: 20px'>Delete Knowledge</b>" +
         "<br><br>Are you sure you want to delete this knowledge?</p>";
       let options = {
@@ -307,8 +299,9 @@ export default {
     }
   },
   created() {
+    const self = this;
     const axios = require('axios');
-    let self = this;
+    this.role = self.$session.get('user').role
     axios
       .get(globalURL.host + process.env.VUE_APP_KNOWLEDGE,
         {
@@ -377,6 +370,7 @@ table.table {
 
 .searchTab {
   margin-left: 200px;
+  float: right;
 }
 
 .searchTab1 {

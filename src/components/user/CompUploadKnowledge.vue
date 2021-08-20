@@ -48,17 +48,19 @@
                       <div>{{ row.value }}</div>
                     </template>
                     <template #cell(status)="{item}">
-                      <div v-if="item.status==='Processing'" size="sm" class="mr-1">
+                      <div v-if="item.status==='Processing'" size="sm" class="mr-1 messageDetail">
                         In Progress &nbsp;<i class="fa fa-spinner fa-spin"/>
                       </div>
-                      <div v-if="item.status==='Encoding'" size="sm" class="mr-1">
+                      <div v-if="item.status==='Encoding'" size="sm" class="mr-1 messageDetail">
                         Encoding &nbsp;<i class="fa fa-spinner fa-spin"/>
                       </div>
-                      <div v-if="item.status==='Ready'" size="sm" class="mr-1" style="color: #4ABF60">
+                      <div v-if="item.status==='Ready'" size="sm" class="mr-1 messageDetail" style="color: #4ABF60">
                         Successful&nbsp;<i class="fa fa-check-square" aria-hidden="true"></i>
                       </div>
-                      <div v-if="item.status==='Error'" size="sm" class="mr-1" style="font-weight: bold;color: red">
-                        Fail &nbsp;<i class="fa fa-window-close" aria-hidden="true"></i>
+                      <div v-if="item.status==='Fail'" size="sm" class="mr-1 messageDetail"
+                           style="color: red">
+                        <span v-b-tooltip.right="item.messageDetail">
+                          Fail &nbsp;<i class="fa fa-window-close" aria-hidden="true"></i></span>
                       </div>
                     </template>
                   </b-table>
@@ -134,7 +136,8 @@ export default {
       if (document.getElementById("fileInput").files.length > 0) {
         let newObject = {
           nameCurrent: this.fileName,
-          status: 'Processing'
+          status: 'Processing',
+          messageDetail: ''
         }
         this.items = this.$session.get('listKnowledge')
         let index = this.items.push(newObject) - 1
@@ -172,7 +175,8 @@ export default {
                 self.items = self.$session.get('listKnowledge')
                 res.forEach((value) => {
                   if ("message" in value) {
-                    self.items[index].status = "Error"
+                    self.items[index].status = "Fail"
+                    self.items[index].messageDetail = value.message
                   } else {
                     self.items[index].status = value.status
                   }
@@ -195,6 +199,10 @@ export default {
 </script>
 
 <style scoped>
+
+.messageDetail{
+  font-weight: bold;
+}
 
 .truncate {
   white-space: nowrap;
@@ -273,7 +281,7 @@ h2 {
 .btnUpload {
   width: 200px;
   height: 50px;
-  background-color: #92c3f9;
+  background-color: #79b4f1;
   border: none;
   outline: none;
   color: black;

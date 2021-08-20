@@ -11,7 +11,7 @@
           <!-- Collect the nav links, forms, and other content for toggling -->
           <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
             <div class="row w-100">
-              <div class="col-lg-10 pr-0">
+              <div class="col-lg-12 pr-0">
                 <ul class="nav navbar-nav center_nav pull-right">
                   <li class="nav-item">
                     <router-link to="/" class="nav-link"><i style="font-size: 17px" class="fa fa-home"
@@ -29,8 +29,7 @@
                                                 aria-hidden="true"></i>&nbsp;&nbsp;{{ currentUser }}</a>
                     <ul class="dropdown-menu">
                       <li class="nav-item">
-                        <router-link to="/user" class="nav-link" href="login.html"><i class="fa fa-user-o"
-                                                                                      aria-hidden="true"></i>&nbsp;&nbsp;My
+                        <router-link to="/user" class="nav-link" href="login.html"><i class="fa fa-user-o" aria-hidden="true"></i>&nbsp;&nbsp;My
                           Account
                         </router-link>
                       </li>

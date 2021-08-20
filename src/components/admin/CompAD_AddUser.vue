@@ -26,47 +26,104 @@
               <div class="comment-form">
                 <h4>Create New Account</h4>
                 <form>
-                  <div class="form-group col-lg-9">
-                    <input type="text" class="form-control bd-r" name="username" placeholder="Username" required
-                           v-model="username" v-validate="'required'"
-                           :class="{ 'is-invalid': submitted && errors.has('username') }">
-                    <div v-if="submitted && errors.has('username')" class="invalid-feedback">
-                      {{ errors.first('username') }}
-                    </div>
-                  </div>
                   <div class="form-group bd-r col-lg-9">
-                    <b-form-select class="b-select" v-model="role" required name="role" v-validate="'required'"
-                                   :class="{ 'is-invalid': submitted && errors.has('role') }">
-                      <template v-slot:first>
-                        <b-form-select-option :value="null" disabled selected hidden>-- Choose account role --
-                        </b-form-select-option>
-                      </template>
-                      <b-form-select-option value="user">User</b-form-select-option>
-                      <b-form-select-option value="staff">Staff</b-form-select-option>
-                      <b-form-select-option value="admin">Admin</b-form-select-option>
-                    </b-form-select>
-                    <div v-if="submitted && errors.has('role')" class="invalid-feedback" style="padding-right: 170px">
-                      {{ errors.first('role') }}
+                    <p class="leftCol">Username:</p>
+                    <div class=" col-lg-9 rightCol">
+                      <input type="text" class="form-control textBox" name="Username" placeholder="Username"
+                             v-model="username" v-validate="{ required: true, min: 8, max: 30, regex: /^\w+$/ }"
+                             :class="{ 'is-invalid': submitted && errors.has('Username') }">
+                      <div v-if="submitted && errors.has('Username')" class="invalid-feedback">
+                        {{ errors.first('Username') }}
+                      </div>
                     </div>
                   </div>
-                  <div class="form-group col-lg-9">
-                    <input type="password" class="form-control bd-r" name="password" placeholder="Password" required
-                           v-model="password" v-validate="{ required: true, min: 4}"
-                           :class="{ 'is-invalid': submitted && errors.has('password') }" ref="password">
-                    <div v-if="submitted && errors.has('password')" class="invalid-feedback">
-                      {{ errors.first('password') }}
+                  <br>
+                  <div class="form-group bd-r col-lg-9 cell">
+                    <p class="leftCol">Role:</p>
+                    <div class="col-lg-9 rightCol">
+                      <b-form-select style="border-radius: 50px" class="b-select textBox" v-model="role"
+                                     name="Role" v-validate="'required'"
+                                     :class="{ 'is-invalid': submitted && errors.has('Role') }">
+                        <template v-slot:first>
+                          <b-form-select-option :value="null" disabled selected hidden>-- Choose account role --
+                          </b-form-select-option>
+                        </template>
+                        <b-form-select-option value="user">User</b-form-select-option>
+                        <b-form-select-option value="staff">Staff</b-form-select-option>
+                        <b-form-select-option value="admin">Admin</b-form-select-option>
+                      </b-form-select>
+                      <div v-if="submitted && errors.has('Role')" class="invalid-feedback">
+                        {{ errors.first('Role') }}
+                      </div>
                     </div>
                   </div>
-                  <div class="form-group col-lg-9">
-                    <input type="password" class="form-control bd-r" name="confirm" placeholder="Confirm Password"
-                           required
-                           v-model="confirmPassword" v-validate="'required|confirmed:password'"
-                           :class="{ 'is-invalid': submitted && errors.has('confirm') }">
-                    <div v-if="submitted && errors.has('confirm')" class="invalid-feedback">
-                      {{ errors.first('confirm') }}
+                  <br>
+                  <div class="form-group bd-r col-lg-9 cell">
+                    <p class="leftCol">Full name:&nbsp;&nbsp;</p>
+                    <div class=" col-lg-9 rightCol">
+                      <input type="text" class="form-control textBox" name="Full Name" placeholder="Full Name"
+                             v-model="fullName" v-validate="{ required: true, min: 8, max: 50, regex: /^(.)+$/ }"
+                             :class="{ 'is-invalid': submitted && errors.has('Full Name') }">
+                      <div v-if="submitted && errors.has('Full Name')" class="invalid-feedback">
+                        {{ errors.first('Full Name') }}
+                      </div>
                     </div>
                   </div>
-                  <b-button variant="outline-primary" class="btnUpload" v-on:click="addUser()">Add User</b-button>
+                  <br>
+                  <div class="form-group bd-r col-lg-9 cell">
+                    <p class="leftCol">Email:&nbsp;</p>
+                    <div class=" col-lg-9 rightCol">
+                      <input type="text" class="form-control textBox" name="Email" placeholder="Email"
+                             v-model="email" v-validate:email="'required|email'"
+                             :class="{ 'is-invalid': submitted && errors.has('Email') }">
+                      <div v-if="submitted && errors.has('Email')" class="invalid-feedback">
+                        {{ errors.first('Email') }}
+                      </div>
+                    </div>
+                  </div>
+                  <br>
+                  <div class="form-group bd-r col-lg-9 cell">
+                    <p class="leftCol">Phone:</p>
+                    <div class=" col-lg-9 rightCol">
+                      <input type="text" class="form-control textBox" name="Phone Number"
+                             placeholder="Phone Number"
+                             v-model="phone" v-validate="{ required: true, length: 10, regex: /[0-9]+/ }"
+                             :class="{ 'is-invalid': submitted && errors.has('Phone Number') }">
+                      <div v-if="submitted && errors.has('Phone Number')" class="invalid-feedback">
+                        {{ errors.first('Phone Number') }}
+                      </div>
+                    </div>
+                  </div>
+                  <br>
+                  <div class="form-group bd-r col-lg-9 cell">
+                    <p class="leftCol">Password:</p>
+                    <div class=" col-lg-9 rightCol">
+                      <input type="password" class="form-control textBox" name="Password" placeholder="Password"
+                             v-model="password" v-validate="{ required: true, min: 8, max:24}"
+                             :class="{ 'is-invalid': submitted && errors.has('Password') }" ref="Password">
+                      <div v-if="submitted && errors.has('Password')" class="invalid-feedback">
+                        {{ errors.first('Password') }}
+                      </div>
+                    </div>
+                  </div>
+                  <br>
+                  <div class="form-group bd-r col-lg-9 cell">
+                    <p class="leftCol">Re-Password:</p>
+                    <div class=" col-lg-9 rightCol">
+                      <input type="password" class="form-control textBox" name="Confirm Password"
+                             placeholder="Confirm Password"
+                             v-validate="'required|confirmed:Password'"
+                             :class="{ 'is-invalid': submitted && errors.has('Confirm Password') }">
+                      <div v-if="submitted && errors.has('Confirm Password')" class="invalid-feedback">
+                        {{ errors.first('Confirm Password') }}
+                      </div>
+                    </div>
+                  </div>
+                  <br>
+                  <div class="form-group col-lg-12 cell">
+                    <b-button class="btnUpload" style="margin-right: 49px;" v-on:click="cancelAdd()">Cancel</b-button>
+                    <b-button class="btnUpload" v-on:click="addUser()">Submit</b-button>
+                  </div>
                 </form>
               </div>
             </div>
@@ -101,14 +158,19 @@ export default {
   },
   data() {
     return {
+      fullName: '',
+      email: '',
+      phone: '',
       username: '',
       password: '',
-      confirmPassword: '',
       role: null,
       submitted: false
     }
   },
   methods: {
+    cancelAdd(){
+      this.$router.push('/admin/user');
+    },
     addUser() {
       const self = this;
       this.submitted = true;
@@ -117,6 +179,9 @@ export default {
           const axios = require('axios');
           const FormData = require('form-data');
           const form = new FormData();
+          form.append('fullName', this.fullName);
+          form.append('email', this.email);
+          form.append('phone', this.phone);
           form.append('username', this.username);
           form.append('password', this.password);
           form.append('role', this.role);
@@ -144,17 +209,28 @@ export default {
 
 <style scoped>
 
-.fixed-sidebar {
-  position: -webkit-sticky;
-  position: sticky;
-  height: 600px;
-  color: #fff;
-  top: 80px;
-  z-index: 999;
+
+.textBox {
+  border-radius: 50px;
+}
+
+.cell {
+  margin-top: 25px;
+}
+
+.leftCol {
+  display: inline;
+  float: left;
+  margin-top: 7px;
+}
+
+.rightCol {
+  display: inline;
+  float: right;
 }
 
 .btnUpload {
-  width: 180px;
+  width: 130px;
   height: 45px;
   background-color: #229aeb;
   border: none;
@@ -164,7 +240,7 @@ export default {
   font-size: 15px;
   cursor: pointer;
   text-align: center;
-  margin-top: 10px;
+  margin-top: 30px;
 }
 
 .btnUpload:hover {
@@ -174,8 +250,8 @@ export default {
 }
 
 .bd-r {
-  border-radius: 5px;
-  margin-left: 70px;
+  border-radius: 50px;
+  margin-left: 85px;
 }
 
 .b-select {

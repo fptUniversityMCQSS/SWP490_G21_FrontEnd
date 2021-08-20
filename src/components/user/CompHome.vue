@@ -2,7 +2,7 @@
   <div>
     <comp-header/>
     <!--================Home Banner Area =================-->
-    <section v-if="this.$session.get('token')" class="home_banner_area">
+    <section v-if="role !== ''" class="home_banner_area">
       <div class="banner_inner d-flex align-items-center">
         <div class="container">
           <div class="banner_content text-center">
@@ -13,7 +13,7 @@
       </div>
     </section>
 
-    <section v-else-if="!this.$session.get('token')" class="home_banner_area">
+    <section v-else-if="role === ''" class="home_banner_area">
       <div class="banner_inner d-flex align-items-center">
         <div class="container">
           <div class="banner_content text-center">
@@ -37,7 +37,7 @@
 
             </div>
           </div>
-          <div class="col-lg-2 fixed-sidebar">
+          <div v-if="role !== ''" class="col-lg-2 fixed-sidebar">
             <comp-left-sider/>
           </div>
         </div>
@@ -61,6 +61,15 @@ export default {
   name: "CompHome",
   components: {
     CompHeader, CompFooter, CompBackToTop, CompLeftSider, CompSliderImage
+  },
+  data(){
+    return {
+      role: ''
+    }
+  },
+  created() {
+    if(this.$session.has('user'))
+    this.role = this.$session.get('user').role
   }
 }
 </script>

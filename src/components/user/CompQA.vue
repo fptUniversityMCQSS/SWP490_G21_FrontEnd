@@ -54,20 +54,32 @@
                     <template #cell(historyName)="row">
                       <div>{{ row.value }}</div>
                     </template>
+
+
                     <template #cell(status)="{item}">
-                      <div v-if="item.message !== 'DONE' && item.message !== ''" style="color: red">
-                        Error in processing
+
+                      <div v-if="item.status === 'Loading'">
+                        Loading
                       </div>
-                      <b-progress v-else-if="item.message === 'DONE'" :max="item.questions_number">
-                        <b-progress-bar style="background-color: #4ABF60" :value="item.questions.length"
-                                        :label="`Done`"></b-progress-bar>
-                      </b-progress>
-                      <b-progress v-else :max="item.questions_number">
-                        <b-progress-bar class="progress-bar-animated" striped :value="item.questions.length"
-                                        :label="`${((item.questions.length / item.questions_number) * 100).toFixed(0)}%`"></b-progress-bar>
-                      </b-progress>
-                      {{ item.questions.length + "/" + item.questions_number }}
+                      <div v-else>
+                        <div v-if="item.message !== 'DONE' && item.message !== ''" style="color: red">
+                          <span v-b-tooltip.right="item.message">Error in processing</span>
+                        </div>
+                        <b-progress v-else-if="item.message === 'DONE'" :max="item.questions_number">
+                          <b-progress-bar style="background-color: #4ABF60" :value="item.questions.length"
+                                          :label="`Done`"></b-progress-bar>
+                        </b-progress>
+                        <b-progress v-else :max="item.questions_number">
+                          <b-progress-bar class="progress-bar-animated" striped :value="item.questions.length"
+                                          :label="`${((item.questions.length / item.questions_number) * 100).toFixed(0)}%`"></b-progress-bar>
+                        </b-progress>
+                        {{ item.questions.length + "/" + item.questions_number }}
+                      </div>
+
+
                     </template>
+
+
                     <template #cell(view)="row">
                       <b-button variant="outline-primary" size="sm" @click="row.toggleDetails"
                                 class="actionBtn">
@@ -177,10 +189,11 @@ export default {
           historyName: this.fileName,
           historyDate: '',
           message: '',
+          status: 'Loading',
           questions_number: 1,
           subject: '',
           questions: [],
-          _showDetails: false
+          _showDetails: false,
         }
 
         this.items = this.$session.get('listQA')
@@ -227,6 +240,7 @@ export default {
                   self.items[item.index]._showDetails = item.showDetail
                 })
                 res.forEach((value) => {
+                  self.items[index].status = 'Process'
                   if ("id" in value) {
                     self.items[index].id = value.id
                     self.items[index].historyDate = value.historyDate

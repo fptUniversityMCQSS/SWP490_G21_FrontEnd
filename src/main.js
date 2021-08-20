@@ -45,7 +45,10 @@ import VueFlashMessage from 'vue-flash-message';
 import VuejsDialog from 'vuejs-dialog';
 import 'vuejs-dialog/dist/vuejs-dialog.min.css';
 import './assets/font-awesome/css/font-awesome.min.css'
+import VTooltip from 'v-tooltip'
 
+
+Vue.use(VTooltip)
 Vue.use(VuejsDialog);
 Vue.use(VueFlashMessage);
 Vue.use(Loading)

@@ -9,7 +9,7 @@
           <div class="banner_content text-center">
             <h2>login to your account</h2>
             <div class="page_link">
-              <router-link to="/index">Home</router-link>
+              <router-link to="/">Home</router-link>
               <router-link to="/login">Login</router-link>
             </div>
           </div>
