@@ -8,7 +8,7 @@
           <div class="banner_content text-center">
             <h2>Create New Account</h2>
             <div class="page_link">
-              <router-link to="/home">Home</router-link>
+              <router-link to="/">Home</router-link>
               <router-link to="/admin/add">Create New Account</router-link>
             </div>
           </div>
@@ -168,7 +168,7 @@ export default {
     }
   },
   methods: {
-    cancelAdd(){
+    cancelAdd() {
       this.$router.push('/admin/user');
     },
     addUser() {
@@ -208,8 +208,6 @@ export default {
 </script>
 
 <style scoped>
-
-
 .textBox {
   border-radius: 50px;
 }
@@ -229,6 +227,15 @@ export default {
   float: right;
 }
 
+.fixed-sidebar {
+  position: -webkit-sticky;
+  position: sticky;
+  height: 600px;
+  color: #fff;
+  top: 80px;
+  z-index: 999;
+}
+
 .btnUpload {
   width: 130px;
   height: 45px;
@@ -240,7 +247,7 @@ export default {
   font-size: 15px;
   cursor: pointer;
   text-align: center;
-  margin-top: 30px;
+  margin-top: 20px;
 }
 
 .btnUpload:hover {

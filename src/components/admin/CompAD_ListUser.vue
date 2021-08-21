@@ -140,6 +140,7 @@ export default {
       this.$router.push('/admin/user/' + item.id)
     },
     deleteUser(item) {
+      const self = this
       let message = "<p style='text-align: center; padding-top: 5px'><b style='font-size: 20px'>Delete Account</b>" +
         "<br><br>Are you sure you want to delete this account?</p>";
       let options = {

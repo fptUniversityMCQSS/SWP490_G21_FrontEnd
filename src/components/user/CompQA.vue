@@ -24,7 +24,7 @@
           <div class="col-lg-10">
             <div class="col-lg-11 mx-auto section_gap">
               <div class="wrapper">
-                <div class="cont" style="background-color: #f9f9ff">
+                <div class="cont shadow" style="background-color: #f9f9ff">
                   <h2>Upload Question</h2>
                   <div class="upload-container">
                     <div class="border-container">
@@ -45,22 +45,21 @@
                 <b-button variant="outline-primary" class="btnUpload"
                           v-on:click="submitFiles()">Upload
                 </b-button>
-
                 <p id="noticeUpload" style="color: red; font-size: 17px; margin-top: 20px"></p>
-
                 <div v-if="items.length>0" style="margin-top: 50px">
-                  <b-table striped :items="items.slice().reverse()" :fields="fields" class="text-center"
+                  <b-table :bordered="true" :borderless="true" hover :items="items.slice().reverse()" :fields="fields"
+                           class="shadow text-center"
                            responsive="sm">
                     <template #cell(historyName)="row">
                       <div>{{ row.value }}</div>
                     </template>
-
-
                     <template #cell(status)="{item}">
 
+
                       <div v-if="item.status === 'Loading'">
-                        Loading
+                        Loading&nbsp;<i class="fa fa-spinner fa-spin"/>
                       </div>
+
                       <div v-else>
                         <div v-if="item.message !== 'DONE' && item.message !== ''" style="color: red">
                           <span v-b-tooltip.right="item.message">Error in processing</span>
@@ -78,20 +77,24 @@
 
 
                     </template>
-
-
-                    <template #cell(view)="row">
+                    <template #cell(action)="row">
                       <b-button variant="outline-primary" size="sm" @click="row.toggleDetails"
-                                class="actionBtn">
+                                class="mr-1 actionBtn">
                         {{ row.detailsShowing ? 'Hide' : 'Show' }} Details
                       </b-button>
-                      &nbsp;&nbsp;
                       <b-button
                         v-if="row.item.message !== ''"
                         variant="outline-primary" size="sm"
                         v-on:click="viewQA(row.item.id)"
                         class="actionBtn">
                         View
+                      </b-button>
+                      <b-button
+                        v-if="row.item.status !== 'Loading' && row.item.message === ''"
+                        variant="outline-primary" size="sm"
+                        v-on:click="cancelUpload(row.item)"
+                        class="actionBtn">
+                        Cancel
                       </b-button>
                     </template>
                     <template #row-details="row">
@@ -107,7 +110,6 @@
                     </template>
                   </b-table>
                 </div>
-
               </div>
             </div>
           </div>
@@ -147,15 +149,18 @@ export default {
       fields: [
         {
           key: 'historyName',
-          label: 'File Name'
+          label: 'File Name',
+          thStyle: {background: '#92c3f9', color: 'black', width: '300px'},
         },
         {
           key: 'status',
-          label: 'Status'
+          label: 'Status',
+          thStyle: {background: '#92c3f9', color: 'black'},
         },
         {
-          key: 'view',
-          label: ''
+          key: 'action',
+          label: 'Action',
+          thStyle: {background: '#92c3f9', color: 'black'},
         }
       ],
       files: ''
@@ -174,6 +179,42 @@ export default {
     }
   },
   methods: {
+    cancelUpload(item) {
+      let message = "<p style='text-align: center; padding-top: 5px'><b style='font-size: 20px'>Cancel Upload</b>" +
+        "<br><br>Are you sure you want to cancel upload?</p>";
+      let options = {
+        html: true,
+        okText: 'Continue',
+        cancelText: 'Close',
+      };
+      this.$dialog
+        .confirm(message, options)
+        .then(() => {
+          const axios = require('axios');
+          axios
+            .delete(globalURL.host + process.env.VUE_APP_ADMIN_USER + "/" + item.id, {
+              headers: {
+                'Authorization': 'Bearer ' + self.$session.get("user").token
+              }
+            })
+            .then(response => {
+              if (response.status === 200) {
+                this.flash('Delete successfully', 'success', {
+                  timeout: 10000
+                });
+                let index = this.items.indexOf(item)
+                this.items.splice(index, 1)
+                this.totalRows--
+              }
+            })
+            .catch(error => {
+              console.log(error)
+            })
+        })
+        .catch(function () {
+          console.log('Clicked on cancel');
+        })
+    },
     viewQA(id) {
       self.$router.push('/history/' + id)
     },
@@ -305,14 +346,15 @@ table.table {
 }
 
 .actionBtn {
-  background-color: #95999c;
-  color: #FFFFFF;
+  background-color: #92c3f9;
+  color: black;
   font-weight: bold;
   border: none;
 }
 
 .actionBtn:hover {
-  background-color: #229bebad
+  background-color: #0088ff;
+  color: #fff;
 }
 
 .fixed-sidebar {
@@ -388,12 +430,14 @@ h2 {
   font-weight: 600;
   cursor: pointer;
   text-align: center;
+  margin-top: 20px;
 }
 
 .btnUpload:hover {
   border: none;
   outline: none;
-  background-color: #00BFFF;
+  background-color: #0088ff;
+  color: #fff;
 }
 
 </style>

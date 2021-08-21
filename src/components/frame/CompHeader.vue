@@ -5,7 +5,7 @@
       <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container-fluid">
           <!-- Brand and toggle get grouped for better mobile display -->
-          <router-link to="/" class="navbar-brand logo_h">
+          <router-link to="/" class="navbar-brand logo_h col-lg-2">
             <img src="../../assets/img/logo/lg4.png" alt="">
           </router-link>
           <!-- Collect the nav links, forms, and other content for toggling -->
@@ -29,7 +29,8 @@
                                                 aria-hidden="true"></i>&nbsp;&nbsp;{{ currentUser }}</a>
                     <ul class="dropdown-menu">
                       <li class="nav-item">
-                        <router-link to="/user" class="nav-link" href="login.html"><i class="fa fa-user-o" aria-hidden="true"></i>&nbsp;&nbsp;My
+                        <router-link to="/user" class="nav-link" href="login.html"><i class="fa fa-user-o"
+                                                                                      aria-hidden="true"></i>&nbsp;&nbsp;My
                           Account
                         </router-link>
                       </li>
@@ -66,7 +67,7 @@ export default {
     }
   },
   created() {
-    if(this.$session.has('user')){
+    if (this.$session.has('user')) {
       this.role = this.$session.get('user').role
       this.currentUser = this.$session.get('user').fullName
     }
@@ -95,12 +96,12 @@ a.active {
   outline: none;
   cursor: pointer;
   border-radius: 90px;
-  background-color: #229aeb;
+  background-color: #4d97e2;
   color: #FFFFFF;
 }
 
 .header_btn:hover {
-  background-color: #229bebad
+  background-color: #1c6cbd
 }
 
 .header_btn1 {

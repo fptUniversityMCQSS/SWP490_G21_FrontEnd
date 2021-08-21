@@ -152,6 +152,7 @@ a:hover, a:focus {
 .section_gap1 {
   padding: 40px 0px;
   background-color: #f9f9ff;
+  color: #777777;
   z-index: 999;
 }
 
@@ -3625,27 +3626,24 @@ h6 {
 ============================================================================================ */
 .main_btn {
   display: inline-block;
-  background: #1641ff;
+  background: #0073ff;
   padding: 0px 30px;
   color: #fff;
   font-family: "Roboto", sans-serif;
   font-size: 14px;
   font-weight: 500;
   line-height: 48px;
-  border: 1px solid #1641ff;
-  border-radius: 0px;
+  border-radius: 50px;
   outline: none !important;
   box-shadow: none !important;
   text-align: center;
-  border: 1px solid #1641ff;
   cursor: pointer;
   transition: all 300ms linear 0s;
-  border-radius: 5px;
 }
 
 .main_btn:hover {
-  background: transparent;
-  color: #1641ff;
+  background: #063dc7;
+  color: #fff;
 }
 
 .main_btn2 {
@@ -3673,26 +3671,24 @@ h6 {
 
 .submit_btn {
   display: inline-block;
-  background: #1641ff;
+  background: #3d8dde;
   padding: 0px 30px;
   color: #fff;
   font-family: "Roboto", sans-serif;
   font-size: 14px;
   font-weight: 500;
   line-height: 38px;
-  border: 1px solid #1641ff;
-  border-radius: 0px;
+  border-radius: 50px;
   outline: none !important;
   box-shadow: none !important;
   text-align: center;
-  border: 1px solid #1641ff;
   cursor: pointer;
   transition: all 300ms linear 0s;
 }
 
 .submit_btn:hover {
-  background: transparent;
-  color: #1641ff;
+  background-color: #1060b1;
+  color: #fff;
 }
 
 .white_bg_btn {
@@ -3714,9 +3710,9 @@ h6 {
 }
 
 .white_bg_btn:hover {
-  background: #1641ff;
+  background: #229bebad;
   color: #fff;
-  border-color: #1641ff;
+  border-color: #229bebad;
 }
 
 .org_btn {

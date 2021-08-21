@@ -3,7 +3,6 @@
   <footer class="footer-area section_gap1">
     <div class="container">
       <div class="row">
-
         <div class="col-lg-3" style="margin-left: 30px">
           <img src="../../assets/img/logo/lg3.png"><br><br>
           A web application developed by SWP409_G21 team. With useful features of AI artificial intelligence technology,

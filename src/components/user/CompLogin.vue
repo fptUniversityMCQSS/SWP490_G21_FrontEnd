@@ -68,7 +68,7 @@
                   </div>
                 </div>
                 <div class="col-md-12 form-group">
-                  <button type="submit" value="submit" class="btn submit_btn">Log In</button>
+                  <button type="submit" value="submit" class="btn submit_btn">LOGIN</button>
 <!--                  <a href="#">Forgot Password?</a>-->
                 </div>
               </form>
@@ -112,6 +112,9 @@ export default {
           const form = new FormData();
           form.append('username', this.username);
           form.append('password', this.password);
+
+          console.log(globalURL.host + process.env.VUE_APP_LOGIN)
+
           axios.post(globalURL.host + process.env.VUE_APP_LOGIN, form)
             .then(response => {
               if (response.status === 200) {

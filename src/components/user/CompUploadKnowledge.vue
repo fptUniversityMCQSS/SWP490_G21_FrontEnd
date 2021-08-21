@@ -24,7 +24,7 @@
           <div class="col-lg-10">
             <div class="col-lg-11 mx-auto section_gap">
               <div class="wrapper">
-                <div class="cont" style="background-color: #f9f9ff">
+                <div class="cont shadow" style="background-color: #f9f9ff">
                   <h2>Upload Knowledge</h2>
                   <div class="upload-container">
                     <div class="border-container">
@@ -39,33 +39,39 @@
                 <b-button variant="outline-primary" class="btnUpload"
                           v-on:click="submitFiles()">Upload
                 </b-button>
-
                 <p id="noticeUpload" style="color: red; font-size: 17px; margin-top: 20px"></p>
-
                 <div v-if="this.items.length > 0" style="margin-top: 50px">
-                  <b-table striped hover :items="this.items.slice().reverse()" :fields="fields">
+                  <b-table :bordered="true" :borderless="true" hover class="text-center shadow" :items="this.items.slice().reverse()" :fields="fields">
                     <template #cell(nameCurrent)="row">
                       <div>{{ row.value }}</div>
                     </template>
                     <template #cell(status)="{item}">
-                      <div v-if="item.status==='Processing'" size="sm" class="mr-1 messageDetail">
+                      <div v-if="item.status==='Processing'" size="sm" class="mr-1">
                         In Progress &nbsp;<i class="fa fa-spinner fa-spin"/>
                       </div>
-                      <div v-if="item.status==='Encoding'" size="sm" class="mr-1 messageDetail">
+                      <div v-if="item.status==='Encoding'" size="sm" class="mr-1">
                         Encoding &nbsp;<i class="fa fa-spinner fa-spin"/>
                       </div>
-                      <div v-if="item.status==='Ready'" size="sm" class="mr-1 messageDetail" style="color: #4ABF60">
+                      <div v-if="item.status==='Ready'" size="sm" class="mr-1 " style="color: #4ABF60">
                         Successful&nbsp;<i class="fa fa-check-square" aria-hidden="true"></i>
                       </div>
-                      <div v-if="item.status==='Fail'" size="sm" class="mr-1 messageDetail"
+                      <div v-if="item.status==='Fail'" size="sm" class="mr-1"
                            style="color: red">
                         <span v-b-tooltip.right="item.messageDetail">
                           Fail &nbsp;<i class="fa fa-window-close" aria-hidden="true"></i></span>
                       </div>
                     </template>
+
+                    <template #cell(action)="row">
+                      <b-button
+                        variant="outline-primary" size="sm"
+                        v-on:click="cancelUpload(row.item)"
+                        class="actionBtn">
+                        Cancel
+                      </b-button>
+                    </template>
                   </b-table>
                 </div>
-
               </div>
             </div>
           </div>
@@ -106,12 +112,18 @@ export default {
       fields: [
         {
           key: 'nameCurrent',
-          label: 'File Name'
+          label: 'File Name',
+          thStyle: {background: '#92c3f9', color: 'black', width: '300px'}
         },
         {
           key: 'status',
           label: 'Status',
-          // thStyle: {background: '#7386D5', color: '#ffffff'}
+          thStyle: {background: '#92c3f9', color: 'black'}
+        },
+        {
+          key: 'action',
+          label: 'Action',
+          thStyle: {background: '#92c3f9', color: 'black'}
         }
       ],
       files: '',
@@ -128,6 +140,43 @@ export default {
     }
   },
   methods: {
+    cancelUpload(item){
+      let message = "<p style='text-align: center; padding-top: 5px'><b style='font-size: 20px'>Cancel Upload</b>" +
+        "<br><br>Are you sure you want to cancel upload?</p>";
+      let options = {
+        html: true,
+        okText: 'Continue',
+        cancelText: 'Close',
+      };
+      this.$dialog
+        .confirm(message, options)
+        .then(() => {
+          const axios = require('axios');
+          axios
+            .delete(globalURL.host + process.env.VUE_APP_ADMIN_USER + "/" + item.id, {
+              headers: {
+                'Authorization': 'Bearer ' + self.$session.get("user").token
+              }
+            })
+            .then(response => {
+              if (response.status === 200) {
+                this.flash('Delete successfully', 'success', {
+                  timeout: 10000
+                });
+                let index = this.items.indexOf(item)
+                this.items.splice(index, 1)
+                this.totalRows--
+              }
+            })
+            .catch(error => {
+              console.log(error)
+            })
+        })
+        .catch(function () {
+          console.log('Clicked on cancel');
+        })
+    },
+
     handleFilesUpload(object) {
       this.files = this.$refs.file.files[0];
       this.fileName = object.target.files[0].name
@@ -200,9 +249,18 @@ export default {
 
 <style scoped>
 
-.messageDetail{
+.actionBtn {
+  background-color: #92c3f9;
+  color: black;
   font-weight: bold;
+  border: none;
 }
+
+.actionBtn:hover {
+  background-color: #0088ff;
+  color: #fff;
+}
+
 
 .truncate {
   white-space: nowrap;
@@ -281,19 +339,21 @@ h2 {
 .btnUpload {
   width: 200px;
   height: 50px;
-  background-color: #79b4f1;
+  background-color: #92c3f9;
   border: none;
   outline: none;
   color: black;
   font-weight: 600;
   cursor: pointer;
   text-align: center;
+  margin-top: 20px;
 }
 
 .btnUpload:hover {
   border: none;
   outline: none;
-  background-color: #00BFFF;
+  background-color: #0088ff;
+  color: #fff;
 }
 
 </style>

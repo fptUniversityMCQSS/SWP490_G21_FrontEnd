@@ -32,7 +32,7 @@
                 <div class="tableTl">Knowledge Table</div>
                 <div class="card-body rounded">
                   <div class="table-responsive">
-                    <div style="padding: 20px;">
+                    <div style="padding: 20px">
                       <div class="justify-content-centermy-1 row">
 
                         <b-form-group label="Rows per page:" :class="[role === 'staff' ? 'col-lg-2' : 'col-lg-8']">
@@ -58,13 +58,12 @@
                             </b-input-group-append>
                           </b-input-group>
                         </b-form-group>
-
-
                       </div>
 
                       <div v-if="role === 'staff'">
                         <!-- Main table current -->
-                        <b-table v-if="optionView === 'current'" :bordered="true" :borderless="true" :items="items"
+                        <b-table v-if="optionView === 'current'" class="bgTable" :bordered="true" :borderless="true"
+                                 hover :items="items"
                                  :current-page="currentPage"
                                  stacked="md"
                                  show-empty
@@ -72,11 +71,11 @@
                                  @filtered="onFiltered">
 
                           <template #cell(knowledgeName)="row">
-                            <div class="w-100 truncate">{{ row.value }}</div>
+                            <div>{{ row.value }}</div>
                           </template>
 
                           <template #cell(knowledgeDate)="row">
-                            <div class="w-100 truncate"> {{ formatDate(row.value) }}</div>
+                            <div> {{ formatDate(row.value) }}</div>
                           </template>
                           <template #cell(actions)="{item}">
                             <col :style="{ width: '50px' }">
@@ -91,17 +90,18 @@
                           </template>
                         </b-table>
                         <!--Main table all -->
-                        <b-table v-if="optionView ==='all'" striped hover :items="itemAll" :current-page="currentPage"
+                        <b-table v-if="optionView ==='all'" class="bgTable" :bordered="true" :borderless="true" hover
+                                 :items="itemAll" :current-page="currentPage"
                                  stacked="md"
                                  show-empty
                                  :per-page="perPage" :filter="filter" :fields="fields" id="my-table"
                                  @filtered="onFiltered">
                           <template #cell(knowledgeName)="row">
-                            <div class="w-100 truncate">{{ row.value }}</div>
+                            <div>{{ row.value }}</div>
                           </template>
 
                           <template #cell(knowledgeDate)="row">
-                            <div class="w-100 truncate"> {{ formatDate(row.value) }}</div>
+                            <div> {{ formatDate(row.value) }}</div>
                           </template>
                           <template #cell(actions)="{item}">
                             <b-button variant="outline-primary" size="sm" v-on:click="downloadKnowledge(item)"
@@ -112,7 +112,7 @@
                         </b-table>
                       </div>
                       <div v-else>
-                        <b-table style="background-color: white" :bordered="true" :borderless="true" :items="itemAll"
+                        <b-table class="bgTable" :bordered="true" :borderless="true" hover :items="itemAll"
                                  :current-page="currentPage"
                                  stacked="md"
                                  show-empty
@@ -194,23 +194,29 @@ export default {
           key: 'knowledgeName',
           label: 'Name',
           sortable: true,
-          thStyle: {background: '#92c3f9', color: 'black'}
+          thStyle: {background: '#92c3f9', color: 'black', width: '250px'},
+          thClass: 'text-center'
         },
         {
           key: 'knowledgeDate',
           label: 'Date',
           sortable: true,
-          thStyle: {background: '#92c3f9', color: 'black'}
+          thStyle: {background: '#92c3f9', color: 'black', width: '290px'},
+          thClass: 'text-center'
         },
         {
           key: 'status',
           label: 'Status',
-          thStyle: {background: '#92c3f9', color: 'black'}
+          thStyle: {background: '#92c3f9', color: 'black', width: '100px'},
+          thClass: 'text-center',
+          tdClass: 'text-center'
         },
         {
           key: 'actions',
           label: 'Actions',
-          thStyle: {background: '#92c3f9', color: 'black'}
+          thStyle: {background: '#92c3f9', color: 'black'},
+          thClass: 'text-center',
+          tdClass: 'text-center'
         }
       ],
     }
@@ -368,13 +374,8 @@ table.table {
   color: #2c3e50;
 }
 
-.searchTab {
-  margin-left: 200px;
-  float: right;
-}
-
-.searchTab1 {
-  margin-left: 390px;
+.bgTable {
+  background-color: white;
 }
 
 .actionBtn {
@@ -385,7 +386,8 @@ table.table {
 }
 
 .actionBtn:hover {
-  background-color: #00BFFF
+  background-color: #0088ff;
+  color: #fff;
 }
 
 </style>
