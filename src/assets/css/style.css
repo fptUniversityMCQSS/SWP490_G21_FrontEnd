@@ -152,6 +152,7 @@ a:hover, a:focus {
 .section_gap1 {
   padding: 40px 0px;
   background-color: #f9f9ff;
+  color: #777777;
   z-index: 999;
 }
 
@@ -169,7 +170,7 @@ a:hover, a:focus {
 
 .container-fluid {
   margin: 0px !important;
-  padding: 0px 3% !important;
+  padding: 0px 4% !important;
 }
 
 @media (max-width: 1224px) {
@@ -229,7 +230,7 @@ a:hover, a:focus {
   width: 100%;
   top: 0;
   left: 0;
-  z-index: 1000;
+  z-index: 1001;
   transition: background 0.4s, all 0.3s linear;
 }
 
@@ -297,6 +298,7 @@ a:hover, a:focus {
 .header_area .navbar .nav .nav-item:hover .nav-link, .header_area .navbar .nav .nav-item.active .nav-link {
   color: #1641ff;
 }
+
 
 .header_area .navbar .nav .nav-item.submenu {
   position: relative;
@@ -570,7 +572,7 @@ a:hover, a:focus {
 /* Home Banner Area css
 ============================================================================================ */
 .home_banner_area {
-  background: url(../img/banner/bannerhome.jpg) no-repeat center bottom;
+  background: url(../img/AI/home_banner1.jpg) no-repeat center bottom;
   position: relative;
   z-index: 1;
   height: 500px;
@@ -702,7 +704,7 @@ a:hover, a:focus {
   overflow: hidden;
   width: 100%;
   min-height: 395px;
-  background: url(../img/banner/banner.jpg) no-repeat center bottom;
+  background: url(../img/AI/banner.png) no-repeat center bottom;
   background-size: 100%;
   z-index: 1;
 }
@@ -1626,8 +1628,9 @@ a:hover, a:focus {
   text-align: center;
   border: 1px solid #eee;
   padding: 47px 30px 43px;
-  margin-top: 50px;
+  margin-top: 40px;
   margin-bottom: 40px;
+  font-weight: bold;
 }
 
 .comment-form h4 {
@@ -1663,7 +1666,6 @@ a:hover, a:focus {
   padding: 8px 20px;
   background: #fff;
   border: none;
-  border-radius: 0px;
   width: 100%;
   font-size: 14px;
   color: #777777;
@@ -3625,27 +3627,24 @@ h6 {
 ============================================================================================ */
 .main_btn {
   display: inline-block;
-  background: #1641ff;
+  background: #0073ff;
   padding: 0px 30px;
   color: #fff;
   font-family: "Roboto", sans-serif;
   font-size: 14px;
   font-weight: 500;
   line-height: 48px;
-  border: 1px solid #1641ff;
-  border-radius: 0px;
+  border-radius: 50px;
   outline: none !important;
   box-shadow: none !important;
   text-align: center;
-  border: 1px solid #1641ff;
   cursor: pointer;
   transition: all 300ms linear 0s;
-  border-radius: 5px;
 }
 
 .main_btn:hover {
-  background: transparent;
-  color: #1641ff;
+  background: #063dc7;
+  color: #fff;
 }
 
 .main_btn2 {
@@ -3673,26 +3672,24 @@ h6 {
 
 .submit_btn {
   display: inline-block;
-  background: #1641ff;
+  background: #3d8dde;
   padding: 0px 30px;
   color: #fff;
   font-family: "Roboto", sans-serif;
   font-size: 14px;
   font-weight: 500;
   line-height: 38px;
-  border: 1px solid #1641ff;
-  border-radius: 0px;
+  border-radius: 50px;
   outline: none !important;
   box-shadow: none !important;
   text-align: center;
-  border: 1px solid #1641ff;
   cursor: pointer;
   transition: all 300ms linear 0s;
 }
 
 .submit_btn:hover {
-  background: transparent;
-  color: #1641ff;
+  background-color: #1060b1;
+  color: #fff;
 }
 
 .white_bg_btn {
@@ -3714,9 +3711,9 @@ h6 {
 }
 
 .white_bg_btn:hover {
-  background: #1641ff;
+  background: #229bebad;
   color: #fff;
-  border-color: #1641ff;
+  border-color: #229bebad;
 }
 
 .org_btn {

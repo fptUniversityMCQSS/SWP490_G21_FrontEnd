@@ -28,41 +28,28 @@
                      :is-full-page="false"></loading>
 
             <div class="col-lg-10 mx-auto section_gap">
-              <div class="card rounded shadow border-0" style="background-color: #f9f9ff">
+              <div class="card rounded shadow border-0 bgFormTable">
                 <div class="tableTl">Knowledge Table</div>
-                <div class="card-body  rounded">
+                <div class="card-body rounded">
                   <div class="table-responsive">
-                    <div style="padding: 20px;">
+                    <div style="padding: 20px">
                       <div class="justify-content-centermy-1 row">
-                        <b-form-group horizontal label="Rows per page:" class="col-2">
-                          <b-form-select size="sm"
+
+                        <b-form-group label="Rows per page:" :class="[role === 'staff' ? 'col-lg-2' : 'col-lg-8']">
+                          <b-form-select size="sm" :class="[role === 'staff' ? 'col-lg-12' : 'col-lg-3']"
                                          :options="[{text:5,value:5},{text:10,value:10},{text:15,value:15},{text:20,value:20}]"
                                          v-model="perPage">
                           </b-form-select>
                         </b-form-group>
-
-                        <b-form-group v-if="this.$session.get('role') === 'staff'" label="Knowledge view mode:"
-                                      class="col-3">
-                          <b-form-select size="sm" v-on:change="changeMode"
+                        <b-form-group v-if="role === 'staff'" label="Knowledge view mode:"
+                                      class="col-lg-6">
+                          <b-form-select size="sm" v-on:change="changeMode" class="col-lg-6"
                                          :options="[{text:'Knowledge of current account',value:'current'},{text:'All knowledge',value:'all'}]"
                                          v-model="optionView">
                           </b-form-select>
                         </b-form-group>
 
-                        <b-form-group v-if="this.$session.get('role') === 'staff'" label="Search:"
-                                      class="col-4 searchTab">
-                          <b-input-group size="sm">
-                            <b-form-input v-model="filter" type="search" placeholder="Type to Search"></b-form-input>
-                            <b-input-group-append>
-                              <b-button @click="filter = ''" variant="outline-primary" class="actionBtn">Clear
-                              </b-button>
-                            </b-input-group-append>
-                          </b-input-group>
-                        </b-form-group>
-
-                        <b-form-group
-                          v-if="this.$session.get('role') === 'admin' || this.$session.get('role') === 'user'"
-                          label="Search:" class="col-4 searchTab1">
+                        <b-form-group label="Search:" class="col-lg-4">
                           <b-input-group size="sm">
                             <b-form-input v-model="filter" type="search" placeholder="Type to Search"></b-form-input>
                             <b-input-group-append>
@@ -72,9 +59,11 @@
                           </b-input-group>
                         </b-form-group>
                       </div>
-                      <div v-if="checkRole === 'staff'">
+
+                      <div v-if="role === 'staff'">
                         <!-- Main table current -->
-                        <b-table v-if="optionView === 'current'" :bordered="true" :borderless="true" :items="items"
+                        <b-table v-if="optionView === 'current'" class="bgTable" :bordered="true" :borderless="true"
+                                  :items="items"
                                  :current-page="currentPage"
                                  stacked="md"
                                  show-empty
@@ -82,11 +71,11 @@
                                  @filtered="onFiltered">
 
                           <template #cell(knowledgeName)="row">
-                            <div class="w-100 truncate">{{ row.value }}</div>
+                            <div>{{ row.value }}</div>
                           </template>
 
                           <template #cell(knowledgeDate)="row">
-                            <div class="w-100 truncate"> {{ formatDate(row.value) }}</div>
+                            <div> {{ formatDate(row.value) }}</div>
                           </template>
                           <template #cell(actions)="{item}">
                             <col :style="{ width: '50px' }">
@@ -101,17 +90,18 @@
                           </template>
                         </b-table>
                         <!--Main table all -->
-                        <b-table v-if="optionView ==='all'" striped hover :items="itemAll" :current-page="currentPage"
+                        <b-table v-if="optionView ==='all'" class="bgTable" :bordered="true" :borderless="true"
+                                 :items="itemAll" :current-page="currentPage"
                                  stacked="md"
                                  show-empty
                                  :per-page="perPage" :filter="filter" :fields="fields" id="my-table"
                                  @filtered="onFiltered">
                           <template #cell(knowledgeName)="row">
-                            <div class="w-100 truncate">{{ row.value }}</div>
+                            <div>{{ row.value }}</div>
                           </template>
 
                           <template #cell(knowledgeDate)="row">
-                            <div class="w-100 truncate"> {{ formatDate(row.value) }}</div>
+                            <div> {{ formatDate(row.value) }}</div>
                           </template>
                           <template #cell(actions)="{item}">
                             <b-button variant="outline-primary" size="sm" v-on:click="downloadKnowledge(item)"
@@ -122,7 +112,7 @@
                         </b-table>
                       </div>
                       <div v-else>
-                        <b-table style="background-color: white" :bordered="true" :borderless="true" :items="itemAll"
+                        <b-table class="bgTable" :bordered="true" :borderless="true" :items="itemAll"
                                  :current-page="currentPage"
                                  stacked="md"
                                  show-empty
@@ -138,12 +128,12 @@
                           </template>
                           <template #cell(actions)="{item}">
                             <b-button variant="outline-primary" size="sm" v-on:click="downloadKnowledge(item)"
-                                      class="mr-1 actionBtn">
+                                      class="mr-1">
                               Download <i class="fa fa-download" aria-hidden="true"></i>
                             </b-button>
-                            <b-button v-if="checkRole === 'admin'" variant="outline-primary" size="sm"
+                            <b-button v-if="role === 'admin'" variant="outline-primary" size="sm"
                                       v-on:click="deleteKnowledge(item)"
-                                      class="actionBtn">
+                                      class="btnDelete">
                               Delete&nbsp;<i class="fa fa-trash" aria-hidden="true"></i>
                             </b-button>
                           </template>
@@ -192,11 +182,11 @@ export default {
     return {
       items: [],
       itemAll: [],
-      checkRole: this.$session.get('role'),
       currentPage: 1,
       perPage: 5,
       filter: "",
       totalRows: 1,
+      role: '',
       isLoading: true,
       optionView: 'current',
       fields: [
@@ -204,23 +194,29 @@ export default {
           key: 'knowledgeName',
           label: 'Name',
           sortable: true,
-          thStyle: {background: '#92c3f9', color: 'black'}
+          thStyle: {background: '#92c3f9', color: 'black', width: '250px'},
+          thClass: 'text-center'
         },
         {
           key: 'knowledgeDate',
           label: 'Date',
           sortable: true,
-          thStyle: {background: '#92c3f9', color: 'black'}
+          thStyle: {background: '#92c3f9', color: 'black', width: '290px'},
+          thClass: 'text-center'
         },
         {
           key: 'status',
           label: 'Status',
-          thStyle: {background: '#92c3f9', color: 'black'}
+          thStyle: {background: '#92c3f9', color: 'black', width: '100px'},
+          thClass: 'text-center',
+          tdClass: 'text-center'
         },
         {
           key: 'actions',
           label: 'Actions',
-          thStyle: {background: '#92c3f9', color: 'black'}
+          thStyle: {background: '#92c3f9', color: 'black'},
+          thClass: 'text-center',
+          tdClass: 'text-center'
         }
       ],
     }
@@ -240,13 +236,14 @@ export default {
       return dateFormat(newDate, "dddd, mmmm dS, yyyy, h:MM:ss TT");
     },
     downloadKnowledge(item) {
+      const self = this
       const axios = require('axios');
       axios
         .get(globalURL.host + process.env.VUE_APP_KNOWLEDGE + "/" + item.knowledgeId,
           {
             headers: {
               'Content-Type': 'multipart/form-data',
-              'Authorization': 'Bearer ' + this.$session.get("token"),
+              'Authorization': 'Bearer ' + self.$session.get("user").token
             }, responseType: 'blob'
           })
         .then(response => {
@@ -259,6 +256,7 @@ export default {
         })
     },
     deleteKnowledge(item) {
+      const self = this
       let message = "<p style='text-align: center; padding-top: 5px'><b style='font-size: 20px'>Delete Knowledge</b>" +
         "<br><br>Are you sure you want to delete this knowledge?</p>";
       let options = {
@@ -275,7 +273,7 @@ export default {
               {
                 headers: {
                   'Content-Type': 'multipart/form-data',
-                  'Authorization': 'Bearer ' + this.$session.get("token"),
+                  'Authorization': 'Bearer ' + self.$session.get("user").token
                 }
               })
             .then(response => {
@@ -307,14 +305,15 @@ export default {
     }
   },
   created() {
+    const self = this;
     const axios = require('axios');
-    let self = this;
+    this.role = self.$session.get('user').role
     axios
       .get(globalURL.host + process.env.VUE_APP_KNOWLEDGE,
         {
           headers: {
             'Content-Type': 'multipart/form-data',
-            'Authorization': 'Bearer ' + this.$session.get("token"),
+            'Authorization': 'Bearer ' + self.$session.get("user").token
           }
         })
       .then(response => {
@@ -348,11 +347,6 @@ export default {
 
 <style scoped>
 
-.page-item.active .page-link {
-  background-color: red !important;
-  border-color: red !important;
-}
-
 .truncate {
   white-space: nowrap;
   overflow: hidden;
@@ -380,14 +374,6 @@ table.table {
   color: #2c3e50;
 }
 
-.searchTab {
-  margin-left: 200px;
-}
-
-.searchTab1 {
-  margin-left: 390px;
-}
-
 .actionBtn {
   background-color: #92c3f9;
   color: black;
@@ -396,7 +382,25 @@ table.table {
 }
 
 .actionBtn:hover {
-  background-color: #00BFFF
+  background-color: #0088ff;
+  color: #fff;
+}
+
+.btnDelete{
+  border-color: red;
+  color: red;
+}
+.btnDelete:hover{
+  background-color: red;
+  color: #fff;
+}
+
+.bgFormTable{
+  background-color: #f9f9ff
+}
+
+.bgTable {
+  background-color: white;
 }
 
 </style>

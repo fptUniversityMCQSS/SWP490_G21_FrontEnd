@@ -62,7 +62,7 @@
                 </div>
                 <div class="col-md-12 form-group">
                   <input type="text" class="form-control" name="Phone Number" placeholder="Phone Number"
-                         v-model="phoneNumber" v-validate="{ required: true, length: 10, regex: /[0-9]+/ }"
+                         v-model="phone" v-validate="{ required: true, length: 10, regex: /[0-9]+/ }"
                          :class="{ 'is-invalid': submitted && errors.has('Phone Number') }">
                   <div v-if="submitted && errors.has('Phone Number')" class="invalid-feedback">
                     {{ errors.first('Phone Number') }}
@@ -80,7 +80,7 @@
                 </div>
                 <div class="col-md-12 form-group">
                   <input type="password" class="form-control" placeholder="Confirm Password"
-                         v-model="rePassword" v-validate="'required|confirmed:Password'"
+                         v-validate="'required|confirmed:Password'"
                          name="Confirm Password" :class="{ 'is-invalid': submitted && errors.has('Confirm Password') }">
                   <div v-if="submitted && errors.has('Confirm Password')" class="invalid-feedback">
                     {{
@@ -90,8 +90,8 @@
                 </div>
                 <div class="col-md-12 form-group">
                   <div class="creat_account">
-<!--                    <input type="checkbox" id="f-option2" name="selector">-->
-<!--                    <label for="f-option2">Keep me logged in</label>-->
+                    <!--                    <input type="checkbox" id="f-option2" name="selector">-->
+                    <!--                    <label for="f-option2">Keep me logged in</label>-->
                   </div>
                 </div>
                 <div class="col-md-12 form-group">
@@ -122,9 +122,8 @@ export default {
       fullName: '',
       username: '',
       email: '',
-      phoneNumber: '',
+      phone: '',
       password: '',
-      rePassword: '',
       err: '',
       submitted: false
     }
@@ -140,7 +139,7 @@ export default {
           const form = new FormData();
           form.append('fullName', this.fullName);
           form.append('email', this.email);
-          form.append('phone', this.phoneNumber);
+          form.append('phone', this.phone);
           form.append('username', this.username);
           form.append('password', this.password);
           axios.post(globalURL.host + process.env.VUE_APP_REGISTER, form)

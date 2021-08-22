@@ -19,10 +19,11 @@
 
     <!--================Content Area =================-->
     <section class="cat_product_area">
-      <div>
+      <div class="vld-parent">
+
         <div class="row flex-row-reverse">
           <div class="col-lg-1 py-5 tblAns">
-            <b-table striped hover :items="items.Questions" :fields="fields" class="scrollbar">
+            <b-table v-if="!isLoading" striped hover :items="items.Questions" :fields="fields" class="scrollbar">
               <template #cell(Number)="{item}">
                 {{ item.Number }}
               </template>
@@ -31,13 +32,15 @@
               </template>
             </b-table>
           </div>
+
           <div class="col-lg-7 py-5">
+
             <div class="detailAns">
               <h3>{{ items.Name }}</h3>
               <p>{{ formatDate(items.Date) }}&nbsp;&nbsp;&nbsp;&nbsp;
-                <b-button variant="outline-primary" size="sm" v-on:click="downloadDetail"
+                <b-button v-if="!isLoading" variant="outline-primary" size="sm" v-on:click="downloadDetail"
                           class="mr-1 actionBtn">
-                  Download
+                  Download <i class="fa fa-download" aria-hidden="true"></i>
                 </b-button>
               <div v-for="item in items.Questions" :key="item.id">
                 <p class="text-justify h5 pb-2 font-weight-bold" style="white-space: pre-line">
@@ -52,11 +55,14 @@
                     }}</p>
                 </div>
               </div>
-              <router-link to="/history">
+              <router-link to="/history" v-if="!isLoading">
                 <b-button variant="outline-primary" class="btnUpload">Finish Review</b-button>
               </router-link>
             </div>
           </div>
+          <loading :active.sync="isLoading"
+                   :can-cancel="true"
+                   :is-full-page="false"></loading>
           <div class="col-lg-2 fixed-sidebar">
             <comp-left-sider/>
           </div>
@@ -75,11 +81,15 @@ import CompHeader from "../frame/CompHeader";
 import CompFooter from "../frame/CompFooter";
 import CompBackToTop from "../frame/CompBackToTop";
 import CompLeftSider from "../frame/CompLeftSider";
+import Loading from 'vue-loading-overlay'
+import Vue from "vue";
+
+Vue.use(Loading)
 
 export default {
   name: "CompHistoryDetail",
   components: {
-    CompHeader, CompFooter, CompBackToTop, CompLeftSider
+    CompHeader, CompFooter, CompBackToTop, CompLeftSider, Loading
   },
   methods: {
     formatDate(date) {
@@ -102,7 +112,7 @@ export default {
           {
             headers: {
               'Content-Type': 'multipart/form-data',
-              'Authorization': 'Bearer ' + this.$session.get("token"),
+              'Authorization': 'Bearer ' + self.$session.get("user").token
             }, responseType: 'blob'
           })
         .then(response => {
@@ -122,6 +132,7 @@ export default {
       perPage: 5,
       filter: "",
       totalRows: 1,
+      isLoading: true,
       fields: [
         {
           key: 'Number',
@@ -140,14 +151,13 @@ export default {
     const self = this;
     const axios = require('axios');
     axios
-      .get(globalURL.host + process.env.VUE_APP_HISTORY_DETAIL + self.$route.params.id, {
+      .get(globalURL.host + process.env.VUE_APP_HISTORY + "/" + self.$route.params.id, {
         headers: {
-          'Authorization': 'Bearer ' + self.$session.get("token")
+          'Authorization': 'Bearer ' + self.$session.get("user").token
         }
       })
       .then(response => {
         if (response.status === 200) {
-
           let historyDetail = {
             Date: response.data.Date,
             Id: response.data.Id,
@@ -174,6 +184,7 @@ export default {
           })
           this.items = historyDetail
         }
+        this.isLoading = false;
       })
       .catch(error => {
         console.log(error)

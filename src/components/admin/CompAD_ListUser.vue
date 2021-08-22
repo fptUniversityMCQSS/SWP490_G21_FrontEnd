@@ -26,9 +26,9 @@
                      :can-cancel="true"
                      :is-full-page="false"></loading>
             <div class="col-lg-10 mx-auto section_gap">
-              <div class="card rounded shadow border-0">
+              <div class="card rounded shadow border-0 bgFormTable">
                 <div class="tableTl">User Table</div>
-                <div class="card-body bg-white rounded">
+                <div class="card-body rounded">
                   <div class="table-responsive">
                     <div style="padding: 20px;">
                       <div class="justify-content-centermy-1 row">
@@ -39,34 +39,36 @@
                           </b-form-select>
                         </b-form-group>
 
+                        <b-form-group class="col-lg-6">
+                          <b-button variant="outline-primary" size="sm" class="addBtn" v-on:click="addUser()">
+                            Add User
+                          </b-button>
+                        </b-form-group>
+
                         <b-form-group label="Search:" class="col-4 searchTab">
                           <b-input-group size="sm">
                             <b-form-input v-model="filter" type="search" placeholder="Type to Search"></b-form-input>
                             <b-input-group-append>
-                              <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>
+                              <b-button class="actionBtn" @click="filter = ''">Clear</b-button>
                             </b-input-group-append>
                           </b-input-group>
                         </b-form-group>
 
-                        <b-form-group class="col-2">
-                          <b-button variant="outline-primary" size="sm" class="addButton" v-on:click="addUser()">Add
-                            User
-                          </b-button>
-                        </b-form-group>
 
                       </div>
                       <!-- Main table element -->
-                      <b-table striped hover :items="items" :current-page="currentPage" show-empty
+                      <b-table class="bgTable" :bordered="true" :borderless="true" :items="items"
+                               :current-page="currentPage" show-empty
                                :per-page="perPage" :filter="filter" :fields="fields" id="my-table"
                                @filtered="onFiltered">
                         <template #cell(actions)="{item}">
                           <b-button variant="outline-primary" size="sm" v-on:click="editUser(item)"
-                                    class="mr-1 actionBtn" :disabled="item.status">
-                            Edit Account
+                                    class="mr-1" :disabled="item.status">
+                            Edit&nbsp;<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                           </b-button>
                           <b-button variant="outline-primary" size="sm"
-                                    v-on:click="deleteUser(item)" class="actionBtn" :disabled="item.status">
-                            Delete Account
+                                    v-on:click="deleteUser(item)" class="btnDelete" :disabled="item.status">
+                            Delete&nbsp;<i class="fa fa-trash" aria-hidden="true"></i>
                           </b-button>
                         </template>
                       </b-table>
@@ -82,11 +84,14 @@
           </div>
           <div class="col-lg-2 fixed-sidebar">
             <comp-left-sider/>
-            <flash-message class="myCustomClass"></flash-message>
+
           </div>
         </div>
       </div>
     </section>
+    <div style="z-index: 1001">
+      <flash-message></flash-message>
+    </div>
 
     <comp-back-to-top/>
     <comp-footer/>
@@ -118,18 +123,42 @@ export default {
       isLoading: true,
       fields: [
         {
-          key: 'username',
-          label: 'Username',
-          sortable: true
+          key: 'fullName',
+          label: 'Full Name',
+          sortable: true,
+          thStyle: {background: '#92c3f9', color: 'black', width: '200px'},
+          thClass: 'text-center',
+          tdClass: 'text-center'
+        },
+        {
+          key: 'email',
+          label: 'Email',
+          sortable: true,
+          thStyle: {background: '#92c3f9', color: 'black', width: '200px'},
+          thClass: 'text-center',
+          tdClass: 'text-center'
+        },
+        {
+          key: 'phone',
+          label: 'Phone',
+          sortable: true,
+          thStyle: {background: '#92c3f9', color: 'black', width: '200px'},
+          thClass: 'text-center',
+          tdClass: 'text-center'
         },
         {
           key: 'role',
           label: 'Role',
-          sortable: true
+          thStyle: {background: '#92c3f9', color: 'black'},
+          thClass: 'text-center',
+          tdClass: 'text-center'
         },
         {
           key: 'actions',
-          label: 'Actions'
+          label: 'Actions',
+          thStyle: {background: '#92c3f9', color: 'black', width: '250px'},
+          thClass: 'text-center',
+          tdClass: 'text-center'
         }
       ],
     }
@@ -139,6 +168,7 @@ export default {
       this.$router.push('/admin/user/' + item.id)
     },
     deleteUser(item) {
+      const self = this
       let message = "<p style='text-align: center; padding-top: 5px'><b style='font-size: 20px'>Delete Account</b>" +
         "<br><br>Are you sure you want to delete this account?</p>";
       let options = {
@@ -154,13 +184,13 @@ export default {
           axios
             .delete(globalURL.host + process.env.VUE_APP_ADMIN_USER + "/" + item.id, {
               headers: {
-                'Authorization': 'Bearer ' + this.$session.get("token")
+                'Authorization': 'Bearer ' + self.$session.get("user").token
               }
             })
             .then(response => {
               if (response.status === 200) {
                 this.flash('Delete successfully', 'success', {
-                  timeout: 3000
+                  timeout: 10000
                 });
                 let index = this.items.indexOf(item)
                 this.items.splice(index, 1)
@@ -190,7 +220,7 @@ export default {
     axios
       .get(globalURL.host + process.env.VUE_APP_ADMIN_USER, {
         headers: {
-          'Authorization': 'Bearer ' + self.$session.get("token")
+          'Authorization': 'Bearer ' + self.$session.get("user").token
         }
       })
       .then(response => {
@@ -200,6 +230,9 @@ export default {
               id: value.id,
               role: value.role,
               username: value.username,
+              fullName: value.fullName,
+              email: value.email,
+              phone: value.phone,
               status: false
             }
             this.items.push(object)
@@ -216,6 +249,15 @@ export default {
 </script>
 
 <style scoped>
+
+.btnDelete{
+  border-color: red;
+  color: red;
+}
+.btnDelete:hover{
+  background-color: red;
+  color: #fff;
+}
 
 .fixed-sidebar {
   position: -webkit-sticky;
@@ -234,29 +276,27 @@ export default {
   color: #2c3e50;
 }
 
-.searchTab {
-  margin-left: 294px;
+.bgFormTable {
+  background-color: #f9f9ff
 }
 
-.addButton {
-  background-color: #229aeb;
-  margin-top: 28px;
-  color: #FFFFFF;
-  font-weight: bold;
-}
-
-.addButton:hover {
-  background-color: #229bebad
+.bgTable {
+  background-color: white;
 }
 
 .actionBtn {
-  background-color: #95999c;
-  color: #FFFFFF;
+  background-color: #92c3f9;
+  color: black;
   font-weight: bold;
   border: none;
 }
 
 .actionBtn:hover {
-  background-color: #229bebad
+  background-color: #0088ff;
+  color: #fff;
+}
+
+.addBtn {
+  margin-top: 30px;
 }
 </style>

@@ -5,25 +5,25 @@
       <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container-fluid">
           <!-- Brand and toggle get grouped for better mobile display -->
-          <router-link to="/" class="navbar-brand logo_h">
-            <img src="../../assets/img/logo/lg4.png" alt="">
+          <router-link to="/" class="navbar-brand logo_h col-lg-2" active-class="active">
+            <img src="../../assets/img/AI/deepquiz.png" alt="">
           </router-link>
           <!-- Collect the nav links, forms, and other content for toggling -->
           <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
             <div class="row w-100">
-              <div class="col-lg-10 pr-0">
+              <div class="col-lg-12 pr-0">
                 <ul class="nav navbar-nav center_nav pull-right">
                   <li class="nav-item">
-                    <router-link to="/" class="nav-link"><i style="font-size: 17px" class="fa fa-home"
+                    <router-link to="/" class="nav-link" active-class="active"><i style="font-size: 17px" class="fa fa-home"
                                                             aria-hidden="true"></i>&nbsp;&nbsp;Home
                     </router-link>
                   </li>
                   <li class="nav-item">
-                    <router-link to="/about" class="nav-link"><i style="font-size: 15px" class="fa fa-address-book"
+                    <router-link to="/about" class="nav-link" exact-active-class="exact-active"><i style="font-size: 15px" class="fa fa-address-book"
                                                                  aria-hidden="true"></i>&nbsp;&nbsp;About
                     </router-link>
                   </li>
-                  <li class="nav-item submenu dropdown" v-if="role === 'user' || role === 'staff' || role==='admin'">
+                  <li class="nav-item submenu dropdown" v-if="role !== ''">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false"><i style="font-size: 15px" class="fa fa-user-circle"
                                                 aria-hidden="true"></i>&nbsp;&nbsp;{{ currentUser }}</a>
@@ -40,8 +40,8 @@
                       </li>
                     </ul>
                   </li>
-                  <li class="nav-item" v-if="!role">
-                    <router-link to="/login" class="nav-link">
+                  <li class="nav-item" v-if="role === ''">
+                    <router-link to="/login" class="nav-link" active-class="active">
                       <b-button variant="outline-primary" class="header_btn">LOGIN/REGISTER</b-button>
                     </router-link>
                   </li>
@@ -62,9 +62,14 @@ export default {
   name: "CompHeader",
   data() {
     return {
-      user: this.$session.get('user'),
-      role: this.$session.get('role'),
-      currentUser: this.$session.get('fullName')
+      role: '',
+      currentUser: ''
+    }
+  },
+  created() {
+    if (this.$session.exists('user')) {
+      this.role = this.$session.get('user').role
+      this.currentUser = this.$session.get('user').fullName
     }
   },
   methods: {
@@ -78,9 +83,29 @@ export default {
 
 <style scoped>
 
-a.active {
-  color: #ba8b00;
+a.router-link-active,
+a.router-link-exact-active {
 }
+
+/*.navbar .nav .nav-item:hover {*/
+/*  font-size: 30px;*/
+/*  background: #cdd3d9;*/
+/*}*/
+
+/*.header_area .navbar .nav .nav-item:hover .nav-link {*/
+/*  color: #1641ff;*/
+/*  background-color: #ff3e3f;*/
+/*}*/
+
+/*.header_area .navbar .nav .router-link-active .nav-link{*/
+/*  color: #1641ff;*/
+/*  background-color: #FFFFFF;*/
+/*}*/
+
+/*.header_area .navbar .nav .router-link-exact-active .nav-link{*/
+/*  color: #1641ff;*/
+/*  background-color: #FFFFFF;*/
+/*}*/
 
 .header_btn {
   font-size: 12px;
@@ -91,12 +116,12 @@ a.active {
   outline: none;
   cursor: pointer;
   border-radius: 90px;
-  background-color: #229aeb;
+  background-color: #4d97e2;
   color: #FFFFFF;
 }
 
 .header_btn:hover {
-  background-color: #229bebad
+  background-color: #1c6cbd
 }
 
 .header_btn1 {

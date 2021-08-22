@@ -2,18 +2,19 @@
   <div>
     <comp-header/>
     <!--================Home Banner Area =================-->
-    <section v-if="this.$session.get('token')" class="home_banner_area">
+    <section v-if="role !== ''" class="home_banner_area">
       <div class="banner_inner d-flex align-items-center">
         <div class="container">
           <div class="banner_content text-center">
-            <h2>Do you have a high school exam test?<br>
-              Let our AI assistant help you find the solution</h2>
+<!--            <h2>Do you have a high school exam test?<br>-->
+<!--              Let our AI assistant help you find the solution</h2>-->
+            <h2>Multiple choices question solving system using Deep learning <br> for high school tests</h2>
           </div>
         </div>
       </div>
     </section>
 
-    <section v-else-if="!this.$session.get('token')" class="home_banner_area">
+    <section v-else-if="role === ''" class="home_banner_area">
       <div class="banner_inner d-flex align-items-center">
         <div class="container">
           <div class="banner_content text-center">
@@ -37,7 +38,7 @@
 
             </div>
           </div>
-          <div class="col-lg-2 fixed-sidebar">
+          <div v-if="role !== ''" class="col-lg-2 fixed-sidebar">
             <comp-left-sider/>
           </div>
         </div>
@@ -61,6 +62,15 @@ export default {
   name: "CompHome",
   components: {
     CompHeader, CompFooter, CompBackToTop, CompLeftSider, CompSliderImage
+  },
+  data(){
+    return {
+      role: ''
+    }
+  },
+  created() {
+    if(this.$session.exists('user'))
+    this.role = this.$session.get('user').role
   }
 }
 </script>
@@ -80,6 +90,6 @@ h2 {
   color: #FFFFFF;
   font-weight: bold;
   font-size: 30px;
-  font-family: Courier;
+  font-family: Arial, Helvetica, sans-serif;
 }
 </style>

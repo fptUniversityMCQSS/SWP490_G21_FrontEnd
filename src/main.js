@@ -45,7 +45,11 @@ import VueFlashMessage from 'vue-flash-message';
 import VuejsDialog from 'vuejs-dialog';
 import 'vuejs-dialog/dist/vuejs-dialog.min.css';
 import './assets/font-awesome/css/font-awesome.min.css'
+import VTooltip from 'v-tooltip'
+import Map from 'map'
 
+Vue.use(Map)
+Vue.use(VTooltip)
 Vue.use(VuejsDialog);
 Vue.use(VueFlashMessage);
 Vue.use(Loading)
@@ -55,6 +59,8 @@ const options = {
   persist: true
 }
 Vue.use(VueSession, options)
+import VueSessionStorage from 'vue-sessionstorage'
+// Vue.use(VueSessionStorage)
 Vue.use(Vuex)
 Vue.use(VeeValidate, {
   inject: true,

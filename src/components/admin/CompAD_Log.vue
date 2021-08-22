@@ -80,6 +80,7 @@ export default {
   },
   created() {
     let self = this
+
     this.controller = new AbortController()
     this.signal = this.controller.signal
     fetch(globalURL.host + process.env.VUE_APP_LOG,
@@ -88,7 +89,7 @@ export default {
         signal: this.signal,
         headers: {
           // 'Content-Type': 'multipart/form-data',
-          'Authorization': 'Bearer ' + self.$session.get("token"),
+          'Authorization': 'Bearer ' + self.$session.get("user").token
         }
       }
     )

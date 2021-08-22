@@ -26,30 +26,32 @@
                      :can-cancel="true"
                      :is-full-page="false"></loading>
             <div class="col-lg-10 mx-auto section_gap">
-              <div class="card rounded shadow border-0">
+              <div class="card rounded shadow border-0" style="background-color: #f9f9ff">
                 <div class="tableTl">History Table</div>
-                <div class="card-body bg-white rounded">
+                <div class="card-body rounded">
                   <div class="table-responsive">
                     <div style="padding: 20px;">
                       <div class="justify-content-centermy-1 row">
-                        <b-form-group horizontal label="Rows per page:" class="col-2">
-                          <b-form-select size="sm"
+                        <b-form-group horizontal label="Rows per page:" class="col-lg-8">
+                          <b-form-select size="sm" class="col-lg-3"
                                          :options="[{text:5,value:5},{text:10,value:10},
                                          {text:15,value:15},{text:20,value:20}]"
                                          v-model="perPage">
                           </b-form-select>
                         </b-form-group>
-                        <b-form-group label="Search:" class="col-4 searchTab">
+                        <b-form-group label="Search:" class="col-lg-4">
                           <b-input-group size="sm">
                             <b-form-input v-model="filter" type="search" placeholder="Type to Search"></b-form-input>
                             <b-input-group-append>
-                              <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>
+                              <b-button variant="outline-primary" @click="filter = ''" class="actionBtn">Clear
+                              </b-button>
                             </b-input-group-append>
                           </b-input-group>
                         </b-form-group>
                       </div>
                       <!-- Main table element -->
-                      <b-table striped hover :items="items.slice().reverse()" :current-page="currentPage" stacked="md"
+                      <b-table class="bgTable" :bordered="true" :borderless="true"
+                               :items="items.slice().reverse()" :current-page="currentPage" stacked="md"
                                show-empty
                                :per-page="perPage" :filter="filter" :fields="fields" id="my-table"
                                @filtered="onFiltered">
@@ -61,12 +63,16 @@
                         </template>
                         <template #cell(action)="{item}">
                           <b-button variant="outline-primary" size="sm" v-on:click="sendData(item)"
-                                    class="mr-1 actionBtn">
-                            Review
+                                    class="mr-1">
+                            View
                           </b-button>
-                          <b-button variant="outline-primary" size="sm" v-on:click="downloadKnowledge(item)"
-                                    class="mr-1 actionBtn">
-                            Download
+                          <b-button variant="outline-primary" size="sm" v-on:click="downloadHistory(item)"
+                                    class="mr-1">
+                            Download <i class="fa fa-download" aria-hidden="true"></i>
+                          </b-button>
+                          <b-button variant="outline-primary" size="sm" v-on:click="deleteHistory(item)"
+                                    class="mr-1 btnDelete">
+                            Delete&nbsp;<i class="fa fa-trash" aria-hidden="true"></i>
                           </b-button>
                         </template>
                       </b-table>
@@ -121,26 +127,80 @@ export default {
         {
           key: 'historyName',
           label: 'Name',
-          sortable: true
+          sortable: true,
+          thStyle: {background: '#92c3f9', color: 'black', width: '190px'},
+          thClass: 'text-center'
         },
         {
           key: 'historyDate',
           label: 'Date',
-          sortable: true
+          sortable: true,
+          thStyle: {background: '#92c3f9', color: 'black', width: '190px'},
+          thClass: 'text-center'
         },
         {
           key: 'subject',
           label: 'Subject',
-          sortable: true
+          sortable: true,
+          thStyle: {background: '#92c3f9', color: 'black',  width: '140px'},
+          thClass: 'text-center',
+          tdClass: 'text-center'
+        },
+        {
+          key: 'status',
+          label: 'Status',
+          thStyle: {background: '#92c3f9', color: 'black'},
+          thClass: 'text-center',
+          tdClass: 'text-center'
         },
         {
           key: 'action',
-          label: 'Action'
+          label: 'Action',
+          thStyle: {background: '#92c3f9', color: 'black', width: '265px'},
+          thClass: 'text-center',
+          tdClass: 'text-center'
         }
       ]
     }
   },
   methods: {
+    deleteHistory(item) {
+      const self = this
+      let message = "<p style='text-align: center; padding-top: 5px'><b style='font-size: 20px'>Delete Question Answer Test</b>" +
+        "<br><br>Are you sure you want to delete this test?</p>";
+      let options = {
+        html: true,
+        okText: 'Continue',
+        cancelText: 'Close',
+      };
+      this.$dialog
+        .confirm(message, options)
+        .then(() => {
+          const axios = require('axios');
+          axios
+            .delete(globalURL.host + process.env.VUE_APP_KNOWLEDGE + "/" + item.knowledgeId,
+              {
+                headers: {
+                  'Content-Type': 'multipart/form-data',
+                  'Authorization': 'Bearer ' + self.$session.get("user").token
+                }
+              })
+            .then(response => {
+              if (response.status === 200) {
+                this.flash('Delete successfully', 'success', {
+                  timeout: 3000
+                });
+                let indexCurrent = this.items.indexOf(item)
+                this.items.splice(indexCurrent, 1)
+                this.totalRows--
+              } else {
+              }
+            })
+            .catch(error => {
+              console.log(error)
+            })
+        })
+    },
     formatDate(date) {
       let dateFormat = require('dateformat');
       let newDate = new Date(date);
@@ -149,11 +209,11 @@ export default {
     sendData(item) {
       this.$router.push('/history/' + item.id)
     },
-    downloadKnowledge(item) {
+    downloadHistory(item) {
       let api = process.env.VUE_APP_HISTORY_DOWNLOAD.replace(/%\w+%/g, function (all) {
         return {"%id%": item.id}[all] || all;
       });
-    console.log(api)
+      console.log(api)
 
       const axios = require('axios');
       axios
@@ -161,7 +221,7 @@ export default {
           {
             headers: {
               'Content-Type': 'multipart/form-data',
-              'Authorization': 'Bearer ' + this.$session.get("token"),
+              'Authorization': 'Bearer ' + self.$session.get("user").token
             }, responseType: 'blob'
           })
         .then(response => {
@@ -184,11 +244,12 @@ export default {
     axios
       .get(globalURL.host + process.env.VUE_APP_HISTORY, {
         headers: {
-          'Authorization': 'Bearer ' + self.$session.get("token")
+          'Authorization': 'Bearer ' + self.$session.get("user").token
         }
       })
       .then(response => {
         if (response.status === 200) {
+          console.log(response.data)
           this.items = response.data
           this.totalRows = response.data.length
           this.isLoading = false;
@@ -202,6 +263,20 @@ export default {
 </script>
 
 <style scoped>
+.btnDelete {
+  border-color: red;
+  color: red;
+}
+
+.btnDelete:hover {
+  background-color: red;
+  color: #fff;
+}
+
+.bgTable {
+  background-color: white;
+}
+
 .truncate {
   white-space: nowrap;
   overflow: hidden;
@@ -234,13 +309,14 @@ table.table {
 }
 
 .actionBtn {
-  background-color: #95999c;
-  color: #FFFFFF;
+  background-color: #92c3f9;
+  color: black;
   font-weight: bold;
   border: none;
 }
 
 .actionBtn:hover {
-  background-color: #229bebad
+  background-color: #0088ff;
+  color: #fff;
 }
 </style>

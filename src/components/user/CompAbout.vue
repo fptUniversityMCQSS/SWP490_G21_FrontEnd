@@ -21,8 +21,8 @@
     <section class="cat_product_area">
       <div>
         <div class="row flex-row-reverse">
-          <div class="col-lg-10">
-            <div class="col-lg-8 mx-auto section_gap py-5" style="color: black">
+          <div :class="[role === '' ? 'col-lg-12' : 'col-lg-10']">
+            <div class="col-lg-8 mx-auto section_gap py-5 about">
 
               <h3>About us</h3>
               <p class="py-5"> Toogl promotes their core value of remote working throughout their website and their
@@ -79,7 +79,7 @@
 
             </div>
           </div>
-          <div class="col-lg-2 fixed-sidebar">
+          <div v-if="role !== ''" class="col-lg-2 fixed-sidebar">
             <comp-left-sider/>
           </div>
         </div>
@@ -105,11 +105,24 @@ export default {
   name: "CompAbout",
   components: {
     CompHeader, CompFooter, CompBackToTop, CompLeftSider
+  },
+  data() {
+    return {
+      role: ''
+    }
+  },
+  created() {
+    this.role = this.$session.get('user').role
   }
 }
 </script>
 
 <style scoped>
+
+.about {
+  color: black;
+  margin-bottom: 80px;
+}
 
 .fixed-sidebar {
   position: -webkit-sticky;

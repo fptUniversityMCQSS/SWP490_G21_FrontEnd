@@ -9,7 +9,7 @@
           <div class="banner_content text-center">
             <h2>login to your account</h2>
             <div class="page_link">
-              <router-link to="/index">Home</router-link>
+              <router-link to="/">Home</router-link>
               <router-link to="/login">Login</router-link>
             </div>
           </div>
@@ -68,7 +68,7 @@
                   </div>
                 </div>
                 <div class="col-md-12 form-group">
-                  <button type="submit" value="submit" class="btn submit_btn">Log In</button>
+                  <button type="submit" value="submit" class="btn submit_btn">LOGIN</button>
 <!--                  <a href="#">Forgot Password?</a>-->
                 </div>
               </form>
@@ -112,15 +112,15 @@ export default {
           const form = new FormData();
           form.append('username', this.username);
           form.append('password', this.password);
+
           axios.post(globalURL.host + process.env.VUE_APP_LOGIN, form)
             .then(response => {
               if (response.status === 200) {
-                self.$session.start()
+                // self.$session.start()
                 self.$session.set('user', response.data)
-                self.$session.set('token', response.data.token)
-                self.$session.set('role', response.data.role)
-                self.$session.set('fullName', response.data.fullName)
+                sessionStorage.setItem('user', JSON.stringify(response.data))
                 self.$router.push('/');
+
               }
             }).catch(error => {
             this.err = error.response.data.message

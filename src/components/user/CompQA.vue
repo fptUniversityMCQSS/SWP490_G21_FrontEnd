@@ -22,9 +22,9 @@
       <div>
         <div class="row flex-row-reverse">
           <div class="col-lg-10">
-            <div class="col-lg-11 mx-auto section_gap" >
+            <div class="col-lg-11 mx-auto section_gap">
               <div class="wrapper">
-                <div class="cont" style="background-color: #f9f9ff">
+                <div class="cont shadow" style="background-color: #f9f9ff">
                   <h2>Upload Question</h2>
                   <div class="upload-container">
                     <div class="border-container">
@@ -45,40 +45,55 @@
                 <b-button variant="outline-primary" class="btnUpload"
                           v-on:click="submitFiles()">Upload
                 </b-button>
-
                 <p id="noticeUpload" style="color: red; font-size: 17px; margin-top: 20px"></p>
-
                 <div v-if="items.length>0" style="margin-top: 50px">
-                  <b-table striped :items="items.slice().reverse()" :fields="fields" class="text-center"
+                  <b-table :bordered="true" :borderless="true" :items="items.slice().reverse()" :fields="fields"
+                           class="shadow text-center"
                            responsive="sm">
                     <template #cell(historyName)="row">
                       <div>{{ row.value }}</div>
                     </template>
                     <template #cell(status)="{item}">
-                      <div v-if="item.message === 'Fail to receive response from AI server'" style="color: red">
-                        Error in processing</div>
-                      <b-progress v-else-if="item.message === 'DONE'" :max="item.questions_number">
-                        <b-progress-bar style="background-color: #4ABF60" :value="item.questions.length"
-                                        :label="`Done`"></b-progress-bar>
-                      </b-progress>
-                      <b-progress v-else :max="item.questions_number">
-                        <b-progress-bar class="progress-bar-animated" striped :value="item.questions.length"
-                                        :label="`${((item.questions.length / item.questions_number) * 100).toFixed(0)}%`"></b-progress-bar>
-                      </b-progress>
-                      {{ item.questions.length + "/" + item.questions_number }}
+
+
+                      <div v-if="item.status === 'Loading'">
+                        Loading&nbsp;<i class="fa fa-spinner fa-spin"/>
+                      </div>
+
+                      <div v-else>
+                        <div v-if="item.message !== 'DONE' && item.message !== ''" style="color: red">
+                          <span v-b-tooltip.right="item.message">Error in processing</span>
+                        </div>
+                        <b-progress v-else-if="item.message === 'DONE'" :max="item.questions_number">
+                          <b-progress-bar style="background-color: #4ABF60" :value="item.questions.length"
+                                          :label="`Done`"></b-progress-bar>
+                        </b-progress>
+                        <b-progress v-else :max="item.questions_number">
+                          <b-progress-bar class="progress-bar-animated" striped :value="item.questions.length"
+                                          :label="`${((item.questions.length / item.questions_number) * 100).toFixed(0)}%`"></b-progress-bar>
+                        </b-progress>
+                        {{ item.questions.length + "/" + item.questions_number }}
+                      </div>
+
+
                     </template>
-                    <template #cell(view)="row">
+                    <template #cell(action)="row">
                       <b-button variant="outline-primary" size="sm" @click="row.toggleDetails"
-                                class="actionBtn">
+                                class="mr-1">
                         {{ row.detailsShowing ? 'Hide' : 'Show' }} Details
                       </b-button>
-                      &nbsp;&nbsp;
                       <b-button
                         v-if="row.item.message !== ''"
                         variant="outline-primary" size="sm"
-                        v-on:click="viewQA(row.item.id)"
-                        class="actionBtn">
+                        v-on:click="viewQA(row.item.id)">
                         View
+                      </b-button>
+                      <b-button
+                        v-if="row.item.status !== 'Loading' && row.item.message === ''"
+                        variant="outline-primary" size="sm"
+                        v-on:click="cancelUpload(row.item)"
+                        class="btnDelete">
+                        Delete&nbsp;<i class="fa fa-trash" aria-hidden="true"></i>
                       </b-button>
                     </template>
                     <template #row-details="row">
@@ -94,7 +109,6 @@
                     </template>
                   </b-table>
                 </div>
-
               </div>
             </div>
           </div>
@@ -119,12 +133,7 @@ import CompHeader from "../frame/CompHeader";
 import CompFooter from "../frame/CompFooter";
 import CompBackToTop from "../frame/CompBackToTop";
 import CompLeftSider from "../frame/CompLeftSider";
-
-function convertToJSONArray(string) {
-  let regex = /\}\n\{/g
-  let newString = '[' + string.replaceAll(regex, '},{') + ']'
-  return JSON.parse(newString)
-}
+import * as utility from '../utility/utility';
 
 let self
 export default {
@@ -139,15 +148,18 @@ export default {
       fields: [
         {
           key: 'historyName',
-          label: 'File Name'
+          label: 'File Name',
+          thStyle: {background: '#92c3f9', color: 'black', width: '300px'},
         },
         {
           key: 'status',
-          label: 'Status'
+          label: 'Status',
+          thStyle: {background: '#92c3f9', color: 'black'},
         },
         {
-          key: 'view',
-          label: ''
+          key: 'action',
+          label: 'Action',
+          thStyle: {background: '#92c3f9', color: 'black'},
         }
       ],
       files: ''
@@ -166,6 +178,42 @@ export default {
     }
   },
   methods: {
+    cancelUpload(item) {
+      let message = "<p style='text-align: center; padding-top: 5px'><b style='font-size: 20px'>Cancel Upload</b>" +
+        "<br><br>Are you sure you want to cancel upload?</p>";
+      let options = {
+        html: true,
+        okText: 'Continue',
+        cancelText: 'Close',
+      };
+      this.$dialog
+        .confirm(message, options)
+        .then(() => {
+          const axios = require('axios');
+          axios
+            .delete(globalURL.host + process.env.VUE_APP_ADMIN_USER + "/" + item.id, {
+              headers: {
+                'Authorization': 'Bearer ' + self.$session.get("user").token
+              }
+            })
+            .then(response => {
+              if (response.status === 200) {
+                this.flash('Delete successfully', 'success', {
+                  timeout: 10000
+                });
+                let index = this.items.indexOf(item)
+                this.items.splice(index, 1)
+                this.totalRows--
+              }
+            })
+            .catch(error => {
+              console.log(error)
+            })
+        })
+        .catch(function () {
+          console.log('Clicked on cancel');
+        })
+    },
     viewQA(id) {
       self.$router.push('/history/' + id)
     },
@@ -181,10 +229,11 @@ export default {
           historyName: this.fileName,
           historyDate: '',
           message: '',
+          status: 'Loading',
           questions_number: 1,
           subject: '',
           questions: [],
-          _showDetails: false
+          _showDetails: false,
         }
 
         this.items = this.$session.get('listQA')
@@ -200,7 +249,7 @@ export default {
             method: "PUT",
             headers: {
               // 'Content-Type': 'multipart/form-data',
-              'Authorization': 'Bearer ' + self.$session.get("token"),
+              'Authorization': 'Bearer ' + self.$session.get("user").token
             },
             body: formData
           }
@@ -218,7 +267,7 @@ export default {
                 }
                 // Enqueue the next data chunk into our target stream
                 let string = new TextDecoder().decode(value);
-                let res = convertToJSONArray(string)
+                let res = utility.convertToJSONArray(string)
                 let arrIndex = []
                 self.items.forEach((item) => {
                   arrIndex.push({
@@ -231,6 +280,7 @@ export default {
                   self.items[item.index]._showDetails = item.showDetail
                 })
                 res.forEach((value) => {
+                  self.items[index].status = 'Process'
                   if ("id" in value) {
                     self.items[index].id = value.id
                     self.items[index].historyDate = value.historyDate
@@ -261,7 +311,9 @@ export default {
             }
             read();
           })
-          .catch(console.error);
+          .catch(error => {
+            self.items[index].message = error.response.data.message
+          });
       } else {
         document.getElementById("noticeUpload").innerHTML = "Please choose file to upload!";
       }
@@ -271,6 +323,16 @@ export default {
 </script>
 
 <style scoped>
+
+.btnDelete{
+  border-color: red;
+  color: red;
+}
+.btnDelete:hover{
+  background-color: red;
+  color: #fff;
+}
+
 .scrollbar {
   height: 200px;
   overflow: auto;
@@ -293,14 +355,15 @@ table.table {
 }
 
 .actionBtn {
-  background-color: #95999c;
-  color: #FFFFFF;
+  background-color: #92c3f9;
+  color: black;
   font-weight: bold;
   border: none;
 }
 
 .actionBtn:hover {
-  background-color: #229bebad
+  background-color: #0088ff;
+  color: #fff;
 }
 
 .fixed-sidebar {
@@ -376,12 +439,14 @@ h2 {
   font-weight: 600;
   cursor: pointer;
   text-align: center;
+  margin-top: 20px;
 }
 
 .btnUpload:hover {
   border: none;
   outline: none;
-  background-color: #00BFFF;
+  background-color: #0088ff;
+  color: #fff;
 }
 
 </style>

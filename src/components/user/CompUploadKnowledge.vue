@@ -24,7 +24,7 @@
           <div class="col-lg-10">
             <div class="col-lg-11 mx-auto section_gap">
               <div class="wrapper">
-                <div class="cont" style="background-color: #f9f9ff">
+                <div class="cont shadow" style="background-color: #f9f9ff">
                   <h2>Upload Knowledge</h2>
                   <div class="upload-container">
                     <div class="border-container">
@@ -39,11 +39,10 @@
                 <b-button variant="outline-primary" class="btnUpload"
                           v-on:click="submitFiles()">Upload
                 </b-button>
-
                 <p id="noticeUpload" style="color: red; font-size: 17px; margin-top: 20px"></p>
-
                 <div v-if="this.items.length > 0" style="margin-top: 50px">
-                  <b-table striped hover :items="this.items.slice().reverse()" :fields="fields">
+                  <b-table :bordered="true" :borderless="true" class="text-center shadow"
+                           :items="this.items.slice().reverse()" :fields="fields">
                     <template #cell(nameCurrent)="row">
                       <div>{{ row.value }}</div>
                     </template>
@@ -54,16 +53,26 @@
                       <div v-if="item.status==='Encoding'" size="sm" class="mr-1">
                         Encoding &nbsp;<i class="fa fa-spinner fa-spin"/>
                       </div>
-                      <div v-if="item.status==='Ready'" size="sm" class="mr-1" style="color: #4ABF60">
+                      <div v-if="item.status==='Ready'" size="sm" class="mr-1 " style="color: #4ABF60">
                         Successful&nbsp;<i class="fa fa-check-square" aria-hidden="true"></i>
                       </div>
-                      <div v-if="item.status==='Error'" size="sm" class="mr-1" style="font-weight: bold;color: red">
-                        Fail &nbsp;<i class="fa fa-window-close" aria-hidden="true"></i>
+                      <div v-if="item.status==='Fail'" size="sm" class="mr-1"
+                           style="color: red">
+                        <span v-b-tooltip.right="item.messageDetail">
+                          Fail &nbsp;<i class="fa fa-window-close" aria-hidden="true"></i></span>
                       </div>
+                    </template>
+
+                    <template #cell(action)="row">
+                      <b-button
+                        variant="outline-primary" size="sm"
+                        v-on:click="cancelUpload(row.item)"
+                        class="btnDelete">
+                        Delete&nbsp;<i class="fa fa-trash" aria-hidden="true"></i>
+                      </b-button>
                     </template>
                   </b-table>
                 </div>
-
               </div>
             </div>
           </div>
@@ -88,8 +97,19 @@ import CompHeader from "../frame/CompHeader";
 import CompFooter from "../frame/CompFooter";
 import CompBackToTop from "../frame/CompBackToTop";
 import CompLeftSider from "../frame/CompLeftSider";
+import * as utility from '../utility/utility';
 
 let self
+
+
+function findKnowledge(idx, listKnowledge) {
+  for (let i = 0; i < listKnowledge.length; i++) {
+    if (listKnowledge[i].idx === idx) {
+      return i
+    }
+  }
+  return -1
+}
 
 export default {
   name: "CompUploadKnowledge",
@@ -100,15 +120,22 @@ export default {
     return {
       items: [],
       fileName: '',
+      nextIndex: 0,
       fields: [
         {
           key: 'nameCurrent',
-          label: 'File Name'
+          label: 'File Name',
+          thStyle: {background: '#92c3f9', color: 'black', width: '300px'}
         },
         {
           key: 'status',
           label: 'Status',
-          // thStyle: {background: '#7386D5', color: '#ffffff'}
+          thStyle: {background: '#92c3f9', color: 'black'}
+        },
+        {
+          key: 'action',
+          label: 'Action',
+          thStyle: {background: '#92c3f9', color: 'black'}
         }
       ],
       files: '',
@@ -116,6 +143,12 @@ export default {
     }
   },
   created() {
+
+    // console.log( this.$session.get('user'), 'storage2')
+    // var obj = JSON.parse(sessionStorage.user);
+    // console.log(obj, 'storage')
+
+
     self = this
     if (!this.$session.has('listKnowledge')) {
       this.$session.set('listKnowledge', [])
@@ -123,8 +156,57 @@ export default {
     } else {
       this.items = this.$session.get('listKnowledge')
     }
+
+    if (!this.$session.has('nextIndex')) {
+      this.$session.set('nextIndex', 0)
+      this.nextIndex = this.$session.get('nextIndex')
+    } else {
+      this.nextIndex = this.$session.get('nextIndex')
+    }
   },
   methods: {
+    cancelUpload(item) {
+      let message = "<p style='text-align: center; padding-top: 5px'><b style='font-size: 20px'>Delete knowledge</b>" +
+        "<br><br>Are you sure you want to delete knowledge?</p>";
+      let options = {
+        html: true,
+        okText: 'Continue',
+        cancelText: 'Close',
+      };
+      this.$dialog
+        .confirm(message, options)
+        .then(() => {
+          const axios = require('axios');
+          axios
+            .delete(globalURL.host + process.env.VUE_APP_KNOWLEDGE + "/" + item.knowledgeId, {
+              headers: {
+                'Authorization': 'Bearer ' + self.$session.get("user").token
+              }
+            })
+            .then(response => {
+              if (response.status === 200) {
+                this.flash('Delete successfully', 'success', {
+                  timeout: 10000
+                });
+
+                self.items = self.$session.get('listKnowledge')
+                // self.items = sessionStorage.getItem('listKnowledge')
+                let index = findKnowledge(item.idx, self.items)
+                self.items[index].controller.abort()
+                self.items.splice(index, 1)
+                self.$session.set('listKnowledge', self.items)
+                // sessionStorage.setItem('listKnowledge', self.items)
+              }
+            })
+            .catch(error => {
+              console.log(error)
+            })
+        })
+        .catch(function () {
+          console.log('Clicked on cancel');
+        })
+    },
+
     handleFilesUpload(object) {
       this.files = this.$refs.file.files[0];
       this.fileName = object.target.files[0].name
@@ -133,11 +215,29 @@ export default {
       if (document.getElementById("fileInput").files.length > 0) {
         let newObject = {
           nameCurrent: this.fileName,
-          status: 'Processing'
+          status: 'Processing',
+          messageDetail: '',
+          knowledgeId: '',
+          idx: this.nextIndex,
+          // controller: null
         }
-        this.items = this.$session.get('listKnowledge')
-        let index = this.items.push(newObject) - 1
-        this.$session.set('listKnowledge', this.items)
+
+
+        // newObject.controller = new AbortController()
+
+        self.items = self.$session.get('listKnowledge')
+        self.items.push(newObject)
+        this.nextIndex++
+        self.$session.set('nextIndex', self.nextIndex)
+        self.$session.set('listKnowledge', self.items)
+        console.log(self.$session.get('listKnowledge'))
+
+        // self.items = sessionStorage.getItem('listKnowledge')
+        // console.log(sessionStorage.getItem('listKnowledge'))
+        // self.items.push(newObject)
+        // this.nextIndex++
+        // sessionStorage.setItem('nextIndex', JSON.stringify(self.nextIndex))
+        // sessionStorage.setItem('listKnowledge',JSON.stringify(self.items))
         /*
           Initialize the form data
         */
@@ -146,9 +246,10 @@ export default {
         fetch(globalURL.host + process.env.VUE_APP_KNOWLEDGE,
           {
             method: "PUT",
+            // signal: newObject.controller.signal,
             headers: {
               // 'Content-Type': 'multipart/form-data',
-              'Authorization': 'Bearer ' + self.$session.get("token"),
+              'Authorization': 'Bearer ' + self.$session.get("user").token
             },
             body: formData
           }
@@ -166,23 +267,30 @@ export default {
                 }
                 // Enqueue the next data chunk into our target stream
                 let string = new TextDecoder().decode(value);
-                let parseJSON = JSON.parse(string);
-                console.log(parseJSON);
+                let res = utility.convertToJSONArray(string)
                 self.items = self.$session.get('listKnowledge')
-                if ("message" in parseJSON) {
-                  self.items[index].status = "Error"
-                } else {
-                  self.items[index].status = parseJSON.status
-                }
+                // self.items = sessionStorage.getItem('listKnowledge')
+
+                let index = findKnowledge(newObject.idx, self.items)
+
+                res.forEach((value) => {
+                  if ("message" in value) {
+                    self.items[index].status = "Fail"
+                    self.items[index].messageDetail = value.message
+                  } else {
+                    self.items[index].status = value.status
+                    self.items[index].knowledgeId = value.knowledgeId
+                  }
+                })
                 self.$session.set('listKnowledge', self.items)
+               // sessionStorage.setItem('listKnowledge',JSON.stringify(self.items) )
               }
               reader.releaseLock();
             }
             read();
           })
           .catch(console.error);
-      }
-      else {
+      } else {
         document.getElementById("noticeUpload").innerHTML = "Please choose file to upload!";
       }
     }
@@ -193,6 +301,29 @@ export default {
 </script>
 
 <style scoped>
+
+.btnDelete {
+  border-color: red;
+  color: red;
+}
+
+.btnDelete:hover {
+  background-color: red;
+  color: #fff;
+}
+
+.actionBtn {
+  background-color: #92c3f9;
+  color: black;
+  font-weight: bold;
+  border: none;
+}
+
+.actionBtn:hover {
+  background-color: #0088ff;
+  color: #fff;
+}
+
 
 .truncate {
   white-space: nowrap;
@@ -275,15 +406,17 @@ h2 {
   border: none;
   outline: none;
   color: black;
-  font-weight: 600;
+  font-weight: bold;
   cursor: pointer;
   text-align: center;
+  margin-top: 20px;
 }
 
 .btnUpload:hover {
   border: none;
   outline: none;
-  background-color: #00BFFF;
+  background-color: #0088ff;
+  color: #fff;
 }
 
 </style>
