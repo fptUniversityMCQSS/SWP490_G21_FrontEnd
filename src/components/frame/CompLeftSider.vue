@@ -48,7 +48,7 @@
         </ul>
       </li>
       <li v-if="role === 'admin'">
-        <router-link to="/admin/log" exact-active-class="exact-active">
+        <router-link to="/admin/log">
           <i class="fa fa-server spaceMenu" aria-hidden="true"></i>Logging
         </router-link>
       </li>
@@ -66,7 +66,7 @@ export default {
     }
   },
   created() {
-    if (this.$session.has('user')) {
+    if (this.$session.exists('user')) {
       this.role = this.$session.get('user').role
     }
   }
@@ -91,7 +91,6 @@ export default {
 
 a.router-link-active,
 a.router-link-exact-active {
-  /*background: #00BFFF;*/
   background-color: #92c3f9;
 }
 

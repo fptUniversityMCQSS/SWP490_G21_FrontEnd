@@ -43,13 +43,14 @@
                           <b-input-group size="sm">
                             <b-form-input v-model="filter" type="search" placeholder="Type to Search"></b-form-input>
                             <b-input-group-append>
-                              <b-button variant="outline-primary" @click="filter = ''" class="actionBtn">Clear</b-button>
+                              <b-button variant="outline-primary" @click="filter = ''" class="actionBtn">Clear
+                              </b-button>
                             </b-input-group-append>
                           </b-input-group>
                         </b-form-group>
                       </div>
                       <!-- Main table element -->
-                      <b-table class="bgTable" :bordered="true" :borderless="true" hover
+                      <b-table class="bgTable" :bordered="true" :borderless="true"
                                :items="items.slice().reverse()" :current-page="currentPage" stacked="md"
                                show-empty
                                :per-page="perPage" :filter="filter" :fields="fields" id="my-table"
@@ -62,16 +63,16 @@
                         </template>
                         <template #cell(action)="{item}">
                           <b-button variant="outline-primary" size="sm" v-on:click="sendData(item)"
-                                    class="mr-1 actionBtn">
-                            Review
+                                    class="mr-1">
+                            View
                           </b-button>
                           <b-button variant="outline-primary" size="sm" v-on:click="downloadHistory(item)"
-                                    class="mr-1 actionBtn">
-                            Download
+                                    class="mr-1">
+                            Download <i class="fa fa-download" aria-hidden="true"></i>
                           </b-button>
                           <b-button variant="outline-primary" size="sm" v-on:click="deleteHistory(item)"
-                                    class="mr-1 actionBtn">
-                            Delete
+                                    class="mr-1 btnDelete">
+                            Delete&nbsp;<i class="fa fa-trash" aria-hidden="true"></i>
                           </b-button>
                         </template>
                       </b-table>
@@ -127,21 +128,21 @@ export default {
           key: 'historyName',
           label: 'Name',
           sortable: true,
-          thStyle: {background: '#92c3f9', color: 'black', width: '200px'},
+          thStyle: {background: '#92c3f9', color: 'black', width: '190px'},
           thClass: 'text-center'
         },
         {
           key: 'historyDate',
           label: 'Date',
           sortable: true,
-          thStyle: {background: '#92c3f9', color: 'black', width: '200px'},
+          thStyle: {background: '#92c3f9', color: 'black', width: '190px'},
           thClass: 'text-center'
         },
         {
           key: 'subject',
           label: 'Subject',
           sortable: true,
-          thStyle: {background: '#92c3f9', color: 'black'},
+          thStyle: {background: '#92c3f9', color: 'black',  width: '140px'},
           thClass: 'text-center',
           tdClass: 'text-center'
         },
@@ -155,7 +156,7 @@ export default {
         {
           key: 'action',
           label: 'Action',
-          thStyle: {background: '#92c3f9', color: 'black', width: '250px'},
+          thStyle: {background: '#92c3f9', color: 'black', width: '265px'},
           thClass: 'text-center',
           tdClass: 'text-center'
         }
@@ -262,6 +263,15 @@ export default {
 </script>
 
 <style scoped>
+.btnDelete {
+  border-color: red;
+  color: red;
+}
+
+.btnDelete:hover {
+  background-color: red;
+  color: #fff;
+}
 
 .bgTable {
   background-color: white;

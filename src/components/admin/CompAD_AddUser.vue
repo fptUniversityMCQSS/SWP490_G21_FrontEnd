@@ -23,7 +23,7 @@
         <div class="row flex-row-reverse">
           <div class="col-lg-10">
             <div class="col-lg-8 mx-auto section_gap">
-              <div class="comment-form">
+              <div class="comment-form shadow">
                 <h4>Create New Account</h4>
                 <form>
                   <div class="form-group bd-r col-lg-9">
@@ -239,12 +239,11 @@ export default {
 .btnUpload {
   width: 130px;
   height: 45px;
-  background-color: #229aeb;
+  background-color: #92c3f9;
   border: none;
   outline: none;
-  color: #fff;
+  color: black;
   font-weight: bold;
-  font-size: 15px;
   cursor: pointer;
   text-align: center;
   margin-top: 20px;
@@ -253,7 +252,8 @@ export default {
 .btnUpload:hover {
   border: none;
   outline: none;
-  background-color: #229bebad
+  background-color: #0088ff;
+  color: #fff;
 }
 
 .bd-r {

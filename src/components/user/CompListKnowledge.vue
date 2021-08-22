@@ -28,7 +28,7 @@
                      :is-full-page="false"></loading>
 
             <div class="col-lg-10 mx-auto section_gap">
-              <div class="card rounded shadow border-0" style="background-color: #f9f9ff">
+              <div class="card rounded shadow border-0 bgFormTable">
                 <div class="tableTl">Knowledge Table</div>
                 <div class="card-body rounded">
                   <div class="table-responsive">
@@ -63,7 +63,7 @@
                       <div v-if="role === 'staff'">
                         <!-- Main table current -->
                         <b-table v-if="optionView === 'current'" class="bgTable" :bordered="true" :borderless="true"
-                                 hover :items="items"
+                                  :items="items"
                                  :current-page="currentPage"
                                  stacked="md"
                                  show-empty
@@ -90,7 +90,7 @@
                           </template>
                         </b-table>
                         <!--Main table all -->
-                        <b-table v-if="optionView ==='all'" class="bgTable" :bordered="true" :borderless="true" hover
+                        <b-table v-if="optionView ==='all'" class="bgTable" :bordered="true" :borderless="true"
                                  :items="itemAll" :current-page="currentPage"
                                  stacked="md"
                                  show-empty
@@ -112,7 +112,7 @@
                         </b-table>
                       </div>
                       <div v-else>
-                        <b-table class="bgTable" :bordered="true" :borderless="true" hover :items="itemAll"
+                        <b-table class="bgTable" :bordered="true" :borderless="true" :items="itemAll"
                                  :current-page="currentPage"
                                  stacked="md"
                                  show-empty
@@ -128,12 +128,12 @@
                           </template>
                           <template #cell(actions)="{item}">
                             <b-button variant="outline-primary" size="sm" v-on:click="downloadKnowledge(item)"
-                                      class="mr-1 actionBtn">
+                                      class="mr-1">
                               Download <i class="fa fa-download" aria-hidden="true"></i>
                             </b-button>
                             <b-button v-if="role === 'admin'" variant="outline-primary" size="sm"
                                       v-on:click="deleteKnowledge(item)"
-                                      class="actionBtn">
+                                      class="btnDelete">
                               Delete&nbsp;<i class="fa fa-trash" aria-hidden="true"></i>
                             </b-button>
                           </template>
@@ -374,10 +374,6 @@ table.table {
   color: #2c3e50;
 }
 
-.bgTable {
-  background-color: white;
-}
-
 .actionBtn {
   background-color: #92c3f9;
   color: black;
@@ -388,6 +384,23 @@ table.table {
 .actionBtn:hover {
   background-color: #0088ff;
   color: #fff;
+}
+
+.btnDelete{
+  border-color: red;
+  color: red;
+}
+.btnDelete:hover{
+  background-color: red;
+  color: #fff;
+}
+
+.bgFormTable{
+  background-color: #f9f9ff
+}
+
+.bgTable {
+  background-color: white;
 }
 
 </style>

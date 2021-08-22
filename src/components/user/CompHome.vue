@@ -6,8 +6,9 @@
       <div class="banner_inner d-flex align-items-center">
         <div class="container">
           <div class="banner_content text-center">
-            <h2>Do you have a high school exam test?<br>
-              Let our AI assistant help you find the solution</h2>
+<!--            <h2>Do you have a high school exam test?<br>-->
+<!--              Let our AI assistant help you find the solution</h2>-->
+            <h2>Multiple choices question solving system using Deep learning <br> for high school tests</h2>
           </div>
         </div>
       </div>
@@ -68,7 +69,7 @@ export default {
     }
   },
   created() {
-    if(this.$session.has('user'))
+    if(this.$session.exists('user'))
     this.role = this.$session.get('user').role
   }
 }
@@ -89,6 +90,6 @@ h2 {
   color: #FFFFFF;
   font-weight: bold;
   font-size: 30px;
-  font-family: Courier;
+  font-family: Arial, Helvetica, sans-serif;
 }
 </style>

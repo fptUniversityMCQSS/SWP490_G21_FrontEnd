@@ -41,7 +41,8 @@
                 </b-button>
                 <p id="noticeUpload" style="color: red; font-size: 17px; margin-top: 20px"></p>
                 <div v-if="this.items.length > 0" style="margin-top: 50px">
-                  <b-table :bordered="true" :borderless="true" hover class="text-center shadow" :items="this.items.slice().reverse()" :fields="fields">
+                  <b-table :bordered="true" :borderless="true" class="text-center shadow"
+                           :items="this.items.slice().reverse()" :fields="fields">
                     <template #cell(nameCurrent)="row">
                       <div>{{ row.value }}</div>
                     </template>
@@ -66,8 +67,8 @@
                       <b-button
                         variant="outline-primary" size="sm"
                         v-on:click="cancelUpload(row.item)"
-                        class="actionBtn">
-                        Cancel
+                        class="btnDelete">
+                        Delete&nbsp;<i class="fa fa-trash" aria-hidden="true"></i>
                       </b-button>
                     </template>
                   </b-table>
@@ -100,6 +101,16 @@ import * as utility from '../utility/utility';
 
 let self
 
+
+function findKnowledge(idx, listKnowledge) {
+  for (let i = 0; i < listKnowledge.length; i++) {
+    if (listKnowledge[i].idx === idx) {
+      return i
+    }
+  }
+  return -1
+}
+
 export default {
   name: "CompUploadKnowledge",
   components: {
@@ -109,6 +120,7 @@ export default {
     return {
       items: [],
       fileName: '',
+      nextIndex: 0,
       fields: [
         {
           key: 'nameCurrent',
@@ -131,6 +143,12 @@ export default {
     }
   },
   created() {
+
+    // console.log( this.$session.get('user'), 'storage2')
+    // var obj = JSON.parse(sessionStorage.user);
+    // console.log(obj, 'storage')
+
+
     self = this
     if (!this.$session.has('listKnowledge')) {
       this.$session.set('listKnowledge', [])
@@ -138,11 +156,18 @@ export default {
     } else {
       this.items = this.$session.get('listKnowledge')
     }
+
+    if (!this.$session.has('nextIndex')) {
+      this.$session.set('nextIndex', 0)
+      this.nextIndex = this.$session.get('nextIndex')
+    } else {
+      this.nextIndex = this.$session.get('nextIndex')
+    }
   },
   methods: {
-    cancelUpload(item){
-      let message = "<p style='text-align: center; padding-top: 5px'><b style='font-size: 20px'>Cancel Upload</b>" +
-        "<br><br>Are you sure you want to cancel upload?</p>";
+    cancelUpload(item) {
+      let message = "<p style='text-align: center; padding-top: 5px'><b style='font-size: 20px'>Delete knowledge</b>" +
+        "<br><br>Are you sure you want to delete knowledge?</p>";
       let options = {
         html: true,
         okText: 'Continue',
@@ -153,7 +178,7 @@ export default {
         .then(() => {
           const axios = require('axios');
           axios
-            .delete(globalURL.host + process.env.VUE_APP_ADMIN_USER + "/" + item.id, {
+            .delete(globalURL.host + process.env.VUE_APP_KNOWLEDGE + "/" + item.knowledgeId, {
               headers: {
                 'Authorization': 'Bearer ' + self.$session.get("user").token
               }
@@ -163,9 +188,14 @@ export default {
                 this.flash('Delete successfully', 'success', {
                   timeout: 10000
                 });
-                let index = this.items.indexOf(item)
-                this.items.splice(index, 1)
-                this.totalRows--
+
+                self.items = self.$session.get('listKnowledge')
+                // self.items = sessionStorage.getItem('listKnowledge')
+                let index = findKnowledge(item.idx, self.items)
+                self.items[index].controller.abort()
+                self.items.splice(index, 1)
+                self.$session.set('listKnowledge', self.items)
+                // sessionStorage.setItem('listKnowledge', self.items)
               }
             })
             .catch(error => {
@@ -186,11 +216,28 @@ export default {
         let newObject = {
           nameCurrent: this.fileName,
           status: 'Processing',
-          messageDetail: ''
+          messageDetail: '',
+          knowledgeId: '',
+          idx: this.nextIndex,
+          // controller: null
         }
-        this.items = this.$session.get('listKnowledge')
-        let index = this.items.push(newObject) - 1
-        this.$session.set('listKnowledge', this.items)
+
+
+        // newObject.controller = new AbortController()
+
+        self.items = self.$session.get('listKnowledge')
+        self.items.push(newObject)
+        this.nextIndex++
+        self.$session.set('nextIndex', self.nextIndex)
+        self.$session.set('listKnowledge', self.items)
+        console.log(self.$session.get('listKnowledge'))
+
+        // self.items = sessionStorage.getItem('listKnowledge')
+        // console.log(sessionStorage.getItem('listKnowledge'))
+        // self.items.push(newObject)
+        // this.nextIndex++
+        // sessionStorage.setItem('nextIndex', JSON.stringify(self.nextIndex))
+        // sessionStorage.setItem('listKnowledge',JSON.stringify(self.items))
         /*
           Initialize the form data
         */
@@ -199,6 +246,7 @@ export default {
         fetch(globalURL.host + process.env.VUE_APP_KNOWLEDGE,
           {
             method: "PUT",
+            // signal: newObject.controller.signal,
             headers: {
               // 'Content-Type': 'multipart/form-data',
               'Authorization': 'Bearer ' + self.$session.get("user").token
@@ -220,17 +268,22 @@ export default {
                 // Enqueue the next data chunk into our target stream
                 let string = new TextDecoder().decode(value);
                 let res = utility.convertToJSONArray(string)
-
                 self.items = self.$session.get('listKnowledge')
+                // self.items = sessionStorage.getItem('listKnowledge')
+
+                let index = findKnowledge(newObject.idx, self.items)
+
                 res.forEach((value) => {
                   if ("message" in value) {
                     self.items[index].status = "Fail"
                     self.items[index].messageDetail = value.message
                   } else {
                     self.items[index].status = value.status
+                    self.items[index].knowledgeId = value.knowledgeId
                   }
                 })
                 self.$session.set('listKnowledge', self.items)
+               // sessionStorage.setItem('listKnowledge',JSON.stringify(self.items) )
               }
               reader.releaseLock();
             }
@@ -248,6 +301,16 @@ export default {
 </script>
 
 <style scoped>
+
+.btnDelete {
+  border-color: red;
+  color: red;
+}
+
+.btnDelete:hover {
+  background-color: red;
+  color: #fff;
+}
 
 .actionBtn {
   background-color: #92c3f9;
@@ -343,7 +406,7 @@ h2 {
   border: none;
   outline: none;
   color: black;
-  font-weight: 600;
+  font-weight: bold;
   cursor: pointer;
   text-align: center;
   margin-top: 20px;

@@ -113,14 +113,14 @@ export default {
           form.append('username', this.username);
           form.append('password', this.password);
 
-          console.log(globalURL.host + process.env.VUE_APP_LOGIN)
-
           axios.post(globalURL.host + process.env.VUE_APP_LOGIN, form)
             .then(response => {
               if (response.status === 200) {
-                self.$session.start()
+                // self.$session.start()
                 self.$session.set('user', response.data)
+                sessionStorage.setItem('user', JSON.stringify(response.data))
                 self.$router.push('/');
+
               }
             }).catch(error => {
             this.err = error.response.data.message

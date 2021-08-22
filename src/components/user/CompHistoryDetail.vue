@@ -40,7 +40,7 @@
               <p>{{ formatDate(items.Date) }}&nbsp;&nbsp;&nbsp;&nbsp;
                 <b-button v-if="!isLoading" variant="outline-primary" size="sm" v-on:click="downloadDetail"
                           class="mr-1 actionBtn">
-                  Download
+                  Download <i class="fa fa-download" aria-hidden="true"></i>
                 </b-button>
               <div v-for="item in items.Questions" :key="item.id">
                 <p class="text-justify h5 pb-2 font-weight-bold" style="white-space: pre-line">
@@ -151,7 +151,7 @@ export default {
     const self = this;
     const axios = require('axios');
     axios
-      .get(globalURL.host + process.env.VUE_APP_HISTORY +"/" + self.$route.params.id, {
+      .get(globalURL.host + process.env.VUE_APP_HISTORY + "/" + self.$route.params.id, {
         headers: {
           'Authorization': 'Bearer ' + self.$session.get("user").token
         }

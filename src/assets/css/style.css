@@ -299,6 +299,7 @@ a:hover, a:focus {
   color: #1641ff;
 }
 
+
 .header_area .navbar .nav .nav-item.submenu {
   position: relative;
 }
@@ -571,7 +572,7 @@ a:hover, a:focus {
 /* Home Banner Area css
 ============================================================================================ */
 .home_banner_area {
-  background: url(../img/banner/bannerhome.jpg) no-repeat center bottom;
+  background: url(../img/AI/home_banner1.jpg) no-repeat center bottom;
   position: relative;
   z-index: 1;
   height: 500px;
@@ -703,7 +704,7 @@ a:hover, a:focus {
   overflow: hidden;
   width: 100%;
   min-height: 395px;
-  background: url(../img/banner/banner.jpg) no-repeat center bottom;
+  background: url(../img/AI/banner.png) no-repeat center bottom;
   background-size: 100%;
   z-index: 1;
 }

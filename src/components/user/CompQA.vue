@@ -47,7 +47,7 @@
                 </b-button>
                 <p id="noticeUpload" style="color: red; font-size: 17px; margin-top: 20px"></p>
                 <div v-if="items.length>0" style="margin-top: 50px">
-                  <b-table :bordered="true" :borderless="true" hover :items="items.slice().reverse()" :fields="fields"
+                  <b-table :bordered="true" :borderless="true" :items="items.slice().reverse()" :fields="fields"
                            class="shadow text-center"
                            responsive="sm">
                     <template #cell(historyName)="row">
@@ -79,22 +79,21 @@
                     </template>
                     <template #cell(action)="row">
                       <b-button variant="outline-primary" size="sm" @click="row.toggleDetails"
-                                class="mr-1 actionBtn">
+                                class="mr-1">
                         {{ row.detailsShowing ? 'Hide' : 'Show' }} Details
                       </b-button>
                       <b-button
                         v-if="row.item.message !== ''"
                         variant="outline-primary" size="sm"
-                        v-on:click="viewQA(row.item.id)"
-                        class="actionBtn">
+                        v-on:click="viewQA(row.item.id)">
                         View
                       </b-button>
                       <b-button
                         v-if="row.item.status !== 'Loading' && row.item.message === ''"
                         variant="outline-primary" size="sm"
                         v-on:click="cancelUpload(row.item)"
-                        class="actionBtn">
-                        Cancel
+                        class="btnDelete">
+                        Delete&nbsp;<i class="fa fa-trash" aria-hidden="true"></i>
                       </b-button>
                     </template>
                     <template #row-details="row">
@@ -324,6 +323,16 @@ export default {
 </script>
 
 <style scoped>
+
+.btnDelete{
+  border-color: red;
+  color: red;
+}
+.btnDelete:hover{
+  background-color: red;
+  color: #fff;
+}
+
 .scrollbar {
   height: 200px;
   overflow: auto;

@@ -5675,6 +5675,11 @@ map-visit@^1.0.0:
   dependencies:
     object-visit "^1.0.0"
 
+map@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/map/-/map-1.0.1.tgz#98aa24c25dc5f68f1a9e0a91ee2ff0816334ac56"
+  integrity sha1-mKokwl3F9o8angqR7i/wgWM0rFY=
+
 masonry-layout@^4.2.2:
   version "4.2.2"
   resolved "https://registry.yarnpkg.com/masonry-layout/-/masonry-layout-4.2.2.tgz#d57b44af13e601bfcdc423f1dd8348b5524de348"
@@ -9284,6 +9289,11 @@ vue-session@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/vue-session/-/vue-session-1.0.0.tgz#ca642c751f569a48f8dd66f356f1727fbe081f7c"
   integrity sha512-Ep9lRKGgCZdcGV3In3R3zoSp5Wr+hlcIc8WJ9BG+QKzibwaFZnnvp9HBVdd+dU8d6HGLSi5sWywDmd5MkrkfoQ==
+
+vue-sessionstorage@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/vue-sessionstorage/-/vue-sessionstorage-1.0.0.tgz#51cc153da7791949dc0494161397533e320f7410"
+  integrity sha512-Axo8oY/3gcmU+OdsB/zePuoBCqmyjB2/ORUTrC/WVFm8OkMp8yYlzz6nOOzIU1Tgg6a4ogBaUa3loPtHROotbQ==
 
 vue-style-loader@^3.0.0, vue-style-loader@^3.0.1:
   version "3.1.2"

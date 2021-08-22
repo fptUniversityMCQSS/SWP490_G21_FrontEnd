@@ -274,12 +274,11 @@ export default {
 .btnUpload {
   width: 130px;
   height: 45px;
-  background-color: #229aeb;
+  background-color: #92c3f9;
   border: none;
   outline: none;
-  color: #fff;
+  color: black;
   font-weight: bold;
-  font-size: 15px;
   cursor: pointer;
   text-align: center;
   margin-top: 20px;
@@ -288,7 +287,8 @@ export default {
 .btnUpload:hover {
   border: none;
   outline: none;
-  background-color: #229bebad
+  background-color: #0088ff;
+  color: #fff;
 }
 
 .bd-r {
