@@ -78,7 +78,6 @@
           </div>
           <div class="col-lg-2 fixed-sidebar">
             <comp-left-sider/>
-            <flash-message class="myCustomClass"></flash-message>
           </div>
         </div>
         <!-- code paging here--->
@@ -86,7 +85,7 @@
     </section>
 
     <!--================End Content Area =================-->
-
+    <flash-message class="myCustomClass"></flash-message>
     <comp-back-to-top/>
     <comp-footer/>
   </div>
@@ -150,14 +149,14 @@ export default {
 
 
     self = this
-    if (!this.$session.has('listKnowledge')) {
+    if (!this.$session.exists('listKnowledge')) {
       this.$session.set('listKnowledge', [])
       this.items = this.$session.get('listKnowledge')
     } else {
       this.items = this.$session.get('listKnowledge')
     }
 
-    if (!this.$session.has('nextIndex')) {
+    if (!this.$session.exists('nextIndex')) {
       this.$session.set('nextIndex', 0)
       this.nextIndex = this.$session.get('nextIndex')
     } else {
@@ -185,17 +184,15 @@ export default {
             })
             .then(response => {
               if (response.status === 200) {
-                this.flash('Delete successfully', 'success', {
+                this.flash('Delete successfully!', 'success', {
                   timeout: 10000
                 });
 
                 self.items = self.$session.get('listKnowledge')
-                // self.items = sessionStorage.getItem('listKnowledge')
                 let index = findKnowledge(item.idx, self.items)
-                self.items[index].controller.abort()
+                // self.items[index].controller.abort()
                 self.items.splice(index, 1)
                 self.$session.set('listKnowledge', self.items)
-                // sessionStorage.setItem('listKnowledge', self.items)
               }
             })
             .catch(error => {
@@ -208,8 +205,11 @@ export default {
     },
 
     handleFilesUpload(object) {
-      this.files = this.$refs.file.files[0];
-      this.fileName = object.target.files[0].name
+      if (document.getElementById("fileInput").files.length > 0) {
+        this.files = this.$refs.file.files[0];
+        this.fileName = object.target.files[0].name
+        document.getElementById("noticeUpload").innerHTML = "";
+      }
     },
     submitFiles() {
       if (document.getElementById("fileInput").files.length > 0) {
@@ -221,8 +221,6 @@ export default {
           idx: this.nextIndex,
           // controller: null
         }
-
-
         // newObject.controller = new AbortController()
 
         self.items = self.$session.get('listKnowledge')
@@ -230,14 +228,7 @@ export default {
         this.nextIndex++
         self.$session.set('nextIndex', self.nextIndex)
         self.$session.set('listKnowledge', self.items)
-        console.log(self.$session.get('listKnowledge'))
 
-        // self.items = sessionStorage.getItem('listKnowledge')
-        // console.log(sessionStorage.getItem('listKnowledge'))
-        // self.items.push(newObject)
-        // this.nextIndex++
-        // sessionStorage.setItem('nextIndex', JSON.stringify(self.nextIndex))
-        // sessionStorage.setItem('listKnowledge',JSON.stringify(self.items))
         /*
           Initialize the form data
         */
@@ -268,9 +259,8 @@ export default {
                 // Enqueue the next data chunk into our target stream
                 let string = new TextDecoder().decode(value);
                 let res = utility.convertToJSONArray(string)
-                self.items = self.$session.get('listKnowledge')
-                // self.items = sessionStorage.getItem('listKnowledge')
 
+                self.items = self.$session.get('listKnowledge')
                 let index = findKnowledge(newObject.idx, self.items)
 
                 res.forEach((value) => {
@@ -283,7 +273,6 @@ export default {
                   }
                 })
                 self.$session.set('listKnowledge', self.items)
-               // sessionStorage.setItem('listKnowledge',JSON.stringify(self.items) )
               }
               reader.releaseLock();
             }

@@ -74,7 +74,7 @@ export default {
   },
   methods: {
     logout() {
-      this.$session.destroy();
+      this.$session.clear();
       this.$router.push('/login');
     }
   }

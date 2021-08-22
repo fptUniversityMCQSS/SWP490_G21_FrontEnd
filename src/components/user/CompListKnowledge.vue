@@ -152,12 +152,12 @@
 
           <div class="col-lg-2 fixed-sidebar">
             <comp-left-sider/>
-            <flash-message class="myCustomClass"></flash-message>
+
           </div>
         </div>
       </div>
     </section>
-
+    <flash-message class="flash__message"></flash-message>
     <comp-back-to-top/>
     <comp-footer/>
   </div>
@@ -194,14 +194,14 @@ export default {
           key: 'knowledgeName',
           label: 'Name',
           sortable: true,
-          thStyle: {background: '#92c3f9', color: 'black', width: '250px'},
+          thStyle: {background: '#92c3f9', color: 'black', width: '290px'},
           thClass: 'text-center'
         },
         {
           key: 'knowledgeDate',
           label: 'Date',
           sortable: true,
-          thStyle: {background: '#92c3f9', color: 'black', width: '290px'},
+          thStyle: {background: '#92c3f9', color: 'black', width: '200px'},
           thClass: 'text-center'
         },
         {
@@ -278,7 +278,7 @@ export default {
               })
             .then(response => {
               if (response.status === 200) {
-                this.flash('Delete successfully', 'success', {
+                this.flash('Delete successfully!', 'success', {
                   timeout: 3000
                 });
                 let indexCurrent = this.items.indexOf(item)
@@ -330,7 +330,7 @@ export default {
             }
           });
           this.itemAll = response.data
-          if (self.$session.get('role') === 'admin' || self.$session.get('role') === 'user') {
+          if (self.$session.get('user').role === 'admin' || self.$session.get('user').role === 'user') {
             this.totalRows = this.itemAll.length
           } else {
             this.totalRows = this.items.length

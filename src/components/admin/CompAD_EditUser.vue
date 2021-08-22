@@ -218,7 +218,7 @@ export default {
           })
             .then(response => {
               if (response.status === 200) {
-                this.flash('Edit account successfully', 'success', {
+                this.flash('Edit account successfully!', 'success', {
                   timeout: 3000
                 });
                 self.$router.push('/admin/user');

@@ -58,9 +58,9 @@ Vue.use(BootstrapVueIcons)
 const options = {
   persist: true
 }
-Vue.use(VueSession, options)
+// Vue.use(VueSession, options)
 import VueSessionStorage from 'vue-sessionstorage'
-// Vue.use(VueSessionStorage)
+Vue.use(VueSessionStorage)
 Vue.use(Vuex)
 Vue.use(VeeValidate, {
   inject: true,

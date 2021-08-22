@@ -170,7 +170,7 @@ export default {
   */
   created() {
     self = this
-    if (!this.$session.has('listQA')) {
+    if (!this.$session.exists('listQA')) {
       this.$session.set('listQA', [])
       this.items = this.$session.get('listQA')
     } else {
@@ -198,7 +198,7 @@ export default {
             })
             .then(response => {
               if (response.status === 200) {
-                this.flash('Delete successfully', 'success', {
+                this.flash('Delete successfully!', 'success', {
                   timeout: 10000
                 });
                 let index = this.items.indexOf(item)
@@ -218,9 +218,11 @@ export default {
       self.$router.push('/history/' + id)
     },
     handleFilesUpload(object) {
-      this.files = this.$refs.file.files[0];
-      this.fileName = object.target.files[0].name
-      document.getElementById("noticeUpload").innerHTML = "";
+      if (document.getElementById("fileInput").files.length > 0) {
+        this.files = this.$refs.file.files[0];
+        this.fileName = object.target.files[0].name
+        document.getElementById("noticeUpload").innerHTML = "";
+      }
     },
     submitFiles() {
       if (document.getElementById("fileInput").files.length > 0) {
@@ -324,11 +326,12 @@ export default {
 
 <style scoped>
 
-.btnDelete{
+.btnDelete {
   border-color: red;
   color: red;
 }
-.btnDelete:hover{
+
+.btnDelete:hover {
   background-color: red;
   color: #fff;
 }
