@@ -8,7 +8,7 @@
           <div class="banner_content text-center">
             <h2>Logging Statement</h2>
             <div class="page_link">
-              <router-link to="/home">Home</router-link>
+              <router-link to="/">Home</router-link>
               <router-link to="/admin/logging">Logging</router-link>
             </div>
           </div>
@@ -62,7 +62,6 @@ import CompLeftSider from "../frame/CompLeftSider";
 
 
 export default {
-
   name: "CompAD_Log",
   components: {
     CompHeader, CompFooter, CompBackToTop, CompLeftSider
@@ -80,7 +79,6 @@ export default {
   },
   created() {
     let self = this
-
     this.controller = new AbortController()
     this.signal = this.controller.signal
     fetch(globalURL.host + process.env.VUE_APP_LOG,
@@ -120,7 +118,6 @@ export default {
 </script>
 
 <style scoped>
-
 .fixed-sidebar {
   position: -webkit-sticky;
   position: sticky;

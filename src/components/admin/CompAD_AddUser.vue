@@ -27,6 +27,7 @@
                 <h4>Create New Account</h4>
                 <div class="errNotice">{{ err }}</div>
                 <form>
+                  <!--input username-->
                   <div class="form-group bd-r col-lg-9">
                     <p class="leftCol">Username:</p>
                     <div class=" col-lg-9 rightCol">
@@ -39,6 +40,7 @@
                     </div>
                   </div>
                   <br>
+                  <!--input role-->
                   <div class="form-group bd-r col-lg-9 cell">
                     <p class="leftCol">Role:</p>
                     <div class="col-lg-9 rightCol">
@@ -59,6 +61,7 @@
                     </div>
                   </div>
                   <br>
+                  <!--input fullName-->
                   <div class="form-group bd-r col-lg-9 cell">
                     <p class="leftCol">Full name:&nbsp;&nbsp;</p>
                     <div class=" col-lg-9 rightCol">
@@ -71,6 +74,7 @@
                     </div>
                   </div>
                   <br>
+                  <!--input email-->
                   <div class="form-group bd-r col-lg-9 cell">
                     <p class="leftCol">Email:&nbsp;</p>
                     <div class=" col-lg-9 rightCol">
@@ -83,6 +87,7 @@
                     </div>
                   </div>
                   <br>
+                  <!--input phone-->
                   <div class="form-group bd-r col-lg-9 cell">
                     <p class="leftCol">Phone:</p>
                     <div class=" col-lg-9 rightCol">
@@ -96,6 +101,7 @@
                     </div>
                   </div>
                   <br>
+                  <!--input password-->
                   <div class="form-group bd-r col-lg-9 cell">
                     <p class="leftCol">Password:</p>
                     <div class=" col-lg-9 rightCol">
@@ -108,6 +114,7 @@
                     </div>
                   </div>
                   <br>
+                  <!--confirm password-->
                   <div class="form-group bd-r col-lg-9 cell">
                     <p class="leftCol">Re-Password:</p>
                     <div class=" col-lg-9 rightCol">
@@ -134,25 +141,20 @@
             <flash-message class="myCustomClass"></flash-message>
           </div>
         </div>
-        <!-- code paging here--->
       </div>
     </section>
     <!--================End Content Area =================-->
-
     <comp-back-to-top/>
     <comp-footer/>
   </div>
 </template>
 
 <script>
-
 import CompHeader from "../frame/CompHeader";
 import CompFooter from "../frame/CompFooter";
 import CompBackToTop from "../frame/CompBackToTop";
 import CompLeftSider from "../frame/CompLeftSider";
-
 export default {
-
   name: "CompAD_AddUser",
   components: {
     CompHeader, CompFooter, CompBackToTop, CompLeftSider
@@ -170,9 +172,11 @@ export default {
     }
   },
   methods: {
+    // method cancel add user
     cancelAdd() {
       this.$router.push('/admin/user');
     },
+    // method add user
     addUser() {
       const self = this;
       this.submitted = true;

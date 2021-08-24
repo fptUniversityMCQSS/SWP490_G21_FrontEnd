@@ -6,10 +6,10 @@
       <div class="banner_inner d-flex align-items-center">
         <div class="container">
           <div class="banner_content text-center">
-            <h2>List Knowledge</h2>
+            <h2>List User</h2>
             <div class="page_link">
-              <router-link to="/home">Home</router-link>
-              <router-link to="/admin/users">List Knowledge</router-link>
+              <router-link to="/">Home</router-link>
+              <router-link to="/admin/users">List User</router-link>
             </div>
           </div>
         </div>
@@ -32,19 +32,20 @@
                   <div class="table-responsive">
                     <div style="padding: 20px;">
                       <div class="justify-content-centermy-1 row">
+                        <!--select row per page-->
                         <b-form-group horizontal label="Rows per page:" class="col-2">
                           <b-form-select size="sm"
                                          :options="[{text:5,value:5},{text:10,value:10},{text:15,value:15},{text:20,value:20}]"
                                          v-model="perPage">
                           </b-form-select>
                         </b-form-group>
-
+                        <!--button add user-->
                         <b-form-group class="col-lg-6">
                           <b-button variant="outline-primary" size="sm" class="addBtn" v-on:click="addUser()">
                             Add User&nbsp;<i class="fa fa-user-plus spaceMenu" aria-hidden="true"/>
                           </b-button>
                         </b-form-group>
-
+                        <!--search tab-->
                         <b-form-group label="Search:" class="col-4 searchTab">
                           <b-input-group size="sm">
                             <b-form-input v-model="filter" type="search" placeholder="Type to Search"></b-form-input>
@@ -53,10 +54,9 @@
                             </b-input-group-append>
                           </b-input-group>
                         </b-form-group>
-
-
                       </div>
-                      <!-- Main table element -->
+
+                      <!-- table list user -->
                       <b-table class="bgTable" :bordered="true" :borderless="true" :items="items"
                                :current-page="currentPage" show-empty
                                :per-page="perPage" :filter="filter" :fields="fields" id="my-table"
@@ -64,11 +64,11 @@
                         <template #cell(actions)="{item}">
                           <b-button variant="outline-primary" size="sm" v-on:click="editUser(item)"
                                     class="mr-1" :disabled="item.status">
-                            Edit&nbsp;<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                           </b-button>
                           <b-button variant="outline-primary" size="sm"
                                     v-on:click="deleteUser(item)" class="btnDelete" :disabled="item.status">
-                            Delete&nbsp;<i class="fa fa-trash" aria-hidden="true"></i>
+                            <i class="fa fa-trash" aria-hidden="true"></i>
                           </b-button>
                         </template>
                       </b-table>
@@ -83,16 +83,13 @@
             </div>
           </div>
           <div class="col-lg-2 fixed-sidebar">
+            <flash-message></flash-message>
             <comp-left-sider/>
-
           </div>
         </div>
       </div>
     </section>
-    <div style="z-index: 1001">
-      <flash-message></flash-message>
-    </div>
-
+    <!--================End Content Area =================-->
     <comp-back-to-top/>
     <comp-footer/>
   </div>
@@ -105,7 +102,6 @@ import CompBackToTop from "../frame/CompBackToTop";
 import CompLeftSider from "../frame/CompLeftSider";
 import Loading from 'vue-loading-overlay'
 import Vue from "vue";
-
 Vue.use(Loading)
 
 export default {
@@ -126,7 +122,15 @@ export default {
           key: 'fullName',
           label: 'Full Name',
           sortable: true,
-          thStyle: {background: '#92c3f9', color: 'black', width: '200px'},
+          thStyle: {background: '#92c3f9', color: 'black'},
+          thClass: 'text-center',
+          tdClass: 'text-center'
+        },
+        {
+          key: 'username',
+          label: 'Username',
+          sortable: true,
+          thStyle: {background: '#92c3f9', color: 'black'},
           thClass: 'text-center',
           tdClass: 'text-center'
         },
@@ -134,7 +138,7 @@ export default {
           key: 'email',
           label: 'Email',
           sortable: true,
-          thStyle: {background: '#92c3f9', color: 'black', width: '200px'},
+          thStyle: {background: '#92c3f9', color: 'black'},
           thClass: 'text-center',
           tdClass: 'text-center'
         },
@@ -142,21 +146,21 @@ export default {
           key: 'phone',
           label: 'Phone',
           sortable: true,
-          thStyle: {background: '#92c3f9', color: 'black', width: '200px'},
+          thStyle: {background: '#92c3f9', color: 'black', width: '150px'},
           thClass: 'text-center',
           tdClass: 'text-center'
         },
         {
           key: 'role',
           label: 'Role',
-          thStyle: {background: '#92c3f9', color: 'black'},
+          thStyle: {background: '#92c3f9', color: 'black', width: '70px'},
           thClass: 'text-center',
           tdClass: 'text-center'
         },
         {
           key: 'actions',
           label: 'Actions',
-          thStyle: {background: '#92c3f9', color: 'black', width: '250px'},
+          thStyle: {background: '#92c3f9', color: 'black', width: '120px'},
           thClass: 'text-center',
           tdClass: 'text-center'
         }
@@ -164,9 +168,11 @@ export default {
     }
   },
   methods: {
+    // method edit user
     editUser(item) {
       this.$router.push('/admin/user/' + item.id)
     },
+    // method delete user
     deleteUser(item) {
       const self = this
       let message = "<p style='text-align: center; padding-top: 5px'><b style='font-size: 20px'>Delete Account</b>" +
@@ -205,15 +211,16 @@ export default {
           console.log('Clicked on cancel');
         })
     },
+    // method add user
     addUser() {
       this.$router.push('/admin/add')
     },
+    // method search
     onFiltered(filteredItems) {
       this.totalRows = filteredItems.length
       this.currentPage = 1
     }
   },
-
   created() {
     const self = this
     const axios = require('axios');
@@ -250,11 +257,12 @@ export default {
 
 <style scoped>
 
-.btnDelete{
+.btnDelete {
   border-color: red;
   color: red;
 }
-.btnDelete:hover{
+
+.btnDelete:hover {
   background-color: red;
   color: #fff;
 }

@@ -8,7 +8,7 @@
           <div class="banner_content text-center">
             <h2>History Detail</h2>
             <div class="page_link">
-              <router-link to="/home">Home</router-link>
+              <router-link to="/">Home</router-link>
               <router-link to="/history">History Detail</router-link>
             </div>
           </div>
@@ -20,9 +20,9 @@
     <!--================Content Area =================-->
     <section class="cat_product_area">
       <div class="vld-parent">
-
         <div class="row flex-row-reverse">
           <div class="col-lg-1 py-5 tblAns">
+            <!-- table overview all answers-->
             <b-table v-if="!isLoading" striped hover :items="items.Questions" :fields="fields" class="scrollbar">
               <template #cell(Number)="{item}">
                 {{ item.Number }}
@@ -33,8 +33,8 @@
             </b-table>
           </div>
 
+          <!-- detail question answer-->
           <div class="col-lg-7 py-5">
-
             <div class="detailAns">
               <h3>{{ items.Name }}</h3>
               <p>{{ formatDate(items.Date) }}&nbsp;&nbsp;&nbsp;&nbsp;
@@ -92,6 +92,7 @@ export default {
     CompHeader, CompFooter, CompBackToTop, CompLeftSider, Loading
   },
   methods: {
+    // method format date
     formatDate(date) {
       let dateFormat = require('dateformat');
       let newDate = new Date(date);
@@ -101,6 +102,7 @@ export default {
       }
       return ""
     },
+    //method download history detail
     downloadDetail() {
       let id = this.$route.params.id
       let api = process.env.VUE_APP_HISTORY_DOWNLOAD.replace(/%\w+%/g, function (all) {

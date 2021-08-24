@@ -38,6 +38,7 @@
               <h3>Login form</h3>
               <div class="errNotice">{{ err }}</div>
               <form class="row login_form" @submit.prevent="loginData()" method="post">
+                <!--input username-->
                 <div class="col-md-12 form-group">
                   <input type="text" class="form-control" name="Username" placeholder="Username"
                          v-model="username" v-validate="'required'"
@@ -46,7 +47,7 @@
                     {{ errors.first('Username') }}
                   </div>
                 </div>
-
+                <!--input password-->
                 <div class="col-md-12 form-group">
                   <input v-bind:type="[showPassword ? 'text' : 'password']" class="form-control" name="Password"
                          placeholder="Password"
@@ -54,7 +55,7 @@
                          :class="{ 'is-invalid': submitted && errors.has('Password') }">
                   <div class="input-group-append">
                     <span class="input-group-text" @click="showPassword = !showPassword" style="margin-left: 315px">
-                        <i class="fa" :class="[showPassword ? 'fa-eye' : 'fa-eye-slash']" aria-hidden="true"></i>
+                        <i class="fa" :class="[showPassword ? 'fa-eye-slash':'fa-eye']" aria-hidden="true"></i>
                     </span>
                   </div>
                   <div v-if="submitted && errors.has('Password')" class="invalid-feedback">
@@ -63,13 +64,10 @@
                 </div>
                 <div class="col-md-12 form-group">
                   <div class="creat_account">
-<!--                    <input type="checkbox" id="f-option2" name="selector">-->
-<!--                    <label for="f-option2">Keep me logged in</label>-->
                   </div>
                 </div>
                 <div class="col-md-12 form-group">
                   <button type="submit" value="submit" class="btn submit_btn">LOGIN</button>
-<!--                  <a href="#">Forgot Password?</a>-->
                 </div>
               </form>
             </div>
@@ -78,7 +76,6 @@
       </div>
     </section>
     <!--================End Login Box Area =================-->
-
     <comp-back-to-top/>
     <comp-footer/>
   </div>
@@ -102,6 +99,7 @@ export default {
     }
   },
   methods: {
+    //method login
     loginData() {
       const self = this;
       this.submitted = true;
@@ -112,15 +110,11 @@ export default {
           const form = new FormData();
           form.append('username', this.username);
           form.append('password', this.password);
-
           axios.post(globalURL.host + process.env.VUE_APP_LOGIN, form)
             .then(response => {
               if (response.status === 200) {
-                // self.$session.start()
                 self.$session.set('user', response.data)
-                // sessionStorage.setItem('user', JSON.stringify(response.data))
                 self.$router.push('/');
-
               }
             }).catch(error => {
             this.err = error.response.data.message

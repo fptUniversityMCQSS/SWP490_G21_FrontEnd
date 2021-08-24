@@ -6,10 +6,10 @@
       <div class="banner_inner d-flex align-items-center">
         <div class="container">
           <div class="banner_content text-center">
-            <h2>Question and Answer</h2>
+            <h2>Question Answer</h2>
             <div class="page_link">
-              <router-link to="/home">Home</router-link>
-              <router-link to="/qa">Question and Answer</router-link>
+              <router-link to="/">Home</router-link>
+              <router-link to="/qa">Question Answer</router-link>
             </div>
           </div>
         </div>
@@ -24,6 +24,7 @@
           <div class="col-lg-10">
             <div class="col-lg-11 mx-auto section_gap">
               <div class="wrapper">
+                <!--form upload-->
                 <div class="cont shadow" style="background-color: #f9f9ff">
                   <h2>Upload Question</h2>
                   <div class="upload-container">
@@ -41,11 +42,12 @@
                   </div>
                 </div>
                 <br>
-
                 <b-button variant="outline-primary" class="btnUpload"
                           v-on:click="submitFiles()">Upload
                 </b-button>
-                <p id="noticeUpload" style="color: red; font-size: 17px; margin-top: 20px"></p>
+                <p id="noticeUpload" class="err"></p>
+
+                <!--table list QA uploaded-->
                 <div v-if="items.length>0" style="margin-top: 50px">
                   <b-table :bordered="true" :borderless="true" :items="items.slice().reverse()" :fields="fields"
                            class="shadow text-center"
@@ -54,7 +56,6 @@
                       <div>{{ row.value }}</div>
                     </template>
                     <template #cell(status)="{item}">
-
 
                       <div v-if="item.status === 'Loading'">
                         Loading&nbsp;<i class="fa fa-spinner fa-spin"/>
@@ -75,19 +76,21 @@
                         {{ item.questions.length + "/" + item.questions_number }}
                       </div>
 
-
                     </template>
                     <template #cell(action)="row">
                       <b-button variant="outline-primary" size="sm" @click="row.toggleDetails"
                                 class="mr-1">
-                        {{ row.detailsShowing ? 'Hide' : 'Show' }} Details
+                        {{ row.detailsShowing ? 'Hide' : 'Show' }} Details&nbsp;
+                        <i class="fa" :class="[row.detailsShowing ? 'fa-eye-slash':'fa-eye']" aria-hidden="true"></i>
                       </b-button>
+
                       <b-button
                         v-if="row.item.message !== ''"
                         variant="outline-primary" size="sm"
                         v-on:click="viewQA(row.item.id)">
-                        View
+                        View&nbsp;<i class="fa fa-share-square-o" aria-hidden="true"></i>
                       </b-button>
+
                       <b-button
                         v-if="row.item.status !== 'Loading' && row.item.message === ''"
                         variant="outline-primary" size="sm"
@@ -96,6 +99,7 @@
                         Delete&nbsp;<i class="fa fa-trash" aria-hidden="true"></i>
                       </b-button>
                     </template>
+
                     <template #row-details="row">
                       <b-card class="scrollbar">
                         <ul v-for="ob in row.item.questions" :key="ob.Number">
@@ -117,11 +121,9 @@
             <flash-message class="myCustomClass"></flash-message>
           </div>
         </div>
-        <!-- code paging here--->
       </div>
     </section>
     <!--================End Content Area =================-->
-
     <comp-back-to-top/>
     <comp-footer/>
   </div>
@@ -178,6 +180,7 @@ export default {
     }
   },
   methods: {
+    // method cancel upload
     cancelUpload(item) {
       let message = "<p style='text-align: center; padding-top: 5px'><b style='font-size: 20px'>Cancel Upload</b>" +
         "<br><br>Are you sure you want to cancel upload?</p>";
@@ -191,7 +194,7 @@ export default {
         .then(() => {
           const axios = require('axios');
           axios
-            .delete(globalURL.host + process.env.VUE_APP_ADMIN_USER + "/" + item.id, {
+            .delete(globalURL.host + process.env.VUE_APP_HISTORY + "/" + item.id, {
               headers: {
                 'Authorization': 'Bearer ' + self.$session.get("user").token
               }
@@ -214,9 +217,11 @@ export default {
           console.log('Clicked on cancel');
         })
     },
+    // method view QA
     viewQA(id) {
       self.$router.push('/history/' + id)
     },
+    // method detect file selected
     handleFilesUpload(object) {
       if (document.getElementById("fileInput").files.length > 0) {
         this.files = this.$refs.file.files[0];
@@ -224,6 +229,7 @@ export default {
         document.getElementById("noticeUpload").innerHTML = "";
       }
     },
+    //method submit file
     submitFiles() {
       if (document.getElementById("fileInput").files.length > 0) {
         let objectQA = {
@@ -452,4 +458,9 @@ h2 {
   color: #fff;
 }
 
+.err {
+  color: red;
+  font-size: 17px;
+  margin-top: 20px
+}
 </style>

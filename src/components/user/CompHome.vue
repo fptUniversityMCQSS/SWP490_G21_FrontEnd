@@ -6,8 +6,10 @@
       <div class="banner_inner d-flex align-items-center">
         <div class="container">
           <div class="banner_content text-center">
-            <h2 class="contentBanner">Multiple choices question solving system using Deep learning
-              <br> for high school tests</h2>
+            <h2 class="contentBannerH2">The new way to learn properly!</h2>
+            <h2 class="contentBannerH3">Multiple choices question solving system</h2>
+            <h2 class="contentBannerP">Join us to develop more convenient learning environment</h2>
+            <b-button v-on:click="getStarted" class="btnUpload">Get Started</b-button>
           </div>
         </div>
       </div>
@@ -17,11 +19,10 @@
       <div class="banner_inner d-flex align-items-center">
         <div class="container">
           <div class="banner_content text-center">
-            <!--            <h2>Do you have a high school exam test?<br>-->
-            <!--              Let our AI assistant help you find the solution</h2>-->
-            <h2 class="contentBanner">Multiple choices question solving system using Deep learning
-              <br> for high school tests</h2>
-            <router-link to="/login" class="white_bg_btn">Get Started</router-link>
+            <h2 class="contentBannerH2">The new way to learn properly!</h2>
+            <h2 class="contentBannerH3">Multiple choices question solving system</h2>
+            <h2 class="contentBannerP">Join us to develop more convenient learning environment</h2>
+            <b-button v-on:click="getStarted" class="btnUpload">Get Started</b-button>
           </div>
         </div>
       </div>
@@ -42,7 +43,7 @@
                   <div class="row justify-content-center" data-aos="fade-up">
                     <div class="col-lg-6 text-center heading-section mb-5">
 
-                      <h2>Welcome to Dogger Pet Care</h2>
+                      <h2>Welcome to DeepQuiz</h2>
                       <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there
                         live the blind texts.</p>
                     </div>
@@ -120,12 +121,11 @@ import CompHeader from "../frame/CompHeader";
 import CompFooter from "../frame/CompFooter";
 import CompBackToTop from "../frame/CompBackToTop";
 import CompLeftSider from "../frame/CompLeftSider";
-import CompSliderImage from "../frame/CompSliderImage";
 
 export default {
   name: "CompHome",
   components: {
-    CompHeader, CompFooter, CompBackToTop, CompLeftSider, CompSliderImage
+    CompHeader, CompFooter, CompBackToTop, CompLeftSider
   },
   data() {
     return {
@@ -133,16 +133,25 @@ export default {
     }
   },
   methods: {
+    //click getStarted button
+    getStarted(){
+      if (this.username !== '') {
+        this.$router.push('/qa')
+      } else this.$router.push('/login')
+    },
+    //click QA button
     QA() {
       if (this.username !== '') {
         this.$router.push('/qa')
       } else this.$router.push('/login')
     },
+    //click knowledge button
     knowledge() {
       if (this.username !== '') {
         this.$router.push('/knowledge/upload')
       } else this.$router.push('/login')
     },
+    //click history button
     history() {
       if (this.username !== '') {
         this.$router.push('/history')
@@ -217,10 +226,42 @@ export default {
   z-index: 999;
 }
 
-.contentBanner {
+.contentBannerH2 {
   color: #fff;
   font-weight: bold;
-  font-size: 30px;
-  font-family: Arial, Helvetica, sans-serif;
+  font-size: 25px;
+  font-family: "Roboto", sans-serif;
+}
+.contentBannerH3 {
+  color: #fff;
+  font-weight: bold;
+  font-size: 35px;
+  font-family: "Roboto", sans-serif;
+}
+.contentBannerP {
+  color: #fff;
+  font-weight: bold;
+  font-size: 18px;
+  font-family: "Roboto", sans-serif;
+}
+
+.btnUpload {
+  width: 130px;
+  height: 45px;
+  background-color: #92c3f9;
+  border: none;
+  outline: none;
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.btnUpload:hover {
+  border: none;
+  outline: none;
+  background-color: #0088ff;
+  color: #fff;
 }
 </style>

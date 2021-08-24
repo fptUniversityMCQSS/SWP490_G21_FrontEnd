@@ -8,7 +8,7 @@
           <div class="banner_content text-center">
             <h2>Edit Account</h2>
             <div class="page_link">
-              <router-link to="/home">Home</router-link>
+              <router-link to="/">Home</router-link>
               <router-link to="/admin/edit">Edit Account</router-link>
             </div>
           </div>
@@ -26,6 +26,7 @@
               <div class="comment-form shadow">
                 <h4>Edit Account</h4>
                 <form>
+                  <!--input username-->
                   <div class="form-group bd-r col-lg-9">
                     <p class="leftCol">Username:</p>
                     <div class="col-lg-9 rightCol">
@@ -35,6 +36,7 @@
                     </div>
                   </div>
                   <br>
+                  <!--input role-->
                   <div class="form-group bd-r col-lg-9 cell">
                     <p class="leftCol">Role:</p>
                     <div class="col-lg-9 rightCol">
@@ -56,6 +58,7 @@
 
                   </div>
                   <br>
+                  <!--input fullName-->
                   <div class="form-group bd-r col-lg-9 cell">
                     <p class="leftCol">Full name:&nbsp;&nbsp;</p>
                     <div class=" col-lg-9 rightCol">
@@ -68,6 +71,7 @@
                     </div>
                   </div>
                   <br>
+                  <!--input email-->
                   <div class="form-group bd-r col-lg-9 cell">
                     <p class="leftCol">Email:&nbsp;</p>
                     <div class=" col-lg-9 rightCol">
@@ -80,6 +84,7 @@
                     </div>
                   </div>
                   <br>
+                  <!--input phone-->
                   <div class="form-group bd-r col-lg-9 cell">
                     <p class="leftCol">Phone:</p>
                     <div class=" col-lg-9 rightCol">
@@ -93,12 +98,14 @@
                     </div>
                   </div>
                   <br>
+                  <!--check enable change password-->
                   <div class="form-group bd-r col-lg-9 cell">
                     <a href="#" onclick="return false" class="leftCol changePassword" @click="checked = !checked">Enable
                       change password&nbsp;
                       <i class="fa" :class="[checked ? 'fa-angle-up' : 'fa-angle-down']" aria-hidden="true"></i></a>
                   </div>
                   <br v-if="checked">
+                  <!--input password-->
                   <div v-if="checked" class="form-group bd-r col-lg-9 cell">
                     <p class="leftCol">Password:</p>
                     <div class=" col-lg-9 rightCol">
@@ -111,6 +118,7 @@
                     </div>
                   </div>
                   <br v-if="checked">
+                  <!--confirm password-->
                   <div v-if="checked" class="form-group bd-r col-lg-9 cell">
                     <p class="leftCol">Re-Password:</p>
                     <div class=" col-lg-9 rightCol">
@@ -137,7 +145,6 @@
             <flash-message class="myCustomClass"></flash-message>
           </div>
         </div>
-        <!-- code paging here--->
       </div>
     </section>
     <!--================End Content Area =================-->
@@ -148,14 +155,12 @@
 </template>
 
 <script>
-
 import CompHeader from "../frame/CompHeader";
 import CompFooter from "../frame/CompFooter";
 import CompBackToTop from "../frame/CompBackToTop";
 import CompLeftSider from "../frame/CompLeftSider";
 
 export default {
-
   name: "CompAD_EditUser",
   components: {
     CompHeader, CompFooter, CompBackToTop, CompLeftSider
@@ -193,9 +198,11 @@ export default {
     })
   },
   methods: {
+    // method cancel edit user
     cancelEdit() {
       this.$router.push('/admin/user')
     },
+    // method edit user
     editUser() {
       const self = this;
       this.submitted = true;

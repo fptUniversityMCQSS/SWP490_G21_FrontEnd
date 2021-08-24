@@ -8,7 +8,7 @@
           <div class="banner_content text-center">
             <h2>Upload Knowledge</h2>
             <div class="page_link">
-              <router-link to="/home">Home</router-link>
+              <router-link to="/">Home</router-link>
               <router-link to="/knowledge">Upload Knowledge</router-link>
             </div>
           </div>
@@ -24,6 +24,7 @@
           <div class="col-lg-10">
             <div class="col-lg-11 mx-auto section_gap">
               <div class="wrapper">
+                <!--form upload-->
                 <div class="cont shadow" style="background-color: #f9f9ff">
                   <h2>Upload Knowledge</h2>
                   <div class="upload-container">
@@ -36,10 +37,9 @@
                   </div>
                 </div>
                 <br>
-                <b-button variant="outline-primary" class="btnUpload"
-                          v-on:click="submitFiles()">Upload
-                </b-button>
-                <p id="noticeUpload" style="color: red; font-size: 17px; margin-top: 20px"></p>
+                <b-button variant="outline-primary" class="btnUpload" v-on:click="submitFiles()">Upload</b-button>
+                <p id="noticeUpload" class="err"></p>
+                  <!--table file uploaded-->
                 <div v-if="this.items.length > 0" style="margin-top: 50px">
                   <b-table :bordered="true" :borderless="true" class="text-center shadow"
                            :items="this.items.slice().reverse()" :fields="fields">
@@ -80,10 +80,8 @@
             <comp-left-sider/>
           </div>
         </div>
-        <!-- code paging here--->
       </div>
     </section>
-
     <!--================End Content Area =================-->
     <flash-message class="myCustomClass"></flash-message>
     <comp-back-to-top/>
@@ -99,7 +97,6 @@ import CompLeftSider from "../frame/CompLeftSider";
 import * as utility from '../utility/utility';
 
 let self
-
 
 function findKnowledge(idx, listKnowledge) {
   for (let i = 0; i < listKnowledge.length; i++) {
@@ -142,12 +139,6 @@ export default {
     }
   },
   created() {
-
-    // console.log( this.$session.get('user'), 'storage2')
-    // var obj = JSON.parse(sessionStorage.user);
-    // console.log(obj, 'storage')
-
-
     self = this
     if (!this.$session.exists('listKnowledge')) {
       this.$session.set('listKnowledge', [])
@@ -164,6 +155,7 @@ export default {
     }
   },
   methods: {
+    // method cancel upload
     cancelUpload(item) {
       let message = "<p style='text-align: center; padding-top: 5px'><b style='font-size: 20px'>Delete knowledge</b>" +
         "<br><br>Are you sure you want to delete knowledge?</p>";
@@ -203,7 +195,7 @@ export default {
           console.log('Clicked on cancel');
         })
     },
-
+    // method detect file selected
     handleFilesUpload(object) {
       if (document.getElementById("fileInput").files.length > 0) {
         this.files = this.$refs.file.files[0];
@@ -211,6 +203,7 @@ export default {
         document.getElementById("noticeUpload").innerHTML = "";
       }
     },
+    // method submit file
     submitFiles() {
       if (document.getElementById("fileInput").files.length > 0) {
         let newObject = {
@@ -285,11 +278,14 @@ export default {
     }
   }
 }
-
-
 </script>
 
 <style scoped>
+.err {
+  color: red;
+  font-size: 17px;
+  margin-top: 20px;
+}
 
 .btnDelete {
   border-color: red;

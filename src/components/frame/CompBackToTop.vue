@@ -1,5 +1,7 @@
 <template>
-  <button v-on:click="topFunction()" id="myBtn"><i style="font-size: 25px" class="fa fa-angle-double-up" aria-hidden="true"></i></button>
+  <button v-on:click="topFunction()" id="myBtn">
+    <i style="font-size: 25px" class="fa fa-angle-double-up" aria-hidden="true"></i>
+  </button>
 </template>
 
 <script>
@@ -21,6 +23,7 @@ export default {
   }
 }
 </script>
+
 <style scoped>
 #myBtn {
   display: none;

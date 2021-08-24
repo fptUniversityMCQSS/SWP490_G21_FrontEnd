@@ -14,23 +14,28 @@
               <div class="col-lg-12 pr-0">
                 <ul class="nav navbar-nav center_nav pull-right">
                   <li class="nav-item">
-                    <router-link to="/" class="nav-link" active-class="active"><i style="font-size: 17px" class="fa fa-home"
-                                                            aria-hidden="true"></i>&nbsp;&nbsp;Home
+                    <router-link to="/" class="nav-link" active-class="active">
+                      <i class="fa fa-home fontHeader" aria-hidden="true"></i>&nbsp;&nbsp;Home
                     </router-link>
                   </li>
                   <li class="nav-item">
-                    <router-link to="/about" class="nav-link" exact-active-class="exact-active"><i style="font-size: 15px" class="fa fa-address-book"
-                                                                 aria-hidden="true"></i>&nbsp;&nbsp;About
+                    <router-link to="/qa" class="nav-link">
+                      <i class="fa fa-tasks fontHeader" aria-hidden="true"></i>&nbsp;&nbsp;Feature
                     </router-link>
                   </li>
-                  <li class="nav-item submenu dropdown" v-if="role !== ''">
+                  <li class="nav-item">
+                    <router-link to="/library" class="nav-link">
+                      <i class="fa fa-folder-open" aria-hidden="true"></i>&nbsp;&nbsp;API Library
+                    </router-link>
+                  </li>
+                  <li class="nav-item submenu dropdown" v-if="username !== ''">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                       aria-expanded="false"><i style="font-size: 15px" class="fa fa-user-circle"
+                       aria-expanded="false"><i class="fa fa-user-circle"
                                                 aria-hidden="true"></i>&nbsp;&nbsp;{{ currentUser }}</a>
                     <ul class="dropdown-menu">
                       <li class="nav-item">
-                        <router-link to="/user" class="nav-link" href="login.html"><i class="fa fa-user-o"
-                                                                                      aria-hidden="true"></i>&nbsp;&nbsp;My
+                        <router-link to="/user" class="nav-link">
+                          <i class="fa fa-user-o" aria-hidden="true"></i>&nbsp;&nbsp;My
                           Account
                         </router-link>
                       </li>
@@ -40,7 +45,7 @@
                       </li>
                     </ul>
                   </li>
-                  <li class="nav-item" v-if="role === ''">
+                  <li class="nav-item" v-if="username === ''">
                     <router-link to="/login" class="nav-link" active-class="active">
                       <b-button variant="outline-primary" class="header_btn">LOGIN/REGISTER</b-button>
                     </router-link>
@@ -57,22 +62,22 @@
 </template>
 
 <script>
-
 export default {
   name: "CompHeader",
   data() {
     return {
-      role: '',
+      username: '',
       currentUser: ''
     }
   },
   created() {
     if (this.$session.exists('user')) {
-      this.role = this.$session.get('user').role
+      this.username = this.$session.get('user').username
       this.currentUser = this.$session.get('user').fullName
     }
   },
   methods: {
+    // method logout
     logout() {
       this.$session.clear();
       this.$router.push('/login');
@@ -82,30 +87,9 @@ export default {
 </script>
 
 <style scoped>
-
 a.router-link-active,
 a.router-link-exact-active {
 }
-
-/*.navbar .nav .nav-item:hover {*/
-/*  font-size: 30px;*/
-/*  background: #cdd3d9;*/
-/*}*/
-
-/*.header_area .navbar .nav .nav-item:hover .nav-link {*/
-/*  color: #1641ff;*/
-/*  background-color: #ff3e3f;*/
-/*}*/
-
-/*.header_area .navbar .nav .router-link-active .nav-link{*/
-/*  color: #1641ff;*/
-/*  background-color: #FFFFFF;*/
-/*}*/
-
-/*.header_area .navbar .nav .router-link-exact-active .nav-link{*/
-/*  color: #1641ff;*/
-/*  background-color: #FFFFFF;*/
-/*}*/
 
 .header_btn {
   font-size: 12px;
@@ -118,6 +102,10 @@ a.router-link-exact-active {
   border-radius: 90px;
   background-color: #4d97e2;
   color: #FFFFFF;
+}
+
+.fontHeader{
+  font-size: 15px;
 }
 
 .header_btn:hover {
