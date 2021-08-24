@@ -28,7 +28,7 @@
               <div class="hover">
                 <h4>Create an account</h4>
                 <p>The new way to learn properly!
-                  Join us to develop an even <br>more convenient learning environment</p>
+                  Join us to develop <br>more convenient learning environment</p>
                 <router-link to="/register" class="main_btn">Create an Account</router-link>
               </div>
             </div>
@@ -118,7 +118,7 @@ export default {
               if (response.status === 200) {
                 // self.$session.start()
                 self.$session.set('user', response.data)
-                sessionStorage.setItem('user', JSON.stringify(response.data))
+                // sessionStorage.setItem('user', JSON.stringify(response.data))
                 self.$router.push('/');
 
               }

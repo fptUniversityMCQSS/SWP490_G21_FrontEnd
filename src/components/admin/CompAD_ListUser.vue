@@ -41,7 +41,7 @@
 
                         <b-form-group class="col-lg-6">
                           <b-button variant="outline-primary" size="sm" class="addBtn" v-on:click="addUser()">
-                            Add User
+                            Add User&nbsp;<i class="fa fa-user-plus spaceMenu" aria-hidden="true"/>
                           </b-button>
                         </b-form-group>
 
@@ -189,8 +189,8 @@ export default {
             })
             .then(response => {
               if (response.status === 200) {
-                this.flash('Delete successfully', 'success', {
-                  timeout: 10000
+                this.flash('Delete successfully!', 'success', {
+                  timeout: 3000
                 });
                 let index = this.items.indexOf(item)
                 this.items.splice(index, 1)

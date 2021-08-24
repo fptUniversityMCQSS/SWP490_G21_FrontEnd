@@ -53,7 +53,7 @@
                   </div>
                   <div>
                     <i class="fa fa-envelope" aria-hidden="true" style="color: #2faae6"></i>&nbsp;
-                    <span>SWP409_G21@gmai.com</span>
+                    <span>fptquestionanswering@gmail.com</span>
                   </div>
                 </div>
 

@@ -142,7 +142,7 @@ export default {
           key: 'subject',
           label: 'Subject',
           sortable: true,
-          thStyle: {background: '#92c3f9', color: 'black',  width: '140px'},
+          thStyle: {background: '#92c3f9', color: 'black',  width: '100px'},
           thClass: 'text-center',
           tdClass: 'text-center'
         },
@@ -187,7 +187,7 @@ export default {
               })
             .then(response => {
               if (response.status === 200) {
-                this.flash('Delete successfully', 'success', {
+                this.flash('Delete successfully!', 'success', {
                   timeout: 3000
                 });
                 let indexCurrent = this.items.indexOf(item)
@@ -210,11 +210,10 @@ export default {
       this.$router.push('/history/' + item.id)
     },
     downloadHistory(item) {
+      const self = this
       let api = process.env.VUE_APP_HISTORY_DOWNLOAD.replace(/%\w+%/g, function (all) {
         return {"%id%": item.id}[all] || all;
       });
-      console.log(api)
-
       const axios = require('axios');
       axios
         .get(globalURL.host + api,

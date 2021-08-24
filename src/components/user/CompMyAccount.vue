@@ -243,7 +243,7 @@ export default {
                   username: this.username
                 }
                 self.$session.set('user', updateAccount)
-                this.flash('Edit account successfully', 'success', {
+                this.flash('Change profile successfully!', 'success', {
                   timeout: 3000
                 });
               }
