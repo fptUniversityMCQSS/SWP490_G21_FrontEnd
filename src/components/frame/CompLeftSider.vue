@@ -47,11 +47,11 @@
           </li>
         </ul>
       </li>
-      <li v-if="role === 'admin'">
-        <router-link to="/admin/log">
-          <i class="fa fa-server spaceMenu" aria-hidden="true"></i>Logging
-        </router-link>
-      </li>
+<!--      <li v-if="role === 'admin'">-->
+<!--        <router-link to="/admin/log">-->
+<!--          <i class="fa fa-server spaceMenu" aria-hidden="true"></i>Logging-->
+<!--        </router-link>-->
+<!--      </li>-->
     </ul>
   </nav>
 </template>
@@ -82,11 +82,11 @@ export default {
 }
 
 .space {
-  padding-right: 0.45em;
+  padding-right: 0.50em;
 }
 
 .space1 {
-  padding-right: 0.3em;
+  padding-right: 0.35em;
 }
 
 a.router-link-active,
@@ -95,7 +95,7 @@ a.router-link-exact-active {
 }
 
 .sticky {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: 15px;
   font-weight: bold;
   float: left;

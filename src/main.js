@@ -48,6 +48,24 @@ import './assets/font-awesome/css/font-awesome.min.css'
 import VTooltip from 'v-tooltip'
 import Map from 'map'
 
+
+
+// home
+// import './assets/home/css/style.css'
+// import './assets/home/js/jquery-3.3.1.min.js'
+// import './assets/home/js/jquery-ui.js'
+// import './assets/home/js/popper.min.js'
+// import './assets/home/js/owl.carousel.min.js'
+// import './assets/home/js/jquery.countdown.min.js'
+// import './assets/home/js/jquery.easing.1.3.js'
+// import './assets/home/js/aos.js'
+// import './assets/home/js/jquery.fancybox.min.js'
+// import './assets/home/js/jquery.sticky.js'
+// end home
+
+
+
+
 Vue.use(Map)
 Vue.use(VTooltip)
 Vue.use(VuejsDialog);

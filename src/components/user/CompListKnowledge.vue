@@ -80,11 +80,11 @@
                           <template #cell(actions)="{item}">
                             <col :style="{ width: '50px' }">
                             <b-button variant="outline-primary" size="sm" v-on:click="downloadKnowledge(item)"
-                                      class="mr-1 actionBtn">
+                                      class="mr-1">
                               Download <i class="fa fa-download" aria-hidden="true"></i>
                             </b-button>
                             <b-button variant="outline-primary" size="sm" v-on:click="deleteKnowledge(item)"
-                                      class="actionBtn">
+                                      class="btnDelete">
                               Delete&nbsp;<i class="fa fa-trash" aria-hidden="true"></i>
                             </b-button>
                           </template>
@@ -105,7 +105,7 @@
                           </template>
                           <template #cell(actions)="{item}">
                             <b-button variant="outline-primary" size="sm" v-on:click="downloadKnowledge(item)"
-                                      class="mr-1 actionBtn">
+                                      class="mr-1">
                               Download <i class="fa fa-download" aria-hidden="true"></i>
                             </b-button>
                           </template>
@@ -319,7 +319,7 @@ export default {
       .then(response => {
         if (response.status === 200) {
           response.data.forEach((value) => {
-            if (this.$session.get('username') === value.Username) {
+            if (this.$session.get('user').username === value.Username) {
               let object = {
                 username: value.Username,
                 knowledgeDate: value.knowledgeDate,

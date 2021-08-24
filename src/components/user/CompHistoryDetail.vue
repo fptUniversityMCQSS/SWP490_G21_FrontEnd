@@ -56,7 +56,7 @@
                 </div>
               </div>
               <router-link to="/history" v-if="!isLoading">
-                <b-button variant="outline-primary" class="btnUpload">Finish Review</b-button>
+                <b-button variant="outline-primary" class="btnUpload">Finish View</b-button>
               </router-link>
             </div>
           </div>

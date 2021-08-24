@@ -126,7 +126,7 @@
                   <br>
                   <div class="form-group col-lg-12 cell">
                     <b-button class="btnUpload" style="margin-right: 49px;" v-on:click="cancelEdit()">Cancel</b-button>
-                    <b-button class="btnUpload" v-on:click="editUser()">Submit</b-button>
+                    <b-button class="btnUpload" v-on:click="editUser()">Save</b-button>
                   </div>
                 </form>
               </div>

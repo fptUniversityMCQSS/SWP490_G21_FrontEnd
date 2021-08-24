@@ -25,6 +25,7 @@
             <div class="col-lg-8 mx-auto section_gap">
               <div class="comment-form shadow">
                 <h4>Create New Account</h4>
+                <div class="errNotice">{{ err }}</div>
                 <form>
                   <div class="form-group bd-r col-lg-9">
                     <p class="leftCol">Username:</p>
@@ -122,7 +123,7 @@
                   <br>
                   <div class="form-group col-lg-12 cell">
                     <b-button class="btnUpload" style="margin-right: 49px;" v-on:click="cancelAdd()">Cancel</b-button>
-                    <b-button class="btnUpload" v-on:click="addUser()">Submit</b-button>
+                    <b-button class="btnUpload" v-on:click="addUser()">Add</b-button>
                   </div>
                 </form>
               </div>
@@ -164,7 +165,8 @@ export default {
       username: '',
       password: '',
       role: null,
-      submitted: false
+      submitted: false,
+      err: ''
     }
   },
   methods: {
@@ -198,7 +200,7 @@ export default {
                 self.$router.push('/admin/user');
               }
             }).catch(error => {
-            console.log(error)
+            this.err = error.response.data.message
           })
         }
       });
@@ -208,6 +210,12 @@ export default {
 </script>
 
 <style scoped>
+.errNotice {
+  color: red;
+  font-weight: bold;
+  font-size: 15px;
+}
+
 .textBox {
   border-radius: 50px;
 }

@@ -2,24 +2,25 @@
   <div>
     <comp-header/>
     <!--================Home Banner Area =================-->
-    <section v-if="role !== ''" class="home_banner_area">
+    <section v-if="username !== ''" class="home_banner_area">
       <div class="banner_inner d-flex align-items-center">
         <div class="container">
           <div class="banner_content text-center">
-<!--            <h2>Do you have a high school exam test?<br>-->
-<!--              Let our AI assistant help you find the solution</h2>-->
-            <h2>Multiple choices question solving system using Deep learning <br> for high school tests</h2>
+            <h2 class="contentBanner">Multiple choices question solving system using Deep learning
+              <br> for high school tests</h2>
           </div>
         </div>
       </div>
     </section>
 
-    <section v-else-if="role === ''" class="home_banner_area">
+    <section v-else-if="username === ''" class="home_banner_area">
       <div class="banner_inner d-flex align-items-center">
         <div class="container">
           <div class="banner_content text-center">
-            <h2>Do you have a high school exam test?<br>
-              Let our AI assistant help you find the solution</h2>
+            <!--            <h2>Do you have a high school exam test?<br>-->
+            <!--              Let our AI assistant help you find the solution</h2>-->
+            <h2 class="contentBanner">Multiple choices question solving system using Deep learning
+              <br> for high school tests</h2>
             <router-link to="/login" class="white_bg_btn">Get Started</router-link>
           </div>
         </div>
@@ -31,15 +32,78 @@
     <section class="cat_product_area">
       <div>
         <div class="row flex-row-reverse">
-          <div class="col-lg-10 py-5" style="padding-left: 30px">
-            <div class="col-lg-11 mx-auto">
+          <div class="col-lg-12 py-5">
+            <div>
 
               <!-- code home here-->
 
+              <section class="site-section">
+                <div class="container">
+                  <div class="row justify-content-center" data-aos="fade-up">
+                    <div class="col-lg-6 text-center heading-section mb-5">
+
+                      <h2>Welcome to Dogger Pet Care</h2>
+                      <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there
+                        live the blind texts.</p>
+                    </div>
+                  </div>
+
+                  <div class="row hover-1-wrap mb-5 mb-lg-0">
+                    <div class="col-12">
+                      <div class="row">
+                        <div class="mb-4 mb-lg-0 col-lg-6 order-lg-2" data-aos="fade-right">
+                          <a href="#" class="hover-1">
+                            <img src="../../assets/img/product/home_img1.jpg" alt="Image" class="img-fluid imgHome">
+                          </a>
+                        </div>
+                        <div class="col-lg-5 mr-auto text-lg-right align-self-center order-lg-1" data-aos="fade-left">
+                          <h3>Question Answer</h3>
+                          <p class="mb-4">Far far away, behind the word mountains, Separated they live in Bookmarksgrove
+                            right at the coast of the Semantics, a large language ocean.</p>
+                          <p><b-button v-on:click="QA()" class="btnUpload">Feature Access</b-button></p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row hover-1-wrap mb-5 mb-lg-0">
+                    <div class="col-12">
+                      <div class="row">
+                        <div class="mb-4 mb-lg-0 col-lg-6" data-aos="fade-left">
+                          <a href="#" class="hover-1">
+                            <img src="../../assets/img/product/home_img1.jpg" alt="Image" class="img-fluid imgHome">
+                          </a>
+                        </div>
+                        <div class="col-lg-5 ml-auto align-self-center" data-aos="fade-right">
+                          <h3>Knowledge</h3>
+                          <p class="mb-4">Far far away, behind the word mountains, Separated they live in Bookmarksgrove
+                            right at the coast of the Semantics, a large language ocean.</p>
+                          <p><b-button v-on:click="knowledge" class="btnUpload">Feature Access</b-button></p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row hover-1-wrap">
+                    <div class="col-12">
+                      <div class="row">
+                        <div class="mb-4 mb-lg-0 col-lg-6 order-lg-2" data-aos="fade-right">
+                          <a href="#" class="hover-1">
+                            <img src="../../assets/img/product/home_img2.jpg" alt="Image" class="img-fluid imgHome">
+                          </a>
+                        </div>
+                        <div class="col-lg-5 mr-auto text-lg-right align-self-center order-lg-1" data-aos="fade-left">
+                          <h3>History</h3>
+                          <p class="mb-4">Far far away, behind the word mountains, Separated they live in Bookmarksgrove
+                            right at the coast of the Semantics, a large language ocean.</p>
+                          <p><b-button v-on:click="history" class="btnUpload">Feature Access</b-button></p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
             </div>
-          </div>
-          <div v-if="role !== ''" class="col-lg-2 fixed-sidebar">
-            <comp-left-sider/>
           </div>
         </div>
         <!-- code paging here--->
@@ -63,19 +127,86 @@ export default {
   components: {
     CompHeader, CompFooter, CompBackToTop, CompLeftSider, CompSliderImage
   },
-  data(){
+  data() {
     return {
-      role: ''
+      username: ''
+    }
+  },
+  methods: {
+    QA() {
+      if (this.username !== '') {
+        this.$router.push('/qa')
+      } else this.$router.push('/login')
+    },
+    knowledge() {
+      if (this.username !== '') {
+        this.$router.push('/knowledge/upload')
+      } else this.$router.push('/login')
+    },
+    history() {
+      if (this.username !== '') {
+        this.$router.push('/history')
+      } else this.$router.push('/login')
     }
   },
   created() {
-    if(this.$session.exists('user'))
-    this.role = this.$session.get('user').role
+    if (this.$session.exists('user'))
+      this.username = this.$session.get('user').username
   }
 }
 </script>
 
 <style scoped>
+.btnUpload {
+  width: 130px;
+  height: 45px;
+  background-color: #92c3f9;
+  border: none;
+  outline: none;
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.btnUpload:hover {
+  border: none;
+  outline: none;
+  background-color: #0088ff;
+  color: #fff;
+}
+
+.imgHome {
+  border-radius: 50px;
+}
+
+.hover-1-wrap .hover-1 {
+  position: relative;
+  margin-bottom: 0;
+  display: block;
+}
+
+.hover-1-wrap .hover-1:after {
+  z-index: -1;
+  content: "";
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  bottom: 10px;
+  left: 10px;
+  background: #92c3f9;
+  border-radius: 50px;
+  -webkit-transition: .3s all ease-in-out;
+  -o-transition: .3s all ease-in-out;
+  transition: .3s all ease-in-out;
+}
+
+.hover-1-wrap:hover .hover-1:after {
+  right: -10px;
+  bottom: -10px;
+  position: absolute;
+}
 
 .fixed-sidebar {
   position: -webkit-sticky;
@@ -86,8 +217,8 @@ export default {
   z-index: 999;
 }
 
-h2 {
-  color: #FFFFFF;
+.contentBanner {
+  color: #fff;
   font-weight: bold;
   font-size: 30px;
   font-family: Arial, Helvetica, sans-serif;
