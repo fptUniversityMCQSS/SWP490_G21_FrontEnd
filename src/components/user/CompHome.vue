@@ -30,7 +30,7 @@
     <!--================End Home Banner Area =================-->
 
     <!--================Content Area =================-->
-    <section class="cat_product_area">
+    <section class="cat_product_area homeContent">
       <div>
         <div class="row flex-row-reverse">
           <div class="col-lg-12 py-5">
@@ -41,11 +41,9 @@
               <section class="site-section">
                 <div class="container">
                   <div class="row justify-content-center" data-aos="fade-up">
-                    <div class="col-lg-6 text-center heading-section mb-5">
-
+                    <div class="col-lg-7 text-center heading-section mb-5">
                       <h2>Welcome to DeepQuiz</h2>
-                      <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there
-                        live the blind texts.</p>
+                      <p>We provide a more efficient and reliable solution of solving multiple-choice questions</p>
                     </div>
                   </div>
 
@@ -59,9 +57,10 @@
                         </div>
                         <div class="col-lg-5 mr-auto text-lg-right align-self-center order-lg-1" data-aos="fade-left">
                           <h3>Question Answer</h3>
-                          <p class="mb-4">Far far away, behind the word mountains, Separated they live in Bookmarksgrove
-                            right at the coast of the Semantics, a large language ocean.</p>
-                          <p><b-button v-on:click="QA()" class="btnUpload">Feature Access</b-button></p>
+                          <p class="mb-4">Solves multiple-choices questions using our Deep Learning AI, enhances your learning experiences.</p>
+                          <p>
+                            <b-button v-on:click="QA()" class="btnUpload">Feature Access</b-button>
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -77,9 +76,10 @@
                         </div>
                         <div class="col-lg-5 ml-auto align-self-center" data-aos="fade-right">
                           <h3>Knowledge</h3>
-                          <p class="mb-4">Far far away, behind the word mountains, Separated they live in Bookmarksgrove
-                            right at the coast of the Semantics, a large language ocean.</p>
-                          <p><b-button v-on:click="knowledge" class="btnUpload">Feature Access</b-button></p>
+                          <p class="mb-4">Views all knowledge that our AI has studied. You can also download it by yourself.</p>
+                          <p>
+                            <b-button v-on:click="knowledge" class="btnUpload">Feature Access</b-button>
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -95,9 +95,10 @@
                         </div>
                         <div class="col-lg-5 mr-auto text-lg-right align-self-center order-lg-1" data-aos="fade-left">
                           <h3>History</h3>
-                          <p class="mb-4">Far far away, behind the word mountains, Separated they live in Bookmarksgrove
-                            right at the coast of the Semantics, a large language ocean.</p>
-                          <p><b-button v-on:click="history" class="btnUpload">Feature Access</b-button></p>
+                          <p class="mb-4">Views the history of answered questions you have asked in the past.</p>
+                          <p>
+                            <b-button v-on:click="history" class="btnUpload">Feature Access</b-button>
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -134,7 +135,7 @@ export default {
   },
   methods: {
     //click getStarted button
-    getStarted(){
+    getStarted() {
       if (this.username !== '') {
         this.$router.push('/qa')
       } else this.$router.push('/login')
@@ -166,6 +167,7 @@ export default {
 </script>
 
 <style scoped>
+
 .btnUpload {
   width: 130px;
   height: 45px;
@@ -232,12 +234,14 @@ export default {
   font-size: 25px;
   font-family: "Roboto", sans-serif;
 }
+
 .contentBannerH3 {
   color: #fff;
   font-weight: bold;
   font-size: 35px;
   font-family: "Roboto", sans-serif;
 }
+
 .contentBannerP {
   color: #fff;
   font-weight: bold;
@@ -263,5 +267,9 @@ export default {
   outline: none;
   background-color: #0088ff;
   color: #fff;
+}
+
+.homeContent {
+  font-family: "Roboto", sans-serif;
 }
 </style>

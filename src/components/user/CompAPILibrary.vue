@@ -33,6 +33,9 @@
                   <i class="fa" :class="[LoginResponse ? 'fa-angle-up' : 'fa-angle-down']"
                      aria-hidden="true"></i></span></a>
               </div>
+              <div>
+                <b-card class="bcardStyle" disabled="LoginResponse" ></b-card>
+              </div>
 
               <!--RegisterResponse-->
               <div class="top">
@@ -170,8 +173,6 @@
               </div>
 
 
-
-
             </div>
           </div>
           <div v-if="username !== ''" class="col-lg-2 fixed-sidebar">
@@ -241,6 +242,8 @@ export default {
 }
 
 .top {
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
   margin-top: 20px;
   height: auto;
   width: 90%;
@@ -259,5 +262,12 @@ export default {
 .api {
   float: right;
   padding-right: 10px
+}
+
+.bcardStyle{
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  width: 90%;
+  height: 100px;
 }
 </style>
