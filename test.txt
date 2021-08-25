@@ -1,7 +1,0 @@
-{"Number":8,"Content":"The Pentium 4 _________ component executes micro-operations,
-fetching the required data from the L1 data cache and temporarily storing results in registers.
-","Options":[{"OptionKey":"A","OptionContent":"Fetch/decode unit"},
-{"OptionKey":"B","OptionContent":"Out-of-order execution logic"},
-{"OptionKey":"C","OptionContent":"Execution unit"},
-{"OptionKey":"D","OptionContent":"Memory subsystem"}],"Answer":"D"}
-{"message":"DONE"}

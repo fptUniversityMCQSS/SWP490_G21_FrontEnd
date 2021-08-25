@@ -3,6 +3,7 @@
   <footer class="footer-area section_gap1">
     <div class="container">
       <div class="row">
+        <!--col1-->
         <div class="col-lg-3" style="margin-left: 30px">
           <img src="../../assets/img/AI/deepquiz.png">
          <p><br>A web application developed by SWP409_G21 team. With useful features of AI artificial intelligence technology,
@@ -10,8 +11,7 @@
           <div class="single-footer-widget">
           </div>
         </div>
-
-        <!-- First column footer-->
+        <!-- col2-->
         <div class="col-lg-3" style="margin-left: 80px">
           <div class="single-footer-widget">
             <h6 class="footer_title">Have Any Questions?</h6>
@@ -29,7 +29,7 @@
             </div>
           </div>
         </div>
-        <!-- Second column-->
+        <!-- col3-->
         <div class="col-lg-2" style="margin-left: 50px">
           <div class="single-footer-widget">
             <h6 class="footer_title">Quick Links</h6>
@@ -37,12 +37,11 @@
               <router-link class="fa fa-arrow-right" to="/home">&nbsp;Home</router-link>
             </div>
             <div>
-              <router-link to="/about" class="fa fa-arrow-right">&nbsp;About</router-link>
+              <router-link to="/library" class="fa fa-arrow-right">&nbsp;API Library</router-link>
             </div>
           </div>
         </div>
-
-        <!-- Forth column-->
+        <!--col4-->
         <div class="col-lg-2" style="margin-left: 30px">
           <div class="single-footer-widget f_social_wd">
             <h6 class="footer_title">Connect With Us</h6>
@@ -63,11 +62,10 @@
           </div>
         </div>
       </div>
-
       <div class="row footer-bottom d-flex justify-content-between align-items-center">
         <p class="col-lg-12 footer-text text-center">
           Copyright ©2021 DeepQuiz. All rights reserved | Powered by
-          <router-link to="/about">SWP409_G21</router-link>
+          <router-link to="/">SWP409_G21</router-link>
         </p>
       </div>
     </div>

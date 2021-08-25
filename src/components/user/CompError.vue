@@ -21,5 +21,23 @@ export default {
 </script>
 
 <style scoped>
+.btnUpload {
+  width: 200px;
+  height: 50px;
+  background-color: #92c3f9;
+  border: none;
+  outline: none;
+  color: black;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  margin-top: 20px;
+}
 
+.btnUpload:hover {
+  border: none;
+  outline: none;
+  background-color: #0088ff;
+  color: #fff;
+}
 </style>

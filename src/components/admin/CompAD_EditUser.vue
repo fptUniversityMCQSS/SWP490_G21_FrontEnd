@@ -8,7 +8,7 @@
           <div class="banner_content text-center">
             <h2>Edit Account</h2>
             <div class="page_link">
-              <router-link to="/home">Home</router-link>
+              <router-link to="/">Home</router-link>
               <router-link to="/admin/edit">Edit Account</router-link>
             </div>
           </div>
@@ -18,7 +18,7 @@
     <!--================End Home Banner Area =================-->
 
     <!--================Content Area =================-->
-    <section class="cat_product_area">
+    <section class="cat_product_area center">
       <div>
         <div class="row flex-row-reverse">
           <div class="col-lg-10">
@@ -26,15 +26,17 @@
               <div class="comment-form shadow">
                 <h4>Edit Account</h4>
                 <form>
+                  <!--input username-->
                   <div class="form-group bd-r col-lg-9">
                     <p class="leftCol">Username:</p>
                     <div class="col-lg-9 rightCol">
                       <input type="text" class="form-control textBox"
-                             style="background-color: rgba(206,206,219,0.37)" name="username"
+                             style="background-color: rgba(2,4,5,0.05)" name="username"
                              v-model="username" readonly>
                     </div>
                   </div>
                   <br>
+                  <!--input role-->
                   <div class="form-group bd-r col-lg-9 cell">
                     <p class="leftCol">Role:</p>
                     <div class="col-lg-9 rightCol">
@@ -56,6 +58,7 @@
 
                   </div>
                   <br>
+                  <!--input fullName-->
                   <div class="form-group bd-r col-lg-9 cell">
                     <p class="leftCol">Full name:&nbsp;&nbsp;</p>
                     <div class=" col-lg-9 rightCol">
@@ -68,6 +71,7 @@
                     </div>
                   </div>
                   <br>
+                  <!--input email-->
                   <div class="form-group bd-r col-lg-9 cell">
                     <p class="leftCol">Email:&nbsp;</p>
                     <div class=" col-lg-9 rightCol">
@@ -80,6 +84,7 @@
                     </div>
                   </div>
                   <br>
+                  <!--input phone-->
                   <div class="form-group bd-r col-lg-9 cell">
                     <p class="leftCol">Phone:</p>
                     <div class=" col-lg-9 rightCol">
@@ -93,12 +98,14 @@
                     </div>
                   </div>
                   <br>
+                  <!--check enable change password-->
                   <div class="form-group bd-r col-lg-9 cell">
                     <a href="#" onclick="return false" class="leftCol changePassword" @click="checked = !checked">Enable
                       change password&nbsp;
                       <i class="fa" :class="[checked ? 'fa-angle-up' : 'fa-angle-down']" aria-hidden="true"></i></a>
                   </div>
                   <br v-if="checked">
+                  <!--input password-->
                   <div v-if="checked" class="form-group bd-r col-lg-9 cell">
                     <p class="leftCol">Password:</p>
                     <div class=" col-lg-9 rightCol">
@@ -111,6 +118,7 @@
                     </div>
                   </div>
                   <br v-if="checked">
+                  <!--confirm password-->
                   <div v-if="checked" class="form-group bd-r col-lg-9 cell">
                     <p class="leftCol">Re-Password:</p>
                     <div class=" col-lg-9 rightCol">
@@ -128,6 +136,7 @@
                     <b-button class="btnUpload" style="margin-right: 49px;" v-on:click="cancelEdit()">Cancel</b-button>
                     <b-button class="btnUpload" v-on:click="editUser()">Save</b-button>
                   </div>
+                  <div class="errNotice">{{ err }}</div>
                 </form>
               </div>
             </div>
@@ -137,7 +146,6 @@
             <flash-message class="myCustomClass"></flash-message>
           </div>
         </div>
-        <!-- code paging here--->
       </div>
     </section>
     <!--================End Content Area =================-->
@@ -148,20 +156,19 @@
 </template>
 
 <script>
-
 import CompHeader from "../frame/CompHeader";
 import CompFooter from "../frame/CompFooter";
 import CompBackToTop from "../frame/CompBackToTop";
 import CompLeftSider from "../frame/CompLeftSider";
 
 export default {
-
   name: "CompAD_EditUser",
   components: {
     CompHeader, CompFooter, CompBackToTop, CompLeftSider
   },
   data() {
     return {
+      err: '',
       fullName: '',
       email: '',
       phone: '',
@@ -175,7 +182,7 @@ export default {
   created() {
     const self = this;
     const axios = require('axios');
-    axios.get(globalURL.host + process.env.VUE_APP_ADMIN_USER + "/" + self.$route.params.id, {
+    axios.get(process.env.VUE_APP_BACKEND_SERVER + process.env.VUE_APP_ADMIN_USER + "/" + self.$route.params.id, {
       headers: {
         'Authorization': 'Bearer ' + self.$session.get("user").token
       }
@@ -193,9 +200,11 @@ export default {
     })
   },
   methods: {
+    // method cancel edit user
     cancelEdit() {
       this.$router.push('/admin/user')
     },
+    // method edit user
     editUser() {
       const self = this;
       this.submitted = true;
@@ -211,7 +220,7 @@ export default {
           form.append('phone', this.phone);
           form.append('role', this.role);
           form.append('change_password', this.checked);
-          axios.patch(globalURL.host + process.env.VUE_APP_ADMIN_USER + "/" + self.$route.params.id, form, {
+          axios.patch(process.env.VUE_APP_BACKEND_SERVER + process.env.VUE_APP_ADMIN_USER + "/" + self.$route.params.id, form, {
             headers: {
               'Authorization': 'Bearer ' + self.$session.get("user").token
             }
@@ -224,7 +233,7 @@ export default {
                 self.$router.push('/admin/user');
               }
             }).catch(error => {
-            console.log(error)
+            this.err = error.response.data.message
           })
         }
       });
@@ -234,6 +243,16 @@ export default {
 </script>
 
 <style scoped>
+.errNotice {
+  color: red;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.center {
+  margin: auto;
+  display: block;
+}
 
 .changePassword {
   color: black;

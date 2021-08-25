@@ -8,7 +8,7 @@
           <div class="banner_content text-center">
             <h2>History Detail</h2>
             <div class="page_link">
-              <router-link to="/home">Home</router-link>
+              <router-link to="/">Home</router-link>
               <router-link to="/history">History Detail</router-link>
             </div>
           </div>
@@ -20,9 +20,9 @@
     <!--================Content Area =================-->
     <section class="cat_product_area">
       <div class="vld-parent">
-
         <div class="row flex-row-reverse">
           <div class="col-lg-1 py-5 tblAns">
+            <!-- table overview all answers-->
             <b-table v-if="!isLoading" striped hover :items="items.Questions" :fields="fields" class="scrollbar">
               <template #cell(Number)="{item}">
                 {{ item.Number }}
@@ -33,8 +33,8 @@
             </b-table>
           </div>
 
+          <!-- detail question answer-->
           <div class="col-lg-7 py-5">
-
             <div class="detailAns">
               <h3>{{ items.Name }}</h3>
               <p>{{ formatDate(items.Date) }}&nbsp;&nbsp;&nbsp;&nbsp;
@@ -60,7 +60,7 @@
               </router-link>
             </div>
           </div>
-          <loading :active.sync="isLoading"
+          <loading style="margin-left: 150px" :active.sync="isLoading"
                    :can-cancel="true"
                    :is-full-page="false"></loading>
           <div class="col-lg-2 fixed-sidebar">
@@ -92,6 +92,7 @@ export default {
     CompHeader, CompFooter, CompBackToTop, CompLeftSider, Loading
   },
   methods: {
+    // method format date
     formatDate(date) {
       let dateFormat = require('dateformat');
       let newDate = new Date(date);
@@ -101,14 +102,16 @@ export default {
       }
       return ""
     },
+    //method download history detail
     downloadDetail() {
+      let self = this
       let id = this.$route.params.id
       let api = process.env.VUE_APP_HISTORY_DOWNLOAD.replace(/%\w+%/g, function (all) {
         return {"%id%": id}[all] || all;
       });
       const axios = require('axios');
       axios
-        .get(globalURL.host + api,
+        .get(process.env.VUE_APP_BACKEND_SERVER + api,
           {
             headers: {
               'Content-Type': 'multipart/form-data',
@@ -151,7 +154,7 @@ export default {
     const self = this;
     const axios = require('axios');
     axios
-      .get(globalURL.host + process.env.VUE_APP_HISTORY + "/" + self.$route.params.id, {
+      .get(process.env.VUE_APP_BACKEND_SERVER + process.env.VUE_APP_HISTORY + "/" + self.$route.params.id, {
         headers: {
           'Authorization': 'Bearer ' + self.$session.get("user").token
         }

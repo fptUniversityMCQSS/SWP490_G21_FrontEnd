@@ -8,7 +8,7 @@
           <div class="banner_content text-center">
             <h2>List Knowledge</h2>
             <div class="page_link">
-              <router-link to="/home">Home</router-link>
+              <router-link to="/">Home</router-link>
               <router-link to="/knowledge">List Knowledge</router-link>
             </div>
           </div>
@@ -18,15 +18,14 @@
     <!--================End Home Banner Area =================-->
 
     <!--================Content Area =================-->
-    <section class="cat_product_area">
+    <section class="cat_product_area center">
       <div class="vld-parent">
         <div class="row flex-row-reverse">
           <div class="col-lg-10 py-5">
-
+            <!--load animation-->
             <loading :active.sync="isLoading"
                      :can-cancel="true"
                      :is-full-page="false"></loading>
-
             <div class="col-lg-10 mx-auto section_gap">
               <div class="card rounded shadow border-0 bgFormTable">
                 <div class="tableTl">Knowledge Table</div>
@@ -34,13 +33,14 @@
                   <div class="table-responsive">
                     <div style="padding: 20px">
                       <div class="justify-content-centermy-1 row">
-
+                        <!--select row per page-->
                         <b-form-group label="Rows per page:" :class="[role === 'staff' ? 'col-lg-2' : 'col-lg-8']">
                           <b-form-select size="sm" :class="[role === 'staff' ? 'col-lg-12' : 'col-lg-3']"
                                          :options="[{text:5,value:5},{text:10,value:10},{text:15,value:15},{text:20,value:20}]"
                                          v-model="perPage">
                           </b-form-select>
                         </b-form-group>
+                        <!--view mode-->
                         <b-form-group v-if="role === 'staff'" label="Knowledge view mode:"
                                       class="col-lg-6">
                           <b-form-select size="sm" v-on:change="changeMode" class="col-lg-6"
@@ -48,7 +48,7 @@
                                          v-model="optionView">
                           </b-form-select>
                         </b-form-group>
-
+                        <!--search tab-->
                         <b-form-group label="Search:" class="col-lg-4">
                           <b-input-group size="sm">
                             <b-form-input v-model="filter" type="search" placeholder="Type to Search"></b-form-input>
@@ -59,11 +59,10 @@
                           </b-input-group>
                         </b-form-group>
                       </div>
-
+                      <!-- staff table current account-->
                       <div v-if="role === 'staff'">
-                        <!-- Main table current -->
                         <b-table v-if="optionView === 'current'" class="bgTable" :bordered="true" :borderless="true"
-                                  :items="items"
+                                 :items="items"
                                  :current-page="currentPage"
                                  stacked="md"
                                  show-empty
@@ -81,15 +80,16 @@
                             <col :style="{ width: '50px' }">
                             <b-button variant="outline-primary" size="sm" v-on:click="downloadKnowledge(item)"
                                       class="mr-1">
-                              Download <i class="fa fa-download" aria-hidden="true"></i>
+                              <i class="fa fa-download" aria-hidden="true"></i>
                             </b-button>
+
                             <b-button variant="outline-primary" size="sm" v-on:click="deleteKnowledge(item)"
                                       class="btnDelete">
-                              Delete&nbsp;<i class="fa fa-trash" aria-hidden="true"></i>
+                              <i class="fa fa-trash" aria-hidden="true"></i>
                             </b-button>
                           </template>
                         </b-table>
-                        <!--Main table all -->
+                        <!--staff table all knowledge -->
                         <b-table v-if="optionView ==='all'" class="bgTable" :bordered="true" :borderless="true"
                                  :items="itemAll" :current-page="currentPage"
                                  stacked="md"
@@ -106,11 +106,12 @@
                           <template #cell(actions)="{item}">
                             <b-button variant="outline-primary" size="sm" v-on:click="downloadKnowledge(item)"
                                       class="mr-1">
-                              Download <i class="fa fa-download" aria-hidden="true"></i>
+                              <i class="fa fa-download" aria-hidden="true"></i>
                             </b-button>
                           </template>
                         </b-table>
                       </div>
+                      <!--table for andmin and user-->
                       <div v-else>
                         <b-table class="bgTable" :bordered="true" :borderless="true" :items="itemAll"
                                  :current-page="currentPage"
@@ -129,12 +130,12 @@
                           <template #cell(actions)="{item}">
                             <b-button variant="outline-primary" size="sm" v-on:click="downloadKnowledge(item)"
                                       class="mr-1">
-                              Download <i class="fa fa-download" aria-hidden="true"></i>
+                              <i class="fa fa-download" aria-hidden="true"></i>
                             </b-button>
                             <b-button v-if="role === 'admin'" variant="outline-primary" size="sm"
                                       v-on:click="deleteKnowledge(item)"
                                       class="btnDelete">
-                              Delete&nbsp;<i class="fa fa-trash" aria-hidden="true"></i>
+                              <i class="fa fa-trash" aria-hidden="true"></i>
                             </b-button>
                           </template>
                         </b-table>
@@ -149,14 +150,13 @@
               </div>
             </div>
           </div>
-
           <div class="col-lg-2 fixed-sidebar">
             <comp-left-sider/>
-
           </div>
         </div>
       </div>
     </section>
+    <!--================End Content Area =================-->
     <flash-message class="flash__message"></flash-message>
     <comp-back-to-top/>
     <comp-footer/>
@@ -194,14 +194,14 @@ export default {
           key: 'knowledgeName',
           label: 'Name',
           sortable: true,
-          thStyle: {background: '#92c3f9', color: 'black', width: '290px'},
+          thStyle: {background: '#92c3f9', color: 'black'},
           thClass: 'text-center'
         },
         {
           key: 'knowledgeDate',
           label: 'Date',
           sortable: true,
-          thStyle: {background: '#92c3f9', color: 'black', width: '200px'},
+          thStyle: {background: '#92c3f9', color: 'black'},
           thClass: 'text-center'
         },
         {
@@ -214,7 +214,7 @@ export default {
         {
           key: 'actions',
           label: 'Actions',
-          thStyle: {background: '#92c3f9', color: 'black'},
+          thStyle: {background: '#92c3f9', color: 'black', width: '120px'},
           thClass: 'text-center',
           tdClass: 'text-center'
         }
@@ -222,6 +222,7 @@ export default {
     }
   },
   methods: {
+    // method change view mode
     changeMode() {
       this.currentPage = 1
       if (this.optionView === 'current') {
@@ -230,16 +231,18 @@ export default {
         this.totalRows = this.itemAll.length
       }
     },
+    // method format date
     formatDate(date) {
       let dateFormat = require('dateformat');
       let newDate = new Date(date);
       return dateFormat(newDate, "dddd, mmmm dS, yyyy, h:MM:ss TT");
     },
+    // method download knowledge
     downloadKnowledge(item) {
       const self = this
       const axios = require('axios');
       axios
-        .get(globalURL.host + process.env.VUE_APP_KNOWLEDGE + "/" + item.knowledgeId,
+        .get(process.env.VUE_APP_BACKEND_SERVER + process.env.VUE_APP_KNOWLEDGE + "/" + item.knowledgeId,
           {
             headers: {
               'Content-Type': 'multipart/form-data',
@@ -255,6 +258,7 @@ export default {
           link.click();
         })
     },
+    // method delete knowledge
     deleteKnowledge(item) {
       const self = this
       let message = "<p style='text-align: center; padding-top: 5px'><b style='font-size: 20px'>Delete Knowledge</b>" +
@@ -269,7 +273,7 @@ export default {
         .then(() => {
           const axios = require('axios');
           axios
-            .delete(globalURL.host + process.env.VUE_APP_KNOWLEDGE + "/" + item.knowledgeId,
+            .delete(process.env.VUE_APP_BACKEND_SERVER + process.env.VUE_APP_KNOWLEDGE + "/" + item.knowledgeId,
               {
                 headers: {
                   'Content-Type': 'multipart/form-data',
@@ -299,6 +303,7 @@ export default {
             })
         })
     },
+    // method search
     onFiltered(filteredItems) {
       this.totalRows = filteredItems.length
       this.currentPage = 1
@@ -309,7 +314,7 @@ export default {
     const axios = require('axios');
     this.role = self.$session.get('user').role
     axios
-      .get(globalURL.host + process.env.VUE_APP_KNOWLEDGE,
+      .get(process.env.VUE_APP_BACKEND_SERVER + process.env.VUE_APP_KNOWLEDGE,
         {
           headers: {
             'Content-Type': 'multipart/form-data',
@@ -346,6 +351,10 @@ export default {
 </script>
 
 <style scoped>
+.center {
+  margin: auto;
+  display: block;
+}
 
 .truncate {
   white-space: nowrap;
@@ -386,16 +395,17 @@ table.table {
   color: #fff;
 }
 
-.btnDelete{
+.btnDelete {
   border-color: red;
   color: red;
 }
-.btnDelete:hover{
+
+.btnDelete:hover {
   background-color: red;
   color: #fff;
 }
 
-.bgFormTable{
+.bgFormTable {
   background-color: #f9f9ff
 }
 

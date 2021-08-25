@@ -18,15 +18,15 @@
     <!--================End Home Banner Area =================-->
 
     <!--================Content Area =================-->
-    <section class="cat_product_area">
+    <section class="cat_product_area center">
       <div>
         <div class="row flex-row-reverse">
           <div class="col-lg-10">
             <div class="col-lg-8 mx-auto section_gap">
               <div class="comment-form shadow">
                 <h4>Create New Account</h4>
-                <div class="errNotice">{{ err }}</div>
                 <form>
+                  <!--input username-->
                   <div class="form-group bd-r col-lg-9">
                     <p class="leftCol">Username:</p>
                     <div class=" col-lg-9 rightCol">
@@ -39,6 +39,7 @@
                     </div>
                   </div>
                   <br>
+                  <!--input role-->
                   <div class="form-group bd-r col-lg-9 cell">
                     <p class="leftCol">Role:</p>
                     <div class="col-lg-9 rightCol">
@@ -59,6 +60,7 @@
                     </div>
                   </div>
                   <br>
+                  <!--input fullName-->
                   <div class="form-group bd-r col-lg-9 cell">
                     <p class="leftCol">Full name:&nbsp;&nbsp;</p>
                     <div class=" col-lg-9 rightCol">
@@ -71,6 +73,7 @@
                     </div>
                   </div>
                   <br>
+                  <!--input email-->
                   <div class="form-group bd-r col-lg-9 cell">
                     <p class="leftCol">Email:&nbsp;</p>
                     <div class=" col-lg-9 rightCol">
@@ -83,6 +86,7 @@
                     </div>
                   </div>
                   <br>
+                  <!--input phone-->
                   <div class="form-group bd-r col-lg-9 cell">
                     <p class="leftCol">Phone:</p>
                     <div class=" col-lg-9 rightCol">
@@ -96,6 +100,7 @@
                     </div>
                   </div>
                   <br>
+                  <!--input password-->
                   <div class="form-group bd-r col-lg-9 cell">
                     <p class="leftCol">Password:</p>
                     <div class=" col-lg-9 rightCol">
@@ -108,6 +113,7 @@
                     </div>
                   </div>
                   <br>
+                  <!--confirm password-->
                   <div class="form-group bd-r col-lg-9 cell">
                     <p class="leftCol">Re-Password:</p>
                     <div class=" col-lg-9 rightCol">
@@ -125,6 +131,7 @@
                     <b-button class="btnUpload" style="margin-right: 49px;" v-on:click="cancelAdd()">Cancel</b-button>
                     <b-button class="btnUpload" v-on:click="addUser()">Add</b-button>
                   </div>
+                  <div class="errNotice">{{ err }}</div>
                 </form>
               </div>
             </div>
@@ -134,25 +141,20 @@
             <flash-message class="myCustomClass"></flash-message>
           </div>
         </div>
-        <!-- code paging here--->
       </div>
     </section>
     <!--================End Content Area =================-->
-
     <comp-back-to-top/>
     <comp-footer/>
   </div>
 </template>
 
 <script>
-
 import CompHeader from "../frame/CompHeader";
 import CompFooter from "../frame/CompFooter";
 import CompBackToTop from "../frame/CompBackToTop";
 import CompLeftSider from "../frame/CompLeftSider";
-
 export default {
-
   name: "CompAD_AddUser",
   components: {
     CompHeader, CompFooter, CompBackToTop, CompLeftSider
@@ -170,9 +172,11 @@ export default {
     }
   },
   methods: {
+    // method cancel add user
     cancelAdd() {
       this.$router.push('/admin/user');
     },
+    // method add user
     addUser() {
       const self = this;
       this.submitted = true;
@@ -187,7 +191,7 @@ export default {
           form.append('username', this.username);
           form.append('password', this.password);
           form.append('role', this.role);
-          axios.post(globalURL.host + process.env.VUE_APP_ADMIN_USER, form, {
+          axios.post(process.env.VUE_APP_BACKEND_SERVER + process.env.VUE_APP_ADMIN_USER, form, {
             headers: {
               'Authorization': 'Bearer ' + self.$session.get("user").token
             }
@@ -210,6 +214,11 @@ export default {
 </script>
 
 <style scoped>
+.center {
+  margin: auto;
+  display: block;
+}
+
 .errNotice {
   color: red;
   font-weight: bold;

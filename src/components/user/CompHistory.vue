@@ -6,10 +6,10 @@
       <div class="banner_inner d-flex align-items-center">
         <div class="container">
           <div class="banner_content text-center">
-            <h2>History Question & Answer</h2>
+            <h2>Question Answer History</h2>
             <div class="page_link">
-              <router-link to="/home">Home</router-link>
-              <router-link to="/history">History Question & Answer</router-link>
+              <router-link to="/">Home</router-link>
+              <router-link to="/history">Question Answer History</router-link>
             </div>
           </div>
         </div>
@@ -32,6 +32,7 @@
                   <div class="table-responsive">
                     <div style="padding: 20px;">
                       <div class="justify-content-centermy-1 row">
+                        <!--select row per page-->
                         <b-form-group horizontal label="Rows per page:" class="col-lg-8">
                           <b-form-select size="sm" class="col-lg-3"
                                          :options="[{text:5,value:5},{text:10,value:10},
@@ -39,6 +40,7 @@
                                          v-model="perPage">
                           </b-form-select>
                         </b-form-group>
+                        <!--search tab-->
                         <b-form-group label="Search:" class="col-lg-4">
                           <b-input-group size="sm">
                             <b-form-input v-model="filter" type="search" placeholder="Type to Search"></b-form-input>
@@ -49,7 +51,7 @@
                           </b-input-group>
                         </b-form-group>
                       </div>
-                      <!-- Main table element -->
+                      <!--table history-->
                       <b-table class="bgTable" :bordered="true" :borderless="true"
                                :items="items.slice().reverse()" :current-page="currentPage" stacked="md"
                                show-empty
@@ -64,15 +66,15 @@
                         <template #cell(action)="{item}">
                           <b-button variant="outline-primary" size="sm" v-on:click="sendData(item)"
                                     class="mr-1">
-                            View
+                            <i class="fa fa-eye" aria-hidden="true"></i>
                           </b-button>
                           <b-button variant="outline-primary" size="sm" v-on:click="downloadHistory(item)"
                                     class="mr-1">
-                            Download <i class="fa fa-download" aria-hidden="true"></i>
+                            <i class="fa fa-download" aria-hidden="true"></i>
                           </b-button>
                           <b-button variant="outline-primary" size="sm" v-on:click="deleteHistory(item)"
                                     class="mr-1 btnDelete">
-                            Delete&nbsp;<i class="fa fa-trash" aria-hidden="true"></i>
+                            <i class="fa fa-trash" aria-hidden="true"></i>
                           </b-button>
                         </template>
                       </b-table>
@@ -87,13 +89,13 @@
             </div>
           </div>
           <div class="col-lg-2 fixed-sidebar">
+            <flash-message class="myCustomClass"></flash-message>
             <comp-left-sider/>
           </div>
         </div>
       </div>
     </section>
     <!--================End content Area =================-->
-
     <comp-back-to-top/>
     <comp-footer/>
   </div>
@@ -128,7 +130,7 @@ export default {
           key: 'historyName',
           label: 'Name',
           sortable: true,
-          thStyle: {background: '#92c3f9', color: 'black', width: '190px'},
+          thStyle: {background: '#92c3f9', color: 'black'},
           thClass: 'text-center'
         },
         {
@@ -142,21 +144,21 @@ export default {
           key: 'subject',
           label: 'Subject',
           sortable: true,
-          thStyle: {background: '#92c3f9', color: 'black',  width: '100px'},
+          thStyle: {background: '#92c3f9', color: 'black', width: '150px'},
           thClass: 'text-center',
           tdClass: 'text-center'
         },
         {
           key: 'status',
           label: 'Status',
-          thStyle: {background: '#92c3f9', color: 'black'},
+          thStyle: {background: '#92c3f9', color: 'black', width: '100px'},
           thClass: 'text-center',
           tdClass: 'text-center'
         },
         {
           key: 'action',
           label: 'Action',
-          thStyle: {background: '#92c3f9', color: 'black', width: '265px'},
+          thStyle: {background: '#92c3f9', color: 'black', width: '150px'},
           thClass: 'text-center',
           tdClass: 'text-center'
         }
@@ -164,6 +166,7 @@ export default {
     }
   },
   methods: {
+    //method delete history
     deleteHistory(item) {
       const self = this
       let message = "<p style='text-align: center; padding-top: 5px'><b style='font-size: 20px'>Delete Question Answer Test</b>" +
@@ -178,7 +181,7 @@ export default {
         .then(() => {
           const axios = require('axios');
           axios
-            .delete(globalURL.host + process.env.VUE_APP_KNOWLEDGE + "/" + item.knowledgeId,
+            .delete(process.env.VUE_APP_BACKEND_SERVER + process.env.VUE_APP_HISTORY + "/" + item.id,
               {
                 headers: {
                   'Content-Type': 'multipart/form-data',
@@ -201,14 +204,17 @@ export default {
             })
         })
     },
+    // method format date
     formatDate(date) {
       let dateFormat = require('dateformat');
       let newDate = new Date(date);
       return dateFormat(newDate, "dddd, mmmm dS, yyyy, h:MM:ss TT");
     },
+    // method  redirect to history detail
     sendData(item) {
       this.$router.push('/history/' + item.id)
     },
+    // method download history
     downloadHistory(item) {
       const self = this
       let api = process.env.VUE_APP_HISTORY_DOWNLOAD.replace(/%\w+%/g, function (all) {
@@ -216,7 +222,7 @@ export default {
       });
       const axios = require('axios');
       axios
-        .get(globalURL.host + api,
+        .get(process.env.VUE_APP_BACKEND_SERVER + api,
           {
             headers: {
               'Content-Type': 'multipart/form-data',
@@ -232,6 +238,7 @@ export default {
           link.click();
         })
     },
+    // method search
     onFiltered(filteredItems) {
       this.totalRows = filteredItems.length
       this.currentPage = 1
@@ -241,7 +248,7 @@ export default {
     const self = this
     const axios = require('axios');
     axios
-      .get(globalURL.host + process.env.VUE_APP_HISTORY, {
+      .get(process.env.VUE_APP_BACKEND_SERVER + process.env.VUE_APP_HISTORY, {
         headers: {
           'Authorization': 'Bearer ' + self.$session.get("user").token
         }
@@ -260,7 +267,6 @@ export default {
   }
 }
 </script>
-
 <style scoped>
 .btnDelete {
   border-color: red;

@@ -8,7 +8,7 @@
           <div class="banner_content text-center">
             <h2>About us</h2>
             <div class="page_link">
-              <router-link to="/home">Home</router-link>
+              <router-link to="/">Home</router-link>
               <router-link to="/user">About us</router-link>
             </div>
           </div>
@@ -21,9 +21,8 @@
     <section class="cat_product_area">
       <div>
         <div class="row flex-row-reverse">
-          <div :class="[role === '' ? 'col-lg-12' : 'col-lg-10']">
+          <div :class="[username === '' ? 'col-lg-12' : 'col-lg-10']">
             <div class="col-lg-8 mx-auto section_gap py-5 about">
-
               <h3>About us</h3>
               <p class="py-5"> Toogl promotes their core value of remote working throughout their website and their
                 About Us page is a
@@ -56,7 +55,6 @@
                     <span>fptquestionanswering@gmail.com</span>
                   </div>
                 </div>
-
                 <div class="col-lg-4" style="float: left">
                   <a href="https://www.facebook.com/" target="_blank">
                     <i class="fa fa-facebook" style="font-size:24px;color:#007fff"></i>
@@ -75,11 +73,9 @@
                   </a>
                 </div>
               </div>
-
-
             </div>
           </div>
-          <div v-if="role !== ''" class="col-lg-2 fixed-sidebar">
+          <div v-if="username !== ''" class="col-lg-2 fixed-sidebar">
             <comp-left-sider/>
           </div>
         </div>
@@ -87,38 +83,33 @@
       </div>
     </section>
     <!--================End Content Area =================-->
-
     <comp-back-to-top/>
     <comp-footer/>
   </div>
 </template>
 
 <script>
-
 import CompHeader from "../frame/CompHeader";
 import CompFooter from "../frame/CompFooter";
 import CompBackToTop from "../frame/CompBackToTop";
 import CompLeftSider from "../frame/CompLeftSider";
-
 export default {
-
   name: "CompAbout",
   components: {
     CompHeader, CompFooter, CompBackToTop, CompLeftSider
   },
   data() {
     return {
-      role: ''
+      username: ''
     }
   },
   created() {
-    this.role = this.$session.get('user').role
+    this.username = this.$session.get('user').username
   }
 }
 </script>
 
 <style scoped>
-
 .about {
   color: black;
   margin-bottom: 80px;

@@ -47,11 +47,6 @@
           </li>
         </ul>
       </li>
-<!--      <li v-if="role === 'admin'">-->
-<!--        <router-link to="/admin/log">-->
-<!--          <i class="fa fa-server spaceMenu" aria-hidden="true"></i>Logging-->
-<!--        </router-link>-->
-<!--      </li>-->
     </ul>
   </nav>
 </template>
@@ -74,8 +69,6 @@ export default {
 </script>
 
 <style scoped>
-
-
 .spaceMenu {
   padding-right: 0.7em;
   font-size: 16px
@@ -113,7 +106,6 @@ a.router-link-exact-active {
   background: #4ca4ff;
 }
 
-
 a,
 a:hover,
 a:focus {
@@ -135,12 +127,6 @@ h3 {
   color: black;
   background: #cdd3d9;
 }
-
-/*.sticky ul li.active > a,*/
-/*a[aria-expanded="true"] {*/
-/*  color: black;*/
-/*  background: #00BFFF;*/
-/*}*/
 
 a[data-toggle="collapse"] {
   position: relative;

@@ -8,7 +8,7 @@
           <div class="banner_content text-center">
             <h2>Account profile</h2>
             <div class="page_link">
-              <router-link to="/home">Home</router-link>
+              <router-link to="/">Home</router-link>
               <router-link to="/user">Account profile</router-link>
             </div>
           </div>
@@ -18,7 +18,7 @@
     <!--================End Home Banner Area =================-->
 
     <!--================Content Area =================-->
-    <section class="cat_product_area">
+    <section class="cat_product_area center">
       <div>
         <div class="row flex-row-reverse">
           <div class="col-lg-10">
@@ -26,18 +26,21 @@
               <div class="comment-form shadow">
                 <h4>Account Profile</h4>
                 <form>
+                  <!--input username-->
                   <div class="form-group bd-r col-lg-9">
                     <p class="leftCol">Username:</p>
                     <div class="col-lg-9 rightCol">
                       <input type="text" class="form-control textBox" name="username"
-                             v-model="username" readonly>
+                             v-model="username" readonly style="background-color: rgba(2,4,5,0.05)">
                     </div>
                   </div>
                   <br>
+                  <!--input fullName-->
                   <div class="form-group bd-r col-lg-9 cell">
                     <p class="leftCol">Full name:</p>
                     <div class=" col-lg-9 rightCol">
-                      <input v-on:input="change()" type="text" class="form-control textBox" name="Full Name"
+                      <input :disabled="disable" v-on:input="change()" type="text" class="form-control textBox"
+                             name="Full Name"
                              placeholder="Full Name"
                              v-model="fullName" v-validate="{ required: true, min: 8, max: 50, regex: /^(.)+$/ }"
                              :class="{ 'is-invalid': submitted && errors.has('Full Name') }">
@@ -47,10 +50,12 @@
                     </div>
                   </div>
                   <br>
+                  <!--input email-->
                   <div class="form-group bd-r col-lg-9 cell">
                     <p class="leftCol">Email:</p>
                     <div class=" col-lg-9 rightCol">
-                      <input v-on:input="change()" type="text" class="form-control textBox" name="Email"
+                      <input :disabled="disable" v-on:input="change()" type="text" class="form-control textBox"
+                             name="Email"
                              placeholder="Email"
                              v-model="email" v-validate:email="'required|email'"
                              :class="{ 'is-invalid': submitted && errors.has('Email') }">
@@ -60,10 +65,12 @@
                     </div>
                   </div>
                   <br>
+                  <!--input phone-->
                   <div class="form-group bd-r col-lg-9 cell">
                     <p class="leftCol">Phone:</p>
                     <div class=" col-lg-9 rightCol">
-                      <input v-on:input="change()" type="text" class="form-control textBox" name="Phone Number"
+                      <input :disabled="disable" v-on:input="change()" type="text" class="form-control textBox"
+                             name="Phone Number"
                              placeholder="Phone Number"
                              v-model="phone" v-validate="{ required: true, length: 10, regex: /[0-9]+/ }"
                              :class="{ 'is-invalid': submitted && errors.has('Phone Number') }">
@@ -73,16 +80,19 @@
                     </div>
                   </div>
                   <br>
+                  <!--check enable password-->
                   <div class="form-group bd-r col-lg-9 cell">
                     <a href="#" onclick="return false" class="leftCol changePassword" @click="enablePassword">Enable
                       change password&nbsp;
                       <i class="fa" :class="[checked ? 'fa-angle-up' : 'fa-angle-down']" aria-hidden="true"></i></a>
                   </div>
                   <br v-if="checked">
+                  <!--input old password-->
                   <div v-if="checked" class="form-group bd-r col-lg-9 cell">
                     <p class="leftCol">Current Password:</p>
                     <div class=" col-lg-9 rightCol">
-                      <input v-on:input="change()" type="password" class="form-control textBox" name="Current Password"
+                      <input :disabled="disable" v-on:input="change()" type="password" class="form-control textBox"
+                             name="Current Password"
                              placeholder="Current Password"
                              v-model="password" v-validate="'required'"
                              :class="{ 'is-invalid': submitted && errors.has('Current Password') }">
@@ -92,10 +102,12 @@
                     </div>
                   </div>
                   <br v-if="checked">
+                  <!--input new password-->
                   <div v-if="checked" class="form-group bd-r col-lg-9 cell">
                     <p class="leftCol">Password:</p>
                     <div class=" col-lg-9 rightCol">
-                      <input v-on:input="change()" type="password" class="form-control textBox" name="Password"
+                      <input :disabled="disable" v-on:input="change()" type="password" class="form-control textBox"
+                             name="Password"
                              placeholder="Password"
                              v-model="newPassword" v-validate="{ required: true, min: 8, max:24}"
                              :class="{ 'is-invalid': submitted && errors.has('Password') }" ref="Password">
@@ -105,10 +117,12 @@
                     </div>
                   </div>
                   <br v-if="checked">
+                  <!--confirm new password-->
                   <div v-if="checked" class="form-group bd-r col-lg-9 cell">
                     <p class="leftCol">Re-Password:</p>
                     <div class=" col-lg-9 rightCol">
-                      <input v-on:input="change()" type="password" class="form-control textBox" name="Confirm Password"
+                      <input :disabled="disable" v-on:input="change()" type="password" class="form-control textBox"
+                             name="Confirm Password"
                              placeholder="Confirm Password" v-model="reNewPassword"
                              v-validate="'required|confirmed:Password'"
                              :class="{ 'is-invalid': submitted && errors.has('Confirm Password') }">
@@ -119,11 +133,15 @@
                   </div>
                   <br>
                   <div class="form-group col-lg-12 cell">
-                    <b-button v-if="inputChange" class="btnUpload" style="margin-right: 49px;"
+                    <b-button v-if="disable" class="btnUpload"
+                              @click="disable = !disable">Edit
+                    </b-button>
+                    <b-button v-if="!disable" class="btnUpload" style="margin-right: 49px;"
                               v-on:click="cancelEdit()">Cancel
                     </b-button>
-                    <b-button v-if="inputChange" class="btnUpload" v-on:click="editUser()">Save</b-button>
+                    <b-button v-if="!disable" class="btnUpload" v-on:click="editUser()">Save</b-button>
                   </div>
+                  <div class="errNotice">{{ err }}</div>
                 </form>
               </div>
             </div>
@@ -133,11 +151,9 @@
             <flash-message class="myCustomClass"></flash-message>
           </div>
         </div>
-        <!-- code paging here--->
       </div>
     </section>
     <!--================End Content Area =================-->
-
     <comp-back-to-top/>
     <comp-footer/>
   </div>
@@ -151,13 +167,13 @@ import CompBackToTop from "../frame/CompBackToTop";
 import CompLeftSider from "../frame/CompLeftSider";
 
 export default {
-
   name: "CompChangePassword",
   components: {
     CompHeader, CompFooter, CompBackToTop, CompLeftSider
   },
   data() {
     return {
+      err: '',
       user: '',
       inputChange: false,
       username: '',
@@ -169,12 +185,13 @@ export default {
       phone: '',
       submitted: false,
       checked: false,
+      disable: true
     }
   },
   created() {
     const self = this;
     const axios = require('axios');
-    axios.get(globalURL.host + process.env.VUE_APP_USER, {
+    axios.get(process.env.VUE_APP_BACKEND_SERVER + process.env.VUE_APP_USER, {
       headers: {
         'Authorization': 'Bearer ' + self.$session.get("user").token
       }
@@ -193,13 +210,17 @@ export default {
     })
   },
   methods: {
-    enablePassword(){
+    // method enable change password
+    enablePassword() {
       this.checked = !this.checked
     },
+    // method check change
     change() {
       this.inputChange = true
     },
+    // method cancel change
     cancelEdit() {
+      this.disable = true;
       this.inputChange = false
       this.checked = false
       this.username = this.user.username
@@ -211,6 +232,7 @@ export default {
       this.newPassword = ''
       this.reNewPassword = ''
     },
+    // method change profile
     editUser() {
       const self = this;
       this.submitted = true;
@@ -219,21 +241,20 @@ export default {
           const axios = require('axios');
           const FormData = require('form-data');
           const form = new FormData();
-          form.append('username', this.username);
           form.append('password', this.password);
           form.append('email', this.email);
           form.append('phone', this.phone);
-          form.append('password', this.password);
           form.append('fullName', this.fullName);
           form.append('newPassword', this.newPassword);
           form.append('change_password', this.checked);
-          axios.patch(globalURL.host + process.env.VUE_APP_USER, form, {
+          axios.patch(process.env.VUE_APP_BACKEND_SERVER + process.env.VUE_APP_USER, form, {
             headers: {
               'Authorization': 'Bearer ' + self.$session.get("user").token
             }
           })
             .then(response => {
               if (response.status === 200) {
+                this.disable = true
                 let updateAccount = {
                   email: this.email,
                   fullName: this.fullName,
@@ -248,7 +269,7 @@ export default {
                 });
               }
             }).catch(error => {
-            console.log(error)
+            this.err = error.response.data.message
           })
         }
       });
@@ -258,6 +279,16 @@ export default {
 </script>
 
 <style scoped>
+.errNotice {
+  color: red;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.center {
+  margin: auto;
+  display: block;
+}
 
 .changePassword {
   color: black;
@@ -298,12 +329,11 @@ export default {
 .btnUpload {
   width: 130px;
   height: 45px;
-  background-color: #229aeb;
+  background-color: #92c3f9;
   border: none;
   outline: none;
-  color: #fff;
+  color: black;
   font-weight: bold;
-  font-size: 15px;
   cursor: pointer;
   text-align: center;
   margin-top: 20px;
@@ -312,7 +342,8 @@ export default {
 .btnUpload:hover {
   border: none;
   outline: none;
-  background-color: #229bebad
+  background-color: #0088ff;
+  color: #fff;
 }
 
 .bd-r {

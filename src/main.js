@@ -1,5 +1,3 @@
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
 import 'bootstrap/dist/css/bootstrap.css'
@@ -33,7 +31,6 @@ import 'vue-flash-message/dist/vue-flash-message.min.css'
 
 import router from './router'
 import VueAxios from 'vue-axios'
-import VueSession from "vue-session"
 import axios from "axios"
 import {BootstrapVue, BootstrapVueIcons} from "bootstrap-vue"
 import VueMeta from "vue-meta"
@@ -47,24 +44,8 @@ import 'vuejs-dialog/dist/vuejs-dialog.min.css';
 import './assets/font-awesome/css/font-awesome.min.css'
 import VTooltip from 'v-tooltip'
 import Map from 'map'
-
-
-
-// home
-// import './assets/home/css/style.css'
-// import './assets/home/js/jquery-3.3.1.min.js'
-// import './assets/home/js/jquery-ui.js'
-// import './assets/home/js/popper.min.js'
-// import './assets/home/js/owl.carousel.min.js'
-// import './assets/home/js/jquery.countdown.min.js'
-// import './assets/home/js/jquery.easing.1.3.js'
-// import './assets/home/js/aos.js'
-// import './assets/home/js/jquery.fancybox.min.js'
-// import './assets/home/js/jquery.sticky.js'
-// end home
-
-
-
+// Vue.use(VueSession, options)
+import VueSessionStorage from 'vue-sessionstorage'
 
 Vue.use(Map)
 Vue.use(VTooltip)
@@ -76,15 +57,14 @@ Vue.use(BootstrapVueIcons)
 const options = {
   persist: true
 }
-// Vue.use(VueSession, options)
-import VueSessionStorage from 'vue-sessionstorage'
 Vue.use(VueSessionStorage)
 Vue.use(Vuex)
+Vue.config.productionTip = false
 Vue.use(VeeValidate, {
   inject: true,
   fieldsBagName: 'veeFields'
 });
-Vue.config.productionTip = false
+Vue.prototype.$requests = {nextId:0}
 
 /* eslint-disable no-new */
 new Vue({

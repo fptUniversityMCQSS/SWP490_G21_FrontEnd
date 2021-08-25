@@ -6,10 +6,10 @@
       <div class="banner_inner d-flex align-items-center">
         <div class="container">
           <div class="banner_content text-center">
-            <h2>Question and Answer</h2>
+            <h2>Question Answer</h2>
             <div class="page_link">
-              <router-link to="/home">Home</router-link>
-              <router-link to="/qa">Question and Answer</router-link>
+              <router-link to="/">Home</router-link>
+              <router-link to="/qa">Question Answer</router-link>
             </div>
           </div>
         </div>
@@ -24,6 +24,7 @@
           <div class="col-lg-10">
             <div class="col-lg-11 mx-auto section_gap">
               <div class="wrapper">
+                <!--form upload-->
                 <div class="cont shadow" style="background-color: #f9f9ff">
                   <h2>Upload Question</h2>
                   <div class="upload-container">
@@ -41,11 +42,12 @@
                   </div>
                 </div>
                 <br>
-
                 <b-button variant="outline-primary" class="btnUpload"
                           v-on:click="submitFiles()">Upload
                 </b-button>
-                <p id="noticeUpload" style="color: red; font-size: 17px; margin-top: 20px"></p>
+                <p id="noticeUpload" class="err"></p>
+
+                <!--table list QA uploaded-->
                 <div v-if="items.length>0" style="margin-top: 50px">
                   <b-table :bordered="true" :borderless="true" :items="items.slice().reverse()" :fields="fields"
                            class="shadow text-center"
@@ -54,7 +56,6 @@
                       <div>{{ row.value }}</div>
                     </template>
                     <template #cell(status)="{item}">
-
 
                       <div v-if="item.status === 'Loading'">
                         Loading&nbsp;<i class="fa fa-spinner fa-spin"/>
@@ -75,27 +76,30 @@
                         {{ item.questions.length + "/" + item.questions_number }}
                       </div>
 
-
                     </template>
                     <template #cell(action)="row">
                       <b-button variant="outline-primary" size="sm" @click="row.toggleDetails"
                                 class="mr-1">
-                        {{ row.detailsShowing ? 'Hide' : 'Show' }} Details
+                        {{ row.detailsShowing ? 'Hide' : 'Show' }} Details&nbsp;
+                        <i class="fa" :class="[row.detailsShowing ? 'fa-eye-slash':'fa-eye']" aria-hidden="true"></i>
                       </b-button>
+
                       <b-button
                         v-if="row.item.message !== ''"
                         variant="outline-primary" size="sm"
                         v-on:click="viewQA(row.item.id)">
-                        View
+                        View&nbsp;<i class="fa fa-share-square-o" aria-hidden="true"></i>
                       </b-button>
+
                       <b-button
-                        v-if="row.item.status !== 'Loading' && row.item.message === ''"
+                        v-if="row.item.status !== 'Loading' || row.item.message !== ''"
                         variant="outline-primary" size="sm"
                         v-on:click="cancelUpload(row.item)"
                         class="btnDelete">
                         Delete&nbsp;<i class="fa fa-trash" aria-hidden="true"></i>
                       </b-button>
                     </template>
+
                     <template #row-details="row">
                       <b-card class="scrollbar">
                         <ul v-for="ob in row.item.questions" :key="ob.Number">
@@ -117,11 +121,9 @@
             <flash-message class="myCustomClass"></flash-message>
           </div>
         </div>
-        <!-- code paging here--->
       </div>
     </section>
     <!--================End Content Area =================-->
-
     <comp-back-to-top/>
     <comp-footer/>
   </div>
@@ -135,6 +137,15 @@ import CompBackToTop from "../frame/CompBackToTop";
 import CompLeftSider from "../frame/CompLeftSider";
 import * as utility from '../utility/utility';
 
+function findQA(idx, listQA) {
+  for (let i = 0; i < listQA.length; i++) {
+    if (listQA[i].idx === idx) {
+      return i
+    }
+  }
+  return -1
+}
+
 let self
 export default {
   name: "CompQA",
@@ -145,21 +156,22 @@ export default {
     return {
       items: [],
       fileName: '',
+      nextIndex: 0,
       fields: [
         {
           key: 'historyName',
           label: 'File Name',
-          thStyle: {background: '#92c3f9', color: 'black', width: '300px'},
+          thStyle: {background: '#92c3f9', color: 'black', },
         },
         {
           key: 'status',
           label: 'Status',
-          thStyle: {background: '#92c3f9', color: 'black'},
+          thStyle: {background: '#92c3f9', color: 'black', width: '200px'},
         },
         {
           key: 'action',
           label: 'Action',
-          thStyle: {background: '#92c3f9', color: 'black'},
+          thStyle: {background: '#92c3f9', color: 'black', width: '300px'},
         }
       ],
       files: ''
@@ -176,8 +188,16 @@ export default {
     } else {
       this.items = this.$session.get('listQA')
     }
+
+    if (!this.$session.exists('nextIndexQA')) {
+      this.$session.set('nextIndexQA', 0)
+      this.nextIndex = this.$session.get('nextIndexQA')
+    } else {
+      this.nextIndex = this.$session.get('nextIndexQA')
+    }
   },
   methods: {
+    // method cancel upload
     cancelUpload(item) {
       let message = "<p style='text-align: center; padding-top: 5px'><b style='font-size: 20px'>Cancel Upload</b>" +
         "<br><br>Are you sure you want to cancel upload?</p>";
@@ -189,22 +209,29 @@ export default {
       this.$dialog
         .confirm(message, options)
         .then(() => {
+
+          self.items = self.$session.get('listQA')
+          let index = findQA(item.idx, self.items)
+          self.$requests[self.items[index].cancelId].abort()
+          self.items.splice(index, 1)
+          self.$session.set('listQA', self.items)
+
           const axios = require('axios');
           axios
-            .delete(globalURL.host + process.env.VUE_APP_ADMIN_USER + "/" + item.id, {
+            .delete(process.env.VUE_APP_BACKEND_SERVER + process.env.VUE_APP_HISTORY + "/" + item.id, {
               headers: {
                 'Authorization': 'Bearer ' + self.$session.get("user").token
               }
             })
             .then(response => {
-              if (response.status === 200) {
-                this.flash('Delete successfully!', 'success', {
-                  timeout: 10000
-                });
-                let index = this.items.indexOf(item)
-                this.items.splice(index, 1)
-                this.totalRows--
-              }
+              // if (response.status === 200) {
+              //   this.flash('Delete successfully!', 'success', {
+              //     timeout: 10000
+              //   });
+              //   let index = this.items.indexOf(item)
+              //   this.items.splice(index, 1)
+              //   this.totalRows--
+              // }
             })
             .catch(error => {
               console.log(error)
@@ -214,9 +241,11 @@ export default {
           console.log('Clicked on cancel');
         })
     },
+    // method view QA
     viewQA(id) {
       self.$router.push('/history/' + id)
     },
+    // method detect file selected
     handleFilesUpload(object) {
       if (document.getElementById("fileInput").files.length > 0) {
         this.files = this.$refs.file.files[0];
@@ -224,6 +253,7 @@ export default {
         document.getElementById("noticeUpload").innerHTML = "";
       }
     },
+    //method submit file
     submitFiles() {
       if (document.getElementById("fileInput").files.length > 0) {
         let objectQA = {
@@ -236,19 +266,27 @@ export default {
           subject: '',
           questions: [],
           _showDetails: false,
+          idx: this.nextIndex,
         }
+        objectQA.cancelId = this.$requests.nextId
+        let controller = new AbortController()
+        this.$requests[objectQA.cancelId] = controller
+        this.$requests.nextId++
 
         this.items = this.$session.get('listQA')
-        let index = this.items.push(objectQA) - 1
+        this.items.push(objectQA)
+        this.nextIndex++
+        this.$session.set('nextIndexQA', this.nextIndex)
         this.$session.set('listQA', this.items)
         /*
         Initialize the form data
       */
         let formData = new FormData();
         formData.append('file', this.files)
-        fetch(globalURL.host + process.env.VUE_APP_QA,
+        fetch(process.env.VUE_APP_BACKEND_SERVER + process.env.VUE_APP_QA,
           {
             method: "PUT",
+            signal: controller.signal,
             headers: {
               // 'Content-Type': 'multipart/form-data',
               'Authorization': 'Bearer ' + self.$session.get("user").token
@@ -274,10 +312,11 @@ export default {
                 self.items.forEach((item) => {
                   arrIndex.push({
                     index: self.items.indexOf(item),
-                    showDetail: item._showDetails ? true : false
+                    showDetail: !!item._showDetails
                   })
                 })
                 self.items = self.$session.get('listQA')
+                let index = findQA(objectQA.idx, self.items)
                 arrIndex.forEach((item) => {
                   self.items[item.index]._showDetails = item.showDetail
                 })
@@ -310,11 +349,13 @@ export default {
                 self.$session.set('listQA', self.items)
               }
               reader.releaseLock();
+              delete this.$requests[objectQA.cancelId]
             }
             read();
           })
           .catch(error => {
             self.items[index].message = error.response.data.message
+            delete this.$requests[objectQA.cancelId]
           });
       } else {
         document.getElementById("noticeUpload").innerHTML = "Please choose file to upload!";
@@ -452,4 +493,9 @@ h2 {
   color: #fff;
 }
 
+.err {
+  color: red;
+  font-size: 17px;
+  margin-top: 20px
+}
 </style>
