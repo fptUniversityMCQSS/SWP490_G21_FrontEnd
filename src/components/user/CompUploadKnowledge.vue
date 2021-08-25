@@ -18,7 +18,7 @@
     <!--================End Home Banner Area =================-->
 
     <!--================Content Area =================-->
-    <section class="cat_product_area">
+    <section class="cat_product_area center">
       <div>
         <div class="row flex-row-reverse">
           <div class="col-lg-10">
@@ -126,12 +126,12 @@ export default {
         {
           key: 'status',
           label: 'Status',
-          thStyle: {background: '#92c3f9', color: 'black'}
+          thStyle: {background: '#92c3f9', color: 'black', width: '150px'}
         },
         {
           key: 'action',
           label: 'Action',
-          thStyle: {background: '#92c3f9', color: 'black'}
+          thStyle: {background: '#92c3f9', color: 'black', width: '150px'}
         }
       ],
       files: '',
@@ -275,6 +275,10 @@ export default {
 </script>
 
 <style scoped>
+.center {
+  margin: auto;
+  display: block;
+}
 .err {
   color: red;
   font-size: 17px;

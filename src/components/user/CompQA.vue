@@ -92,7 +92,7 @@
                       </b-button>
 
                       <b-button
-                        v-if="row.item.status !== 'Loading' && row.item.message === ''"
+                        v-if="row.item.status !== 'Loading' || row.item.message !== ''"
                         variant="outline-primary" size="sm"
                         v-on:click="cancelUpload(row.item)"
                         class="btnDelete">
@@ -161,17 +161,17 @@ export default {
         {
           key: 'historyName',
           label: 'File Name',
-          thStyle: {background: '#92c3f9', color: 'black', width: '300px'},
+          thStyle: {background: '#92c3f9', color: 'black', },
         },
         {
           key: 'status',
           label: 'Status',
-          thStyle: {background: '#92c3f9', color: 'black'},
+          thStyle: {background: '#92c3f9', color: 'black', width: '200px'},
         },
         {
           key: 'action',
           label: 'Action',
-          thStyle: {background: '#92c3f9', color: 'black'},
+          thStyle: {background: '#92c3f9', color: 'black', width: '300px'},
         }
       ],
       files: ''

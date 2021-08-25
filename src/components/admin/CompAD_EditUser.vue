@@ -18,7 +18,7 @@
     <!--================End Home Banner Area =================-->
 
     <!--================Content Area =================-->
-    <section class="cat_product_area">
+    <section class="cat_product_area center">
       <div>
         <div class="row flex-row-reverse">
           <div class="col-lg-10">
@@ -31,7 +31,7 @@
                     <p class="leftCol">Username:</p>
                     <div class="col-lg-9 rightCol">
                       <input type="text" class="form-control textBox"
-                             style="background-color: rgba(206,206,219,0.37)" name="username"
+                             style="background-color: rgba(2,4,5,0.05)" name="username"
                              v-model="username" readonly>
                     </div>
                   </div>
@@ -241,6 +241,10 @@ export default {
 </script>
 
 <style scoped>
+.center {
+  margin: auto;
+  display: block;
+}
 
 .changePassword {
   color: black;

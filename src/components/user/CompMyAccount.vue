@@ -18,7 +18,7 @@
     <!--================End Home Banner Area =================-->
 
     <!--================Content Area =================-->
-    <section class="cat_product_area">
+    <section class="cat_product_area center">
       <div>
         <div class="row flex-row-reverse">
           <div class="col-lg-10">
@@ -31,7 +31,7 @@
                     <p class="leftCol">Username:</p>
                     <div class="col-lg-9 rightCol">
                       <input type="text" class="form-control textBox" name="username"
-                             v-model="username" readonly>
+                             v-model="username" readonly style="background-color: rgba(2,4,5,0.05)">
                     </div>
                   </div>
                   <br>
@@ -39,7 +39,8 @@
                   <div class="form-group bd-r col-lg-9 cell">
                     <p class="leftCol">Full name:</p>
                     <div class=" col-lg-9 rightCol">
-                      <input v-on:input="change()" type="text" class="form-control textBox" name="Full Name"
+                      <input :disabled="disable" v-on:input="change()" type="text" class="form-control textBox"
+                             name="Full Name"
                              placeholder="Full Name"
                              v-model="fullName" v-validate="{ required: true, min: 8, max: 50, regex: /^(.)+$/ }"
                              :class="{ 'is-invalid': submitted && errors.has('Full Name') }">
@@ -53,7 +54,8 @@
                   <div class="form-group bd-r col-lg-9 cell">
                     <p class="leftCol">Email:</p>
                     <div class=" col-lg-9 rightCol">
-                      <input v-on:input="change()" type="text" class="form-control textBox" name="Email"
+                      <input :disabled="disable" v-on:input="change()" type="text" class="form-control textBox"
+                             name="Email"
                              placeholder="Email"
                              v-model="email" v-validate:email="'required|email'"
                              :class="{ 'is-invalid': submitted && errors.has('Email') }">
@@ -67,7 +69,8 @@
                   <div class="form-group bd-r col-lg-9 cell">
                     <p class="leftCol">Phone:</p>
                     <div class=" col-lg-9 rightCol">
-                      <input v-on:input="change()" type="text" class="form-control textBox" name="Phone Number"
+                      <input :disabled="disable" v-on:input="change()" type="text" class="form-control textBox"
+                             name="Phone Number"
                              placeholder="Phone Number"
                              v-model="phone" v-validate="{ required: true, length: 10, regex: /[0-9]+/ }"
                              :class="{ 'is-invalid': submitted && errors.has('Phone Number') }">
@@ -88,7 +91,8 @@
                   <div v-if="checked" class="form-group bd-r col-lg-9 cell">
                     <p class="leftCol">Current Password:</p>
                     <div class=" col-lg-9 rightCol">
-                      <input v-on:input="change()" type="password" class="form-control textBox" name="Current Password"
+                      <input :disabled="disable" v-on:input="change()" type="password" class="form-control textBox"
+                             name="Current Password"
                              placeholder="Current Password"
                              v-model="password" v-validate="'required'"
                              :class="{ 'is-invalid': submitted && errors.has('Current Password') }">
@@ -102,7 +106,8 @@
                   <div v-if="checked" class="form-group bd-r col-lg-9 cell">
                     <p class="leftCol">Password:</p>
                     <div class=" col-lg-9 rightCol">
-                      <input v-on:input="change()" type="password" class="form-control textBox" name="Password"
+                      <input :disabled="disable" v-on:input="change()" type="password" class="form-control textBox"
+                             name="Password"
                              placeholder="Password"
                              v-model="newPassword" v-validate="{ required: true, min: 8, max:24}"
                              :class="{ 'is-invalid': submitted && errors.has('Password') }" ref="Password">
@@ -116,7 +121,8 @@
                   <div v-if="checked" class="form-group bd-r col-lg-9 cell">
                     <p class="leftCol">Re-Password:</p>
                     <div class=" col-lg-9 rightCol">
-                      <input v-on:input="change()" type="password" class="form-control textBox" name="Confirm Password"
+                      <input :disabled="disable" v-on:input="change()" type="password" class="form-control textBox"
+                             name="Confirm Password"
                              placeholder="Confirm Password" v-model="reNewPassword"
                              v-validate="'required|confirmed:Password'"
                              :class="{ 'is-invalid': submitted && errors.has('Confirm Password') }">
@@ -127,10 +133,13 @@
                   </div>
                   <br>
                   <div class="form-group col-lg-12 cell">
-                    <b-button v-if="inputChange" class="btnUpload" style="margin-right: 49px;"
+                    <b-button v-if="disable" class="btnUpload"
+                              @click="disable = !disable">Edit
+                    </b-button>
+                    <b-button v-if="!disable" class="btnUpload" style="margin-right: 49px;"
                               v-on:click="cancelEdit()">Cancel
                     </b-button>
-                    <b-button v-if="inputChange" class="btnUpload" v-on:click="editUser()">Save</b-button>
+                    <b-button v-if="!disable" class="btnUpload" v-on:click="editUser()">Save</b-button>
                   </div>
                 </form>
               </div>
@@ -174,6 +183,7 @@ export default {
       phone: '',
       submitted: false,
       checked: false,
+      disable: true
     }
   },
   created() {
@@ -199,7 +209,7 @@ export default {
   },
   methods: {
     // method enable change password
-    enablePassword(){
+    enablePassword() {
       this.checked = !this.checked
     },
     // method check change
@@ -208,6 +218,7 @@ export default {
     },
     // method cancel change
     cancelEdit() {
+      this.disable = true;
       this.inputChange = false
       this.checked = false
       this.username = this.user.username
@@ -241,6 +252,7 @@ export default {
           })
             .then(response => {
               if (response.status === 200) {
+                this.disable = true
                 let updateAccount = {
                   email: this.email,
                   fullName: this.fullName,
@@ -265,6 +277,11 @@ export default {
 </script>
 
 <style scoped>
+
+.center {
+  margin: auto;
+  display: block;
+}
 
 .changePassword {
   color: black;

@@ -94,7 +94,7 @@
                         </div>
                         <div class="col-lg-5 mr-auto text-lg-right align-self-center order-lg-1" data-aos="fade-left">
                           <h3>History</h3>
-                          <p class="mb-4">View the history of answered questions you have asked in the past.</p>
+                          <p class="mb-4">View the history of answered questions<br> you have asked in the past.</p>
                           <p>
                             <b-button v-on:click="history" class="btnUpload">Feature Access</b-button>
                           </p>

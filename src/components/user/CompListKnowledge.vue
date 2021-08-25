@@ -18,7 +18,7 @@
     <!--================End Home Banner Area =================-->
 
     <!--================Content Area =================-->
-    <section class="cat_product_area">
+    <section class="cat_product_area center">
       <div class="vld-parent">
         <div class="row flex-row-reverse">
           <div class="col-lg-10 py-5">
@@ -351,6 +351,10 @@ export default {
 </script>
 
 <style scoped>
+.center {
+  margin: auto;
+  display: block;
+}
 
 .truncate {
   white-space: nowrap;

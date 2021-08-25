@@ -18,7 +18,7 @@
     <!--================End Home Banner Area =================-->
 
     <!--================Content Area =================-->
-    <section class="cat_product_area">
+    <section class="cat_product_area center">
       <div>
         <div class="row flex-row-reverse">
           <div class="col-lg-10">
@@ -214,6 +214,11 @@ export default {
 </script>
 
 <style scoped>
+.center {
+  margin: auto;
+  display: block;
+}
+
 .errNotice {
   color: red;
   font-weight: bold;
