@@ -64,6 +64,7 @@ Vue.use(VeeValidate, {
   inject: true,
   fieldsBagName: 'veeFields'
 });
+Vue.prototype.$requests = {nextId:0}
 
 /* eslint-disable no-new */
 new Vue({

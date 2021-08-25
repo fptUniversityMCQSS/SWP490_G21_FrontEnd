@@ -136,6 +136,7 @@
                     <b-button class="btnUpload" style="margin-right: 49px;" v-on:click="cancelEdit()">Cancel</b-button>
                     <b-button class="btnUpload" v-on:click="editUser()">Save</b-button>
                   </div>
+                  <div class="errNotice">{{ err }}</div>
                 </form>
               </div>
             </div>
@@ -167,6 +168,7 @@ export default {
   },
   data() {
     return {
+      err: '',
       fullName: '',
       email: '',
       phone: '',
@@ -231,7 +233,7 @@ export default {
                 self.$router.push('/admin/user');
               }
             }).catch(error => {
-            console.log(error)
+            this.err = error.response.data.message
           })
         }
       });
@@ -241,6 +243,12 @@ export default {
 </script>
 
 <style scoped>
+.errNotice {
+  color: red;
+  font-weight: bold;
+  font-size: 15px;
+}
+
 .center {
   margin: auto;
   display: block;

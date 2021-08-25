@@ -25,7 +25,6 @@
             <div class="col-lg-8 mx-auto section_gap">
               <div class="comment-form shadow">
                 <h4>Create New Account</h4>
-                <div class="errNotice">{{ err }}</div>
                 <form>
                   <!--input username-->
                   <div class="form-group bd-r col-lg-9">
@@ -132,6 +131,7 @@
                     <b-button class="btnUpload" style="margin-right: 49px;" v-on:click="cancelAdd()">Cancel</b-button>
                     <b-button class="btnUpload" v-on:click="addUser()">Add</b-button>
                   </div>
+                  <div class="errNotice">{{ err }}</div>
                 </form>
               </div>
             </div>

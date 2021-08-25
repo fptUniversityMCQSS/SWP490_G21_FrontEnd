@@ -36,7 +36,6 @@
           <div class="col-lg-6">
             <div class="login_form_inner">
               <h3>Login form</h3>
-              <div class="errNotice">{{ err }}</div>
               <form class="row login_form" @submit.prevent="loginData()" method="post">
                 <!--input username-->
                 <div class="col-md-12 form-group">
@@ -69,6 +68,7 @@
                 <div class="col-md-12 form-group">
                   <button type="submit" value="submit" class="btn submit_btn">LOGIN</button>
                 </div>
+                <div class="errNotice">{{ err }}</div>
               </form>
             </div>
           </div>

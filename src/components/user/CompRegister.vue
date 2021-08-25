@@ -37,7 +37,6 @@
           <div class="col-lg-6">
             <div class="login_form_inner reg_form">
               <h3>Create an Account</h3>
-              <div class="errNotice">{{ err }}</div>
               <form class="row login_form" @submit.prevent="register()" method="post">
                 <!--input fullName-->
                 <div class="col-md-12 form-group">
@@ -104,6 +103,7 @@
                 <div class="col-md-12 form-group">
                   <button type="submit" value="submit" class="btn submit_btn">Register</button>
                 </div>
+                <div class="errNotice">{{ err }}</div>
               </form>
             </div>
           </div>

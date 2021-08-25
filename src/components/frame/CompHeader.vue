@@ -37,11 +37,10 @@
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false"><i class="fa fa-user-circle"
                                                 aria-hidden="true"></i>&nbsp;&nbsp;{{ currentUser }}</a>
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu" style="left: -40px">
                       <li class="nav-item">
                         <router-link to="/user" class="nav-link">
-                          <i class="fa fa-user-o" aria-hidden="true"></i>&nbsp;&nbsp;My
-                          Account
+                          <i class="fa fa-user-o" aria-hidden="true"></i> Profile
                         </router-link>
                       </li>
                       <li class="nav-item">

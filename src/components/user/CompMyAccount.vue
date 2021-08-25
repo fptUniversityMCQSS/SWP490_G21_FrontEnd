@@ -141,6 +141,7 @@
                     </b-button>
                     <b-button v-if="!disable" class="btnUpload" v-on:click="editUser()">Save</b-button>
                   </div>
+                  <div class="errNotice">{{ err }}</div>
                 </form>
               </div>
             </div>
@@ -172,6 +173,7 @@ export default {
   },
   data() {
     return {
+      err: '',
       user: '',
       inputChange: false,
       username: '',
@@ -267,7 +269,7 @@ export default {
                 });
               }
             }).catch(error => {
-            console.log(error)
+            this.err = error.response.data.message
           })
         }
       });
@@ -277,6 +279,11 @@ export default {
 </script>
 
 <style scoped>
+.errNotice {
+  color: red;
+  font-weight: bold;
+  font-size: 15px;
+}
 
 .center {
   margin: auto;
@@ -322,12 +329,11 @@ export default {
 .btnUpload {
   width: 130px;
   height: 45px;
-  background-color: #229aeb;
+  background-color: #92c3f9;
   border: none;
   outline: none;
-  color: #fff;
+  color: black;
   font-weight: bold;
-  font-size: 15px;
   cursor: pointer;
   text-align: center;
   margin-top: 20px;
@@ -336,7 +342,8 @@ export default {
 .btnUpload:hover {
   border: none;
   outline: none;
-  background-color: #229bebad
+  background-color: #0088ff;
+  color: #fff;
 }
 
 .bd-r {

@@ -212,7 +212,7 @@ export default {
 
           self.items = self.$session.get('listQA')
           let index = findQA(item.idx, self.items)
-          // self.items[index].controller.abort()
+          self.$requests[self.items[index].cancelId].abort()
           self.items.splice(index, 1)
           self.$session.set('listQA', self.items)
 
@@ -268,6 +268,10 @@ export default {
           _showDetails: false,
           idx: this.nextIndex,
         }
+        objectQA.cancelId = this.$requests.nextId
+        let controller = new AbortController()
+        this.$requests[objectQA.cancelId] = controller
+        this.$requests.nextId++
 
         this.items = this.$session.get('listQA')
         this.items.push(objectQA)
@@ -282,6 +286,7 @@ export default {
         fetch(process.env.VUE_APP_BACKEND_SERVER + process.env.VUE_APP_QA,
           {
             method: "PUT",
+            signal: controller.signal,
             headers: {
               // 'Content-Type': 'multipart/form-data',
               'Authorization': 'Bearer ' + self.$session.get("user").token
@@ -344,11 +349,13 @@ export default {
                 self.$session.set('listQA', self.items)
               }
               reader.releaseLock();
+              delete this.$requests[objectQA.cancelId]
             }
             read();
           })
           .catch(error => {
             self.items[index].message = error.response.data.message
+            delete this.$requests[objectQA.cancelId]
           });
       } else {
         document.getElementById("noticeUpload").innerHTML = "Please choose file to upload!";

@@ -169,7 +169,7 @@ export default {
         .then(() => {
           self.items = self.$session.get('listKnowledge')
           let index = findKnowledge(item.idx, self.items)
-          // self.items[index].controller.abort()
+          self.$requests[self.items[index].cancelId].abort()
           self.items.splice(index, 1)
           self.$session.set('listKnowledge', self.items)
           const axios = require('axios');
@@ -206,9 +206,11 @@ export default {
           messageDetail: '',
           knowledgeId: '',
           idx: this.nextIndex,
-          // controller: null
         }
-        // newObject.controller = new AbortController()
+        newObject.cancelId = this.$requests.nextId
+        let controller = new AbortController()
+        this.$requests[newObject.cancelId] = controller
+        this.$requests.nextId++
 
         self.items = self.$session.get('listKnowledge')
         self.items.push(newObject)
@@ -224,7 +226,7 @@ export default {
         fetch(process.env.VUE_APP_BACKEND_SERVER + process.env.VUE_APP_KNOWLEDGE,
           {
             method: "PUT",
-            // signal: newObject.controller.signal,
+            signal: controller.signal,
             headers: {
               // 'Content-Type': 'multipart/form-data',
               'Authorization': 'Bearer ' + self.$session.get("user").token
@@ -262,10 +264,14 @@ export default {
                 self.$session.set('listKnowledge', self.items)
               }
               reader.releaseLock();
+              delete this.$requests[newObject.cancelId]
             }
             read();
           })
-          .catch(console.error);
+          .catch((error) => {
+            console.log(error)
+            delete this.$requests[newObject.cancelId]
+          });
       } else {
         document.getElementById("noticeUpload").innerHTML = "Please choose file to upload!";
       }
