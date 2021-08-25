@@ -51,7 +51,7 @@
                           </b-input-group>
                         </b-form-group>
                       </div>
-                      <!--table history-->>
+                      <!--table history-->
                       <b-table class="bgTable" :bordered="true" :borderless="true"
                                :items="items.slice().reverse()" :current-page="currentPage" stacked="md"
                                show-empty
@@ -66,7 +66,7 @@
                         <template #cell(action)="{item}">
                           <b-button variant="outline-primary" size="sm" v-on:click="sendData(item)"
                                     class="mr-1">
-                            <i class="fa fa-share-square-o" aria-hidden="true"></i>
+                            <i class="fa fa-eye" aria-hidden="true"></i>
                           </b-button>
                           <b-button variant="outline-primary" size="sm" v-on:click="downloadHistory(item)"
                                     class="mr-1">

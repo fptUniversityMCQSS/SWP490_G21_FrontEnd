@@ -36,8 +36,6 @@
           <div class="col-lg-12 py-5">
             <div>
 
-              <!-- code home here-->
-
               <section class="site-section">
                 <div class="container">
                   <div class="row justify-content-center" data-aos="fade-up">
@@ -52,7 +50,7 @@
                       <div class="row">
                         <div class="mb-4 mb-lg-0 col-lg-6 order-lg-2" data-aos="fade-right">
                           <a href="#" class="hover-1">
-                            <img src="../../assets/img/product/home_img1.jpg" alt="Image" class="img-fluid imgHome">
+                            <img src="../../assets/img/product/home_img3.jpg" alt="Image" class="img-fluid imgHome">
                           </a>
                         </div>
                         <div class="col-lg-5 mr-auto text-lg-right align-self-center order-lg-1" data-aos="fade-left">
@@ -76,7 +74,8 @@
                         </div>
                         <div class="col-lg-5 ml-auto align-self-center" data-aos="fade-right">
                           <h3>Knowledge</h3>
-                          <p class="mb-4">Views all knowledge that our AI has studied. You can also download it by yourself.</p>
+                          <p class="mb-4">View all the knowledge that our AI has studied.<br>
+                            You can download them for your study, research purposes.</p>
                           <p>
                             <b-button v-on:click="knowledge" class="btnUpload">Feature Access</b-button>
                           </p>
@@ -95,7 +94,7 @@
                         </div>
                         <div class="col-lg-5 mr-auto text-lg-right align-self-center order-lg-1" data-aos="fade-left">
                           <h3>History</h3>
-                          <p class="mb-4">Views the history of answered questions you have asked in the past.</p>
+                          <p class="mb-4">View the history of answered questions you have asked in the past.</p>
                           <p>
                             <b-button v-on:click="history" class="btnUpload">Feature Access</b-button>
                           </p>
@@ -108,7 +107,6 @@
             </div>
           </div>
         </div>
-        <!-- code paging here--->
       </div>
     </section>
     <!--================End Content Area =================-->
@@ -149,7 +147,7 @@ export default {
     //click knowledge button
     knowledge() {
       if (this.username !== '') {
-        this.$router.push('/knowledge/upload')
+        this.$router.push('/knowledge')
       } else this.$router.push('/login')
     },
     //click history button
@@ -271,5 +269,6 @@ export default {
 
 .homeContent {
   font-family: "Roboto", sans-serif;
+  font-size: 17px;
 }
 </style>

@@ -18,8 +18,13 @@
                       <i class="fa fa-home fontHeader" aria-hidden="true"></i>&nbsp;&nbsp;Home
                     </router-link>
                   </li>
-                  <li class="nav-item">
+                  <li class="nav-item" v-if="username !== ''">
                     <router-link to="/qa" class="nav-link">
+                      <i class="fa fa-tasks fontHeader" aria-hidden="true"></i>&nbsp;&nbsp;Feature
+                    </router-link>
+                  </li>
+                  <li class="nav-item" v-if="username === ''">
+                    <router-link to="/login" class="nav-link">
                       <i class="fa fa-tasks fontHeader" aria-hidden="true"></i>&nbsp;&nbsp;Feature
                     </router-link>
                   </li>

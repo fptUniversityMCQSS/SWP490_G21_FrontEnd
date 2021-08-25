@@ -228,11 +228,9 @@ export default {
           const axios = require('axios');
           const FormData = require('form-data');
           const form = new FormData();
-          form.append('username', this.username);
           form.append('password', this.password);
           form.append('email', this.email);
           form.append('phone', this.phone);
-          form.append('password', this.password);
           form.append('fullName', this.fullName);
           form.append('newPassword', this.newPassword);
           form.append('change_password', this.checked);

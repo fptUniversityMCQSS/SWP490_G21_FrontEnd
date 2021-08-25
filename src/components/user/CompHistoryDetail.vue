@@ -60,7 +60,7 @@
               </router-link>
             </div>
           </div>
-          <loading :active.sync="isLoading"
+          <loading style="margin-left: 150px" :active.sync="isLoading"
                    :can-cancel="true"
                    :is-full-page="false"></loading>
           <div class="col-lg-2 fixed-sidebar">
@@ -104,6 +104,7 @@ export default {
     },
     //method download history detail
     downloadDetail() {
+      let self = this
       let id = this.$route.params.id
       let api = process.env.VUE_APP_HISTORY_DOWNLOAD.replace(/%\w+%/g, function (all) {
         return {"%id%": id}[all] || all;
