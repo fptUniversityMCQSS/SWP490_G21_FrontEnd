@@ -181,7 +181,7 @@ export default {
         .then(() => {
           const axios = require('axios');
           axios
-            .delete(globalURL.host + process.env.VUE_APP_HISTORY + "/" + item.id,
+            .delete(process.env.VUE_APP_BACKEND_SERVER + process.env.VUE_APP_HISTORY + "/" + item.id,
               {
                 headers: {
                   'Content-Type': 'multipart/form-data',
@@ -222,7 +222,7 @@ export default {
       });
       const axios = require('axios');
       axios
-        .get(globalURL.host + api,
+        .get(process.env.VUE_APP_BACKEND_SERVER + api,
           {
             headers: {
               'Content-Type': 'multipart/form-data',
@@ -248,7 +248,7 @@ export default {
     const self = this
     const axios = require('axios');
     axios
-      .get(globalURL.host + process.env.VUE_APP_HISTORY, {
+      .get(process.env.VUE_APP_BACKEND_SERVER + process.env.VUE_APP_HISTORY, {
         headers: {
           'Authorization': 'Bearer ' + self.$session.get("user").token
         }

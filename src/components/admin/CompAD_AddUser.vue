@@ -191,7 +191,7 @@ export default {
           form.append('username', this.username);
           form.append('password', this.password);
           form.append('role', this.role);
-          axios.post(globalURL.host + process.env.VUE_APP_ADMIN_USER, form, {
+          axios.post(process.env.VUE_APP_BACKEND_SERVER + process.env.VUE_APP_ADMIN_USER, form, {
             headers: {
               'Authorization': 'Bearer ' + self.$session.get("user").token
             }

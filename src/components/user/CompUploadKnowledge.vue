@@ -147,11 +147,11 @@ export default {
       this.items = this.$session.get('listKnowledge')
     }
 
-    if (!this.$session.exists('nextIndex')) {
-      this.$session.set('nextIndex', 0)
-      this.nextIndex = this.$session.get('nextIndex')
+    if (!this.$session.exists('nextIndexKnowledge')) {
+      this.$session.set('nextIndexKnowledge', 0)
+      this.nextIndex = this.$session.get('nextIndexKnowledge')
     } else {
-      this.nextIndex = this.$session.get('nextIndex')
+      this.nextIndex = this.$session.get('nextIndexKnowledge')
     }
   },
   methods: {
@@ -167,25 +167,19 @@ export default {
       this.$dialog
         .confirm(message, options)
         .then(() => {
+          self.items = self.$session.get('listKnowledge')
+          let index = findKnowledge(item.idx, self.items)
+          // self.items[index].controller.abort()
+          self.items.splice(index, 1)
+          self.$session.set('listKnowledge', self.items)
           const axios = require('axios');
           axios
-            .delete(globalURL.host + process.env.VUE_APP_KNOWLEDGE + "/" + item.knowledgeId, {
+            .delete(process.env.VUE_APP_BACKEND_SERVER + process.env.VUE_APP_KNOWLEDGE + "/" + item.knowledgeId, {
               headers: {
                 'Authorization': 'Bearer ' + self.$session.get("user").token
               }
             })
             .then(response => {
-              if (response.status === 200) {
-                this.flash('Delete successfully!', 'success', {
-                  timeout: 10000
-                });
-
-                self.items = self.$session.get('listKnowledge')
-                let index = findKnowledge(item.idx, self.items)
-                // self.items[index].controller.abort()
-                self.items.splice(index, 1)
-                self.$session.set('listKnowledge', self.items)
-              }
             })
             .catch(error => {
               console.log(error)
@@ -219,7 +213,7 @@ export default {
         self.items = self.$session.get('listKnowledge')
         self.items.push(newObject)
         this.nextIndex++
-        self.$session.set('nextIndex', self.nextIndex)
+        self.$session.set('nextIndexKnowledge', self.nextIndex)
         self.$session.set('listKnowledge', self.items)
 
         /*
@@ -227,7 +221,7 @@ export default {
         */
         let formData = new FormData();
         formData.append('file', this.files)
-        fetch(globalURL.host + process.env.VUE_APP_KNOWLEDGE,
+        fetch(process.env.VUE_APP_BACKEND_SERVER + process.env.VUE_APP_KNOWLEDGE,
           {
             method: "PUT",
             // signal: newObject.controller.signal,
