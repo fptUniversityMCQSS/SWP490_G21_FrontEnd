@@ -242,7 +242,7 @@ export default {
       const self = this
       const axios = require('axios');
       axios
-        .get(globalURL.host + process.env.VUE_APP_KNOWLEDGE + "/" + item.knowledgeId,
+        .get(process.env.VUE_APP_BACKEND_SERVER + process.env.VUE_APP_KNOWLEDGE + "/" + item.knowledgeId,
           {
             headers: {
               'Content-Type': 'multipart/form-data',
@@ -273,7 +273,7 @@ export default {
         .then(() => {
           const axios = require('axios');
           axios
-            .delete(globalURL.host + process.env.VUE_APP_KNOWLEDGE + "/" + item.knowledgeId,
+            .delete(process.env.VUE_APP_BACKEND_SERVER + process.env.VUE_APP_KNOWLEDGE + "/" + item.knowledgeId,
               {
                 headers: {
                   'Content-Type': 'multipart/form-data',
@@ -314,7 +314,7 @@ export default {
     const axios = require('axios');
     this.role = self.$session.get('user').role
     axios
-      .get(globalURL.host + process.env.VUE_APP_KNOWLEDGE,
+      .get(process.env.VUE_APP_BACKEND_SERVER + process.env.VUE_APP_KNOWLEDGE,
         {
           headers: {
             'Content-Type': 'multipart/form-data',

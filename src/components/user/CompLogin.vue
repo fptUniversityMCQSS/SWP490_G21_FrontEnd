@@ -110,7 +110,7 @@ export default {
           const form = new FormData();
           form.append('username', this.username);
           form.append('password', this.password);
-          axios.post(globalURL.host + process.env.VUE_APP_LOGIN, form)
+          axios.post(process.env.VUE_APP_BACKEND_SERVER + process.env.VUE_APP_LOGIN, form)
             .then(response => {
               if (response.status === 200) {
                 self.$session.set('user', response.data)

@@ -104,13 +104,14 @@ export default {
     },
     //method download history detail
     downloadDetail() {
+      const self = this;
       let id = this.$route.params.id
       let api = process.env.VUE_APP_HISTORY_DOWNLOAD.replace(/%\w+%/g, function (all) {
         return {"%id%": id}[all] || all;
       });
       const axios = require('axios');
       axios
-        .get(globalURL.host + api,
+        .get(process.env.VUE_APP_BACKEND_SERVER + api,
           {
             headers: {
               'Content-Type': 'multipart/form-data',
@@ -153,7 +154,7 @@ export default {
     const self = this;
     const axios = require('axios');
     axios
-      .get(globalURL.host + process.env.VUE_APP_HISTORY + "/" + self.$route.params.id, {
+      .get(process.env.VUE_APP_BACKEND_SERVER + process.env.VUE_APP_HISTORY + "/" + self.$route.params.id, {
         headers: {
           'Authorization': 'Bearer ' + self.$session.get("user").token
         }

@@ -150,7 +150,7 @@ export default {
           form.append('phone', this.phone);
           form.append('username', this.username);
           form.append('password', this.password);
-          axios.post(globalURL.host + process.env.VUE_APP_REGISTER, form)
+          axios.post(process.env.VUE_APP_BACKEND_SERVER + process.env.VUE_APP_REGISTER, form)
             .then(response => {
               if (response.status === 200) {
                 alert("Register Successfully!")

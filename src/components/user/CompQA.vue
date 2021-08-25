@@ -137,6 +137,15 @@ import CompBackToTop from "../frame/CompBackToTop";
 import CompLeftSider from "../frame/CompLeftSider";
 import * as utility from '../utility/utility';
 
+function findQA(idx, listQA) {
+  for (let i = 0; i < listQA.length; i++) {
+    if (listQA[i].idx === idx) {
+      return i
+    }
+  }
+  return -1
+}
+
 let self
 export default {
   name: "CompQA",
@@ -147,6 +156,7 @@ export default {
     return {
       items: [],
       fileName: '',
+      nextIndex: 0,
       fields: [
         {
           key: 'historyName',
@@ -178,6 +188,13 @@ export default {
     } else {
       this.items = this.$session.get('listQA')
     }
+
+    if (!this.$session.exists('nextIndexQA')) {
+      this.$session.set('nextIndexQA', 0)
+      this.nextIndex = this.$session.get('nextIndexQA')
+    } else {
+      this.nextIndex = this.$session.get('nextIndexQA')
+    }
   },
   methods: {
     // method cancel upload
@@ -192,22 +209,29 @@ export default {
       this.$dialog
         .confirm(message, options)
         .then(() => {
+
+          self.items = self.$session.get('listQA')
+          let index = findQA(item.idx, self.items)
+          // self.items[index].controller.abort()
+          self.items.splice(index, 1)
+          self.$session.set('listQA', self.items)
+
           const axios = require('axios');
           axios
-            .delete(globalURL.host + process.env.VUE_APP_HISTORY + "/" + item.id, {
+            .delete(process.env.VUE_APP_BACKEND_SERVER + process.env.VUE_APP_HISTORY + "/" + item.id, {
               headers: {
                 'Authorization': 'Bearer ' + self.$session.get("user").token
               }
             })
             .then(response => {
-              if (response.status === 200) {
-                this.flash('Delete successfully!', 'success', {
-                  timeout: 10000
-                });
-                let index = this.items.indexOf(item)
-                this.items.splice(index, 1)
-                this.totalRows--
-              }
+              // if (response.status === 200) {
+              //   this.flash('Delete successfully!', 'success', {
+              //     timeout: 10000
+              //   });
+              //   let index = this.items.indexOf(item)
+              //   this.items.splice(index, 1)
+              //   this.totalRows--
+              // }
             })
             .catch(error => {
               console.log(error)
@@ -242,17 +266,20 @@ export default {
           subject: '',
           questions: [],
           _showDetails: false,
+          idx: this.nextIndex,
         }
 
         this.items = this.$session.get('listQA')
-        let index = this.items.push(objectQA) - 1
+        this.items.push(objectQA)
+        this.nextIndex++
+        this.$session.set('nextIndexQA', this.nextIndex)
         this.$session.set('listQA', this.items)
         /*
         Initialize the form data
       */
         let formData = new FormData();
         formData.append('file', this.files)
-        fetch(globalURL.host + process.env.VUE_APP_QA,
+        fetch(process.env.VUE_APP_BACKEND_SERVER + process.env.VUE_APP_QA,
           {
             method: "PUT",
             headers: {
@@ -280,10 +307,11 @@ export default {
                 self.items.forEach((item) => {
                   arrIndex.push({
                     index: self.items.indexOf(item),
-                    showDetail: item._showDetails ? true : false
+                    showDetail: !!item._showDetails
                   })
                 })
                 self.items = self.$session.get('listQA')
+                let index = findQA(objectQA.idx, self.items)
                 arrIndex.forEach((item) => {
                   self.items[item.index]._showDetails = item.showDetail
                 })

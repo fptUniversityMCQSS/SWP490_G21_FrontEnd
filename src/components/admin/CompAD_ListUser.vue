@@ -188,7 +188,7 @@ export default {
           item.status = true
           const axios = require('axios');
           axios
-            .delete(globalURL.host + process.env.VUE_APP_ADMIN_USER + "/" + item.id, {
+            .delete(process.env.VUE_APP_BACKEND_SERVER + process.env.VUE_APP_ADMIN_USER + "/" + item.id, {
               headers: {
                 'Authorization': 'Bearer ' + self.$session.get("user").token
               }
@@ -225,7 +225,7 @@ export default {
     const self = this
     const axios = require('axios');
     axios
-      .get(globalURL.host + process.env.VUE_APP_ADMIN_USER, {
+      .get(process.env.VUE_APP_BACKEND_SERVER + process.env.VUE_APP_ADMIN_USER, {
         headers: {
           'Authorization': 'Bearer ' + self.$session.get("user").token
         }

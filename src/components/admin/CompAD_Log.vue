@@ -81,7 +81,7 @@ export default {
     let self = this
     this.controller = new AbortController()
     this.signal = this.controller.signal
-    fetch(globalURL.host + process.env.VUE_APP_LOG,
+    fetch(process.env.VUE_APP_BACKEND_SERVER + process.env.VUE_APP_LOG,
       {
         method: "GET",
         signal: this.signal,
