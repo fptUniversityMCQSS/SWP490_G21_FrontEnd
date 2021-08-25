@@ -37,7 +37,7 @@
               <router-link class="fa fa-arrow-right" to="/home">&nbsp;Home</router-link>
             </div>
             <div>
-              <router-link to="/about" class="fa fa-arrow-right">&nbsp;About</router-link>
+              <router-link to="/library" class="fa fa-arrow-right">&nbsp;API Library</router-link>
             </div>
           </div>
         </div>
@@ -65,7 +65,7 @@
       <div class="row footer-bottom d-flex justify-content-between align-items-center">
         <p class="col-lg-12 footer-text text-center">
           Copyright ©2021 DeepQuiz. All rights reserved | Powered by
-          <router-link to="/about">SWP409_G21</router-link>
+          <router-link to="/">SWP409_G21</router-link>
         </p>
       </div>
     </div>
