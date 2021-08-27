@@ -55,7 +55,8 @@
                         </div>
                         <div class="col-lg-5 mr-auto text-lg-right align-self-center order-lg-1" data-aos="fade-left">
                           <h3>Question Answer</h3>
-                          <p class="mb-4">Solves multiple-choices questions using our Deep Learning AI, enhances your learning experiences.</p>
+                          <p class="mb-4">Solves multiple-choices questions using our Deep Learning AI, enhances your
+                            learning experiences.</p>
                           <p>
                             <b-button v-on:click="QA()" class="btnUpload">Feature Access</b-button>
                           </p>
@@ -165,27 +166,6 @@ export default {
 </script>
 
 <style scoped>
-
-.btnUpload {
-  width: 130px;
-  height: 45px;
-  background-color: #92c3f9;
-  border: none;
-  outline: none;
-  color: black;
-  font-weight: bold;
-  cursor: pointer;
-  text-align: center;
-  margin-top: 20px;
-}
-
-.btnUpload:hover {
-  border: none;
-  outline: none;
-  background-color: #0088ff;
-  color: #fff;
-}
-
 .imgHome {
   border-radius: 50px;
 }
@@ -250,10 +230,10 @@ export default {
 .btnUpload {
   width: 130px;
   height: 45px;
-  background-color: #92c3f9;
+  background-color: #4d97e2;
   border: none;
   outline: none;
-  color: black;
+  color: #fff;
   font-weight: bold;
   cursor: pointer;
   text-align: center;
@@ -263,7 +243,7 @@ export default {
 .btnUpload:hover {
   border: none;
   outline: none;
-  background-color: #0088ff;
+  background-color: #1c6cbd;
   color: #fff;
 }
 

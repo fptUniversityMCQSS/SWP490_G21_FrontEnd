@@ -128,8 +128,8 @@
                   </div>
                   <br>
                   <div class="form-group col-lg-12 cell">
-                    <b-button class="btnUpload" style="margin-right: 49px;" v-on:click="cancelAdd()">Cancel</b-button>
-                    <b-button class="btnUpload" v-on:click="addUser()">Add</b-button>
+                    <b-button class="btnUpload" style="margin-right: 49px;" v-on:click="addUser()">Add</b-button>
+                    <b-button class="btnUpload" v-on:click="cancelAdd()">Cancel</b-button>
                   </div>
                   <div class="errNotice">{{ err }}</div>
                 </form>
@@ -138,7 +138,7 @@
           </div>
           <div class="col-lg-2 fixed-sidebar">
             <comp-left-sider/>
-            <flash-message class="myCustomClass"></flash-message>
+            <flash-message class="messageNotice"></flash-message>
           </div>
         </div>
       </div>
@@ -175,6 +175,7 @@ export default {
     // method cancel add user
     cancelAdd() {
       this.$router.push('/admin/user');
+      this.err = ''
     },
     // method add user
     addUser() {
@@ -202,6 +203,7 @@ export default {
                   timeout: 3000
                 });
                 self.$router.push('/admin/user');
+                this.err = ''
               }
             }).catch(error => {
             this.err = error.response.data.message
@@ -214,6 +216,20 @@ export default {
 </script>
 
 <style scoped>
+.messageNotice{
+  position: fixed;
+  z-index: 1001;
+  text-align: center;
+  max-width: 300px;
+  bottom: 10px;
+  left: 20px;
+  float: left;
+  outline: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
 .center {
   margin: auto;
   display: block;

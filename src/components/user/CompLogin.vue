@@ -115,6 +115,7 @@ export default {
               if (response.status === 200) {
                 self.$session.set('user', response.data)
                 self.$router.push('/');
+                this.err = ''
               }
             }).catch(error => {
             this.err = error.response.data.message

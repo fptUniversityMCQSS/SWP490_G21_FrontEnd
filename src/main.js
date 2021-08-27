@@ -46,6 +46,9 @@ import VTooltip from 'v-tooltip'
 import Map from 'map'
 // Vue.use(VueSession, options)
 import VueSessionStorage from 'vue-sessionstorage'
+import moment from 'moment'
+
+Vue.use(moment)
 
 Vue.use(Map)
 Vue.use(VTooltip)
@@ -64,7 +67,16 @@ Vue.use(VeeValidate, {
   inject: true,
   fieldsBagName: 'veeFields'
 });
-Vue.prototype.$requests = {nextId:0}
+
+Vue.prototype.$QAData = {
+  nextId: 0,
+  list: []
+}
+Vue.prototype.$KnowledgeData = {
+  nextId: 0,
+  list: []
+}
+
 
 /* eslint-disable no-new */
 new Vue({

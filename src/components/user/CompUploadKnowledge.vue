@@ -37,9 +37,9 @@
                   </div>
                 </div>
                 <br>
-                <b-button variant="outline-primary" class="btnUpload" v-on:click="submitFiles()">Upload</b-button>
+                <b-button variant="outline-primary" class="btnUpload" v-on:click="submitFiles()">Study Knowledge</b-button>
                 <p id="noticeUpload" class="err"></p>
-                  <!--table file uploaded-->
+                <!--table file uploaded-->
                 <div v-if="this.items.length > 0" style="margin-top: 50px">
                   <b-table :bordered="true" :borderless="true" class="text-center shadow"
                            :items="this.items.slice().reverse()" :fields="fields">
@@ -58,13 +58,13 @@
                       </div>
                       <div v-if="item.status==='Fail'" size="sm" class="mr-1"
                            style="color: red">
-                        <span v-b-tooltip.right="item.messageDetail">
+                        <span v-b-tooltip.right="item.messageDetail" style="cursor: pointer">
                           Fail &nbsp;<i class="fa fa-window-close" aria-hidden="true"></i></span>
                       </div>
                     </template>
 
                     <template #cell(action)="row">
-                      <b-button
+                      <b-button :disabled="row.item.changeStatus"
                         variant="outline-primary" size="sm"
                         v-on:click="cancelUpload(row.item)"
                         class="btnDelete">
@@ -116,7 +116,6 @@ export default {
     return {
       items: [],
       fileName: '',
-      nextIndex: 0,
       fields: [
         {
           key: 'nameCurrent',
@@ -138,40 +137,35 @@ export default {
       hasFile: false
     }
   },
+  beforeRouteLeave(to, from, next) {
+    if (this.$session.exists('user')) {
+      this.$KnowledgeData.list = this.items
+    }
+    next()
+  },
   created() {
     self = this
-    if (!this.$session.exists('listKnowledge')) {
-      this.$session.set('listKnowledge', [])
-      this.items = this.$session.get('listKnowledge')
-    } else {
-      this.items = this.$session.get('listKnowledge')
-    }
-
-    if (!this.$session.exists('nextIndexKnowledge')) {
-      this.$session.set('nextIndexKnowledge', 0)
-      this.nextIndex = this.$session.get('nextIndexKnowledge')
-    } else {
-      this.nextIndex = this.$session.get('nextIndexKnowledge')
-    }
+    this.items = this.$KnowledgeData.list
   },
   methods: {
     // method cancel upload
     cancelUpload(item) {
       let message = "<p style='text-align: center; padding-top: 5px'><b style='font-size: 20px'>Delete knowledge</b>" +
-        "<br><br>Are you sure you want to delete knowledge?</p>";
+        "<br><br>Do you want to delete this knowledge?</p>";
       let options = {
         html: true,
-        okText: 'Continue',
-        cancelText: 'Close',
+        okText: 'Yes',
+        cancelText: 'No',
       };
       this.$dialog
         .confirm(message, options)
         .then(() => {
-          self.items = self.$session.get('listKnowledge')
           let index = findKnowledge(item.idx, self.items)
-          self.$requests[self.items[index].cancelId].abort()
+          try {
+            self.items[index].abort()
+          } catch (e) {
+          }
           self.items.splice(index, 1)
-          self.$session.set('listKnowledge', self.items)
           const axios = require('axios');
           axios
             .delete(process.env.VUE_APP_BACKEND_SERVER + process.env.VUE_APP_KNOWLEDGE + "/" + item.knowledgeId, {
@@ -203,20 +197,15 @@ export default {
         let newObject = {
           nameCurrent: this.fileName,
           status: 'Processing',
+          changeStatus : true,
           messageDetail: '',
           knowledgeId: '',
-          idx: this.nextIndex,
+          idx: this.$KnowledgeData.nextId,
+          controller: new AbortController()
         }
-        newObject.cancelId = this.$requests.nextId
-        let controller = new AbortController()
-        this.$requests[newObject.cancelId] = controller
-        this.$requests.nextId++
 
-        self.items = self.$session.get('listKnowledge')
+        this.$KnowledgeData.nextId++
         self.items.push(newObject)
-        this.nextIndex++
-        self.$session.set('nextIndexKnowledge', self.nextIndex)
-        self.$session.set('listKnowledge', self.items)
 
         /*
           Initialize the form data
@@ -226,7 +215,7 @@ export default {
         fetch(process.env.VUE_APP_BACKEND_SERVER + process.env.VUE_APP_KNOWLEDGE,
           {
             method: "PUT",
-            signal: controller.signal,
+            signal: newObject.controller.signal,
             headers: {
               // 'Content-Type': 'multipart/form-data',
               'Authorization': 'Bearer ' + self.$session.get("user").token
@@ -248,8 +237,6 @@ export default {
                 // Enqueue the next data chunk into our target stream
                 let string = new TextDecoder().decode(value);
                 let res = utility.convertToJSONArray(string)
-
-                self.items = self.$session.get('listKnowledge')
                 let index = findKnowledge(newObject.idx, self.items)
 
                 res.forEach((value) => {
@@ -258,19 +245,19 @@ export default {
                     self.items[index].messageDetail = value.message
                   } else {
                     self.items[index].status = value.status
+                    if(self.items[index].status !== 'Processing'){
+                      self.items[index].changeStatus = false
+                    }
                     self.items[index].knowledgeId = value.knowledgeId
                   }
                 })
-                self.$session.set('listKnowledge', self.items)
               }
               reader.releaseLock();
-              delete this.$requests[newObject.cancelId]
             }
             read();
           })
           .catch((error) => {
             console.log(error)
-            delete this.$requests[newObject.cancelId]
           });
       } else {
         document.getElementById("noticeUpload").innerHTML = "Please choose file to upload!";
@@ -285,6 +272,7 @@ export default {
   margin: auto;
   display: block;
 }
+
 .err {
   color: red;
   font-size: 17px;
@@ -375,21 +363,21 @@ h2 {
 .border-container {
   border: 5px dashed rgba(198, 198, 198, 0.65);
   /*   border-radius: 4px; */
-  padding: 20px;
+  padding: 30px;
 }
 
 .border-container p {
   color: #130f40;
   font-weight: 600;
-  font-size: 1.1em;
+  font-size: 1.05em;
   letter-spacing: -1px;
-  margin-top: 30px;
+  margin-top: 15px;
   margin-bottom: 0;
   opacity: 0.65;
 }
 
 .btnUpload {
-  width: 200px;
+  width: auto;
   height: 50px;
   background-color: #92c3f9;
   border: none;

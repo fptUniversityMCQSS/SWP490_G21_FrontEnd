@@ -34,7 +34,7 @@
           <div class="single-footer-widget">
             <h6 class="footer_title">Quick Links</h6>
             <div>
-              <router-link class="fa fa-arrow-right" to="/home">&nbsp;Home</router-link>
+              <router-link class="fa fa-arrow-right" to="/">&nbsp;Home</router-link>
             </div>
             <div>
               <router-link to="/library" class="fa fa-arrow-right">&nbsp;API Library</router-link>

@@ -26,15 +26,22 @@
               <div class="wrapper">
                 <!--form upload-->
                 <div class="cont shadow" style="background-color: #f9f9ff">
-                  <h2>Upload Question</h2>
+                  <h2>Upload Question Answer Exam</h2>
                   <div class="upload-container">
                     <div class="border-container">
-                      <p>To make this feature available,
-                        your file must be in the correct format. You can check out <a
-                          href="../../../static/QB_SWT391_BanTQ.doc"
-                          download="The_sample_doc"><u>the sample
-                          format</u></a></p>
-                      <p>Drag and drop files here, or
+                      <p>To use this function manually, please download this
+                        <a href="../../../static/template.docx" download="template.docx"><u>template</u></a>
+                        and input your question bank to the template correctly.
+                        You can look at the <a href="../../../static/template.docx" download="guideline.docx"><u>guideline</u></a> to know how to input.
+                        You can also use <a href="../../../static/The_sample.docx" download="The_sample.docx"><u>the sample</u></a>
+                        input to test the system.</p>
+
+
+<!--                      <p>To make this feature available,-->
+<!--                        your file must be in the correct format. You can check out <a-->
+<!--                          href="../../../static/The_sample.docx"-->
+<!--                          download="The_sample.docx"><u> The template</u></a></p>-->
+                      <p style="padding-bottom: 20px">Drag and drop files here, or
                         <input type="file" name="file" id="fileInput" ref="file"
                                v-on:change="handleFilesUpload"/>
                       </p>
@@ -43,7 +50,7 @@
                 </div>
                 <br>
                 <b-button variant="outline-primary" class="btnUpload"
-                          v-on:click="submitFiles()">Upload
+                          v-on:click="submitFiles()">Solve The Uploaded Exam
                 </b-button>
                 <p id="noticeUpload" class="err"></p>
 
@@ -109,6 +116,9 @@
                         <p v-if="row.item.message === ''">
                           <img style="max-height: 50px; max-width: 100px " src="../../assets/img/product/thinking.gif">
                         </p>
+                        <p v-if="row.item.message !== 'DONE'">
+                          {{ row.item.message }}
+                        </p>
                       </b-card>
                     </template>
                   </b-table>
@@ -156,12 +166,11 @@ export default {
     return {
       items: [],
       fileName: '',
-      nextIndex: 0,
       fields: [
         {
           key: 'historyName',
           label: 'File Name',
-          thStyle: {background: '#92c3f9', color: 'black', },
+          thStyle: {background: '#92c3f9', color: 'black',},
         },
         {
           key: 'status',
@@ -174,33 +183,27 @@ export default {
           thStyle: {background: '#92c3f9', color: 'black', width: '300px'},
         }
       ],
-      files: ''
+      files: '',
     }
   },
   /*
     Defines the method used by the component
   */
+  beforeRouteLeave(to, from, next) {
+    if (this.$session.exists('user')) {
+      this.$QAData.list = this.items
+    }
+    next()
+  },
   created() {
     self = this
-    if (!this.$session.exists('listQA')) {
-      this.$session.set('listQA', [])
-      this.items = this.$session.get('listQA')
-    } else {
-      this.items = this.$session.get('listQA')
-    }
-
-    if (!this.$session.exists('nextIndexQA')) {
-      this.$session.set('nextIndexQA', 0)
-      this.nextIndex = this.$session.get('nextIndexQA')
-    } else {
-      this.nextIndex = this.$session.get('nextIndexQA')
-    }
+    this.items = this.$QAData.list
   },
   methods: {
     // method cancel upload
     cancelUpload(item) {
-      let message = "<p style='text-align: center; padding-top: 5px'><b style='font-size: 20px'>Cancel Upload</b>" +
-        "<br><br>Are you sure you want to cancel upload?</p>";
+      let message = "<p style='text-align: center; padding-top: 5px'><b style='font-size: 20px'>Delete Question Answer Exam</b>" +
+        "<br><br>Do you want to delete this exam?</p>";
       let options = {
         html: true,
         okText: 'Continue',
@@ -209,12 +212,12 @@ export default {
       this.$dialog
         .confirm(message, options)
         .then(() => {
-
-          self.items = self.$session.get('listQA')
           let index = findQA(item.idx, self.items)
-          self.$requests[self.items[index].cancelId].abort()
+          try {
+            self.items[index].controller.abort()
+          } catch (e) {
+          }
           self.items.splice(index, 1)
-          self.$session.set('listQA', self.items)
 
           const axios = require('axios');
           axios
@@ -224,14 +227,6 @@ export default {
               }
             })
             .then(response => {
-              // if (response.status === 200) {
-              //   this.flash('Delete successfully!', 'success', {
-              //     timeout: 10000
-              //   });
-              //   let index = this.items.indexOf(item)
-              //   this.items.splice(index, 1)
-              //   this.totalRows--
-              // }
             })
             .catch(error => {
               console.log(error)
@@ -265,28 +260,22 @@ export default {
           questions_number: 1,
           subject: '',
           questions: [],
-          _showDetails: false,
-          idx: this.nextIndex,
+          _showDetails: true,
+          idx: this.$QAData.nextId,
+          controller: new AbortController()
         }
-        objectQA.cancelId = this.$requests.nextId
-        let controller = new AbortController()
-        this.$requests[objectQA.cancelId] = controller
-        this.$requests.nextId++
-
-        this.items = this.$session.get('listQA')
+        this.$QAData.nextId++
         this.items.push(objectQA)
-        this.nextIndex++
-        this.$session.set('nextIndexQA', this.nextIndex)
-        this.$session.set('listQA', this.items)
         /*
         Initialize the form data
       */
+
         let formData = new FormData();
         formData.append('file', this.files)
         fetch(process.env.VUE_APP_BACKEND_SERVER + process.env.VUE_APP_QA,
           {
             method: "PUT",
-            signal: controller.signal,
+            signal: objectQA.controller.signal,
             headers: {
               // 'Content-Type': 'multipart/form-data',
               'Authorization': 'Bearer ' + self.$session.get("user").token
@@ -315,7 +304,6 @@ export default {
                     showDetail: !!item._showDetails
                   })
                 })
-                self.items = self.$session.get('listQA')
                 let index = findQA(objectQA.idx, self.items)
                 arrIndex.forEach((item) => {
                   self.items[item.index]._showDetails = item.showDetail
@@ -346,16 +334,14 @@ export default {
                     self.items[index].questions.push(question)
                   }
                 })
-                self.$session.set('listQA', self.items)
               }
               reader.releaseLock();
-              delete this.$requests[objectQA.cancelId]
             }
             read();
           })
           .catch(error => {
             self.items[index].message = error.response.data.message
-            delete this.$requests[objectQA.cancelId]
+            // delete this.$requests[objectQA.cancelId]
           });
       } else {
         document.getElementById("noticeUpload").innerHTML = "Please choose file to upload!";
@@ -426,8 +412,8 @@ table.table {
 }
 
 body {
-  font-family: 'Montserrat', sans-serif;
-  background: #535c68;
+  font-family: Arial, Helvetica, sans-serif;
+  background: rgba(83, 92, 104, 0.71);
 }
 
 .wrapper {
@@ -460,13 +446,12 @@ h2 {
 
 .border-container {
   border: 5px dashed rgba(198, 198, 198, 0.65);
-  padding: 20px;
 }
 
 .border-container p {
-  color: #130f40;
+  color: rgba(19, 15, 64, 0.85);
   font-weight: 600;
-  font-size: 1.1em;
+  font-size: 1.05em;
   letter-spacing: -1px;
   margin-top: 30px;
   margin-bottom: 0;
@@ -474,7 +459,7 @@ h2 {
 }
 
 .btnUpload {
-  width: 200px;
+  width: auto;
   height: 50px;
   background-color: #92c3f9;
   border: none;
