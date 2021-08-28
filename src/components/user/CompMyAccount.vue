@@ -139,7 +139,7 @@
                     <b-button v-if="disable" class="btnUpload"
                               @click="disable = !disable">Edit
                     </b-button>
-                    <b-button v-if="!disable" class="btnUpload" style="margin-right: 49px;" v-on:click="editUser()">Save</b-button>
+                    <b-button v-if="!disable" class="btnUpload" style="margin-right: 50px;" v-on:click="editUser()">Save</b-button>
                     <b-button v-if="!disable" class="btnUpload" v-on:click="cancelEdit()">Cancel
                     </b-button>
                   </div>
@@ -346,7 +346,7 @@ export default {
 .fixed-sidebar {
   position: -webkit-sticky;
   position: sticky;
-  height: 600px;
+  height: 700px;
   color: #fff;
   top: 80px;
   z-index: 999;

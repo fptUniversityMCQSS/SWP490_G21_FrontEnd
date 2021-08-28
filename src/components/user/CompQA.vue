@@ -22,109 +22,105 @@
       <div>
         <div class="row flex-row-reverse">
           <div class="col-lg-10">
-            <div class="col-lg-11 mx-auto section_gap">
+            <div class="col-lg-10 mx-auto">
+              <!--component Question Answer-->
               <div class="wrapper">
-                <!--form upload-->
-                <div class="cont shadow" style="background-color: #f9f9ff">
-                  <h2>Upload Question Answer Exam</h2>
-                  <div class="upload-container">
-                    <div class="border-container">
-                      <p>To use this function manually, please download this
-                        <a href="../../../static/template.docx" download="template.docx"><u>template</u></a>
-                        and input your question bank to the template correctly.
-                        You can look at the <a href="../../../static/template.docx" download="guideline.docx"><u>guideline</u></a> to know how to input.
-                        You can also use <a href="../../../static/The_sample.docx" download="The_sample.docx"><u>the sample</u></a>
-                        input to test the system.</p>
-
-
-<!--                      <p>To make this feature available,-->
-<!--                        your file must be in the correct format. You can check out <a-->
-<!--                          href="../../../static/The_sample.docx"-->
-<!--                          download="The_sample.docx"><u> The template</u></a></p>-->
-                      <p style="padding-bottom: 20px">Drag and drop files here, or
-                        <input type="file" name="file" id="fileInput" ref="file"
-                               v-on:change="handleFilesUpload"/>
-                      </p>
+                  <div class="cont shadow">
+                    <h2>Upload Question Answer Exam</h2>
+                    <div class="upload-container">
+                      <div class="border-container">
+                        <p>To use this function manually, please download this
+                          <a href="../../../static/template.docx" download="template.docx"><u>template</u></a>
+                          and input your question bank to the template correctly.
+                          You can look at the <a href="../../../static/guideline.docx" download="guideline.docx"><u>guideline</u></a>
+                          to know how to input.
+                          You can also use <a href="../../../static/The_sample.docx" download="The_sample.docx"><u>the
+                            sample</u></a>
+                          input to test the system.</p>
+                        <p style="padding-bottom: 20px">Drag and drop files here, or
+                          <input type="file" name="file" id="fileInput" ref="file"
+                                 v-on:change="handleFilesUpload"/>
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <br>
-                <b-button variant="outline-primary" class="btnUpload"
-                          v-on:click="submitFiles()">Solve The Uploaded Exam
-                </b-button>
-                <p id="noticeUpload" class="err"></p>
+                  <b-button variant="outline-primary" class="btnUpload"
+                            v-on:click="submitFiles()">Solve The Uploaded Exam
+                  </b-button>
+                  <p id="noticeUpload" class="err"></p>
+                  <!--table list QA uploaded-->
+                  <div v-if="items.length>0" style="margin-top: 50px">
+                    <b-table :bordered="true" :borderless="true" :items="items.slice().reverse()" :fields="fields"
+                             class="shadow text-center"
+                             responsive="sm">
+                      <template #cell(historyName)="row">
+                        <div>{{ row.value }}</div>
+                      </template>
+                      <template #cell(status)="{item}">
 
-                <!--table list QA uploaded-->
-                <div v-if="items.length>0" style="margin-top: 50px">
-                  <b-table :bordered="true" :borderless="true" :items="items.slice().reverse()" :fields="fields"
-                           class="shadow text-center"
-                           responsive="sm">
-                    <template #cell(historyName)="row">
-                      <div>{{ row.value }}</div>
-                    </template>
-                    <template #cell(status)="{item}">
-
-                      <div v-if="item.status === 'Loading'">
-                        Loading&nbsp;<i class="fa fa-spinner fa-spin"/>
-                      </div>
-
-                      <div v-else>
-                        <div v-if="item.message !== 'DONE' && item.message !== ''" style="color: red">
-                          <span v-b-tooltip.right="item.message">Error in processing</span>
+                        <div v-if="item.status === 'Loading'">
+                          Loading&nbsp;<i class="fa fa-spinner fa-spin"/>
                         </div>
-                        <b-progress v-else-if="item.message === 'DONE'" :max="item.questions_number">
-                          <b-progress-bar style="background-color: #4ABF60" :value="item.questions.length"
-                                          :label="`Done`"></b-progress-bar>
-                        </b-progress>
-                        <b-progress v-else :max="item.questions_number">
-                          <b-progress-bar class="progress-bar-animated" striped :value="item.questions.length"
-                                          :label="`${((item.questions.length / item.questions_number) * 100).toFixed(0)}%`"></b-progress-bar>
-                        </b-progress>
-                        {{ item.questions.length + "/" + item.questions_number }}
-                      </div>
 
-                    </template>
-                    <template #cell(action)="row">
-                      <b-button variant="outline-primary" size="sm" @click="row.toggleDetails"
-                                class="mr-1">
-                        {{ row.detailsShowing ? 'Hide' : 'Show' }} Details&nbsp;
-                        <i class="fa" :class="[row.detailsShowing ? 'fa-eye-slash':'fa-eye']" aria-hidden="true"></i>
-                      </b-button>
+                        <div v-else>
+                          <div v-if="item.message !== 'DONE' && item.message !== ''" style="color: red">
+                            <span v-b-tooltip.right="item.message">Error in processing</span>
+                          </div>
+                          <b-progress v-else-if="item.message === 'DONE'" :max="item.questions_number">
+                            <b-progress-bar style="background-color: #4ABF60" :value="item.questions.length"
+                                            :label="`Done`"></b-progress-bar>
+                          </b-progress>
+                          <b-progress v-else :max="item.questions_number">
+                            <b-progress-bar class="progress-bar-animated" striped :value="item.questions.length"
+                                            :label="`${((item.questions.length / item.questions_number) * 100).toFixed(0)}%`"></b-progress-bar>
+                          </b-progress>
+                          {{ item.questions.length + "/" + item.questions_number }}
+                        </div>
 
-                      <b-button
-                        v-if="row.item.message !== ''"
-                        variant="outline-primary" size="sm"
-                        v-on:click="viewQA(row.item.id)">
-                        View&nbsp;<i class="fa fa-share-square-o" aria-hidden="true"></i>
-                      </b-button>
+                      </template>
+                      <template #cell(action)="row">
+                        <b-button :disabled="row.item.changeStatus" variant="outline-primary" size="sm"
+                                  @click="row.toggleDetails"
+                                  class="mr-1">
+                          {{ row.detailsShowing ? 'Hide' : 'Show' }} Details&nbsp;
+                          <i class="fa" :class="[row.detailsShowing ? 'fa-eye-slash':'fa-eye']" aria-hidden="true"></i>
+                        </b-button>
 
-                      <b-button
-                        v-if="row.item.status !== 'Loading' || row.item.message !== ''"
-                        variant="outline-primary" size="sm"
-                        v-on:click="cancelUpload(row.item)"
-                        class="btnDelete">
-                        Delete&nbsp;<i class="fa fa-trash" aria-hidden="true"></i>
-                      </b-button>
-                    </template>
+                        <b-button
+                          v-if="row.item.message !== ''"
+                          variant="outline-primary" size="sm"
+                          v-on:click="viewQA(row.item.id)">
+                          View&nbsp;<i class="fa fa-share-square-o" aria-hidden="true"></i>
+                        </b-button>
 
-                    <template #row-details="row">
-                      <b-card class="scrollbar">
-                        <ul v-for="ob in row.item.questions" :key="ob.Number">
-                          <li>{{ ob.Number + ". " + ob.Content }}</li>
-                          <li>{{ "=> " + ob.Answer + ". " + ob.AnswerContent }}</li>
-                        </ul>
-                        <p v-if="row.item.message === ''">
-                          <img style="max-height: 50px; max-width: 100px " src="../../assets/img/product/thinking.gif">
-                        </p>
-                        <p v-if="row.item.message !== 'DONE'">
-                          {{ row.item.message }}
-                        </p>
-                      </b-card>
-                    </template>
-                  </b-table>
+                        <b-button
+                          v-if="row.item.status !== 'Loading' || row.item.message !== ''"
+                          variant="outline-primary" size="sm"
+                          v-on:click="cancelUpload(row.item)"
+                          class="btnDelete">
+                          Delete&nbsp;<i class="fa fa-trash" aria-hidden="true"></i>
+                        </b-button>
+                      </template>
+
+                      <template #row-details="row">
+                        <b-card class="scrollbar">
+                          <ul v-for="ob in row.item.questions" :key="ob.Number">
+                            <li>{{ ob.Number + ". " + ob.Content }}</li>
+                            <li>{{ "=> " + ob.Answer + ". " + ob.AnswerContent }}</li>
+                          </ul>
+                          <p v-if="row.item.message === ''">
+                            <img style="max-height: 50px; max-width: 100px "
+                                 src="../../assets/img/product/thinking.gif">
+                          </p>
+                          <p v-if="row.item.message !== 'DONE'">
+                            {{ row.item.message }}
+                          </p>
+                        </b-card>
+                      </template>
+                    </b-table>
+                  </div>
                 </div>
               </div>
-            </div>
           </div>
           <div class="col-lg-2 fixed-sidebar">
             <comp-left-sider/>
@@ -206,8 +202,9 @@ export default {
         "<br><br>Do you want to delete this exam?</p>";
       let options = {
         html: true,
-        okText: 'Continue',
-        cancelText: 'Close',
+        okText: 'Yes',
+        cancelText: 'No',
+        animation: 'bounce'
       };
       this.$dialog
         .confirm(message, options)
@@ -259,8 +256,9 @@ export default {
           status: 'Loading',
           questions_number: 1,
           subject: '',
+          changeStatus: true,
           questions: [],
-          _showDetails: true,
+          _showDetails: false,
           idx: this.$QAData.nextId,
           controller: new AbortController()
         }
@@ -310,6 +308,8 @@ export default {
                 })
                 res.forEach((value) => {
                   self.items[index].status = 'Process'
+                  self.items[index].changeStatus = false
+                  self.items[index]._showDetails = true
                   if ("id" in value) {
                     self.items[index].id = value.id
                     self.items[index].historyDate = value.historyDate
@@ -384,22 +384,10 @@ table.table {
   table-layout: fixed;
 }
 
-.actionBtn {
-  background-color: #92c3f9;
-  color: black;
-  font-weight: bold;
-  border: none;
-}
-
-.actionBtn:hover {
-  background-color: #0088ff;
-  color: #fff;
-}
-
 .fixed-sidebar {
   position: -webkit-sticky;
   position: sticky;
-  height: 600px;
+  height: 700px;
   color: #fff;
   top: 80px;
   z-index: 999;
@@ -419,7 +407,7 @@ body {
 .wrapper {
   margin: auto;
   max-width: 800px;
-  padding-top: 60px;
+  padding-top: 50px;
   padding-bottom: 60px;
   text-align: center;
 }
@@ -428,6 +416,7 @@ body {
   background-color: #f9f9f9;
   padding: 20px;
   border-radius: 10px;
+  margin-top: 50px
 }
 
 h2 {
@@ -468,7 +457,7 @@ h2 {
   font-weight: 600;
   cursor: pointer;
   text-align: center;
-  margin-top: 20px;
+  margin-top: 40px;
 }
 
 .btnUpload:hover {

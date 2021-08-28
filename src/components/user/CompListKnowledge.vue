@@ -66,18 +66,14 @@
                                  :current-page="currentPage"
                                  stacked="md"
                                  show-empty
-                                 :per-page="perPage" :filter="filter" :fields="fields" id="my-table"
+                                 :per-page="perPage" :filter="filter" :fields="fields"
                                  @filtered="onFiltered">
-
-                          <template #cell(knowledgeName)="row">
-                            <div>{{ row.value }}</div>
-                          </template>
 
                           <template #cell(knowledgeDate)="row">
                             <div> {{ formatDate(row.value) }}</div>
                           </template>
+
                           <template #cell(actions)="{item}">
-                            <col :style="{ width: '50px' }">
                             <b-button variant="outline-primary" size="sm" v-on:click="downloadKnowledge(item)"
                                       class="mr-1">
                               <i class="fa fa-download" aria-hidden="true"></i>
@@ -94,7 +90,7 @@
                                  :items="itemAll" :current-page="currentPage"
                                  stacked="md"
                                  show-empty
-                                 :per-page="perPage" :filter="filter" :fields="fields" id="my-table"
+                                 :per-page="perPage" :filter="filter" :fields="fields"
                                  @filtered="onFiltered">
                           <template #cell(knowledgeName)="row">
                             <div>{{ row.value }}</div>
@@ -142,7 +138,7 @@
                       </div>
                       <div style="padding-top: 20px;">
                         <b-pagination size="md" :total-rows="totalRows" :per-page="perPage"
-                                      v-model="currentPage" aria-controls="my-table"/>
+                                      v-model="currentPage"/>
                       </div>
                     </div>
                   </div>
@@ -267,6 +263,7 @@ export default {
         html: true,
         okText: 'Yes',
         cancelText: 'No',
+        animation: 'bounce'
       };
       this.$dialog
         .confirm(message, options)
@@ -329,7 +326,8 @@ export default {
                 username: value.Username,
                 knowledgeDate: value.knowledgeDate,
                 knowledgeId: value.knowledgeId,
-                knowledgeName: value.knowledgeName
+                knowledgeName: value.knowledgeName,
+                status: value.status
               }
               this.items.push(object)
             }
@@ -351,7 +349,7 @@ export default {
 </script>
 
 <style scoped>
-.messageNotice{
+.messageNotice {
   position: fixed;
   z-index: 1001;
   text-align: center;
@@ -388,7 +386,7 @@ table.table {
 .fixed-sidebar {
   position: -webkit-sticky;
   position: sticky;
-  height: 600px;
+  height: 700px;
   color: #fff;
   top: 80px;
   z-index: 999;

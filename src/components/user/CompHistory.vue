@@ -174,6 +174,7 @@ export default {
         html: true,
         okText: 'Yes',
         cancelText: 'No',
+        animation: 'bounce'
       };
       this.$dialog
         .confirm(message, options)
@@ -316,7 +317,7 @@ table.table {
 .fixed-sidebar {
   position: -webkit-sticky;
   position: sticky;
-  height: 600px;
+  height: 700px;
   color: #fff;
   top: 80px;
   z-index: 999;

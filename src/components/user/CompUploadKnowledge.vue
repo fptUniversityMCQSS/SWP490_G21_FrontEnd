@@ -156,6 +156,7 @@ export default {
         html: true,
         okText: 'Yes',
         cancelText: 'No',
+        animation: 'bounce'
       };
       this.$dialog
         .confirm(message, options)
@@ -243,6 +244,7 @@ export default {
                   if ("message" in value) {
                     self.items[index].status = "Fail"
                     self.items[index].messageDetail = value.message
+                    self.items[index].changeStatus = false
                   } else {
                     self.items[index].status = value.status
                     if(self.items[index].status !== 'Processing'){
@@ -315,7 +317,7 @@ table.table {
 .fixed-sidebar {
   position: -webkit-sticky;
   position: sticky;
-  height: 600px;
+  height: 700px;
   color: #fff;
   top: 80px;
   z-index: 999;
