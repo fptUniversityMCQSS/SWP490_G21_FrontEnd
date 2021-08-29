@@ -158,7 +158,7 @@
 
                 <div v-if="qaCreated.Questions.length > 0">
                   <b-button variant="outline-primary" class="btnUpload" @click="submitCreateQA">
-                    Create Question Answer
+                    Create Exam
                   </b-button>
                   <b-button variant="outline-primary" class="btnCancel"
                             @click="cancelCreate">
@@ -375,7 +375,7 @@ export default {
   text-align: center;
   margin-top: 40px;
   margin-left: 50px;
-  width: 200px
+  width: 150px
 }
 
 .btnCancel:hover {
@@ -446,7 +446,7 @@ h2 {
 }
 
 .btnUpload {
-  width: auto;
+  width: 150px;
   height: 50px;
   background-color: #92c3f9;
   border: none;
