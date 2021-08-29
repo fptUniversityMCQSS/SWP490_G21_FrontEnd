@@ -52,7 +52,7 @@
                         In Progress &nbsp;<i class="fa fa-spinner fa-spin"/>
                       </div>
                       <div v-if="item.status==='Encoding'" size="sm" class="mr-1">
-                        Learning &nbsp;<i class="fa fa-spinner fa-spin"/>
+                        Studying &nbsp;<i class="fa fa-spinner fa-spin"/>
                       </div>
                       <div v-if="item.status==='Ready'" size="sm" class="mr-1 " style="color: #4ABF60">
                         Successful&nbsp;<i class="fa fa-check-square" aria-hidden="true"></i>
