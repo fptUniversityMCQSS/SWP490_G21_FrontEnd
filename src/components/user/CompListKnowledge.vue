@@ -198,7 +198,8 @@ export default {
           label: 'Date',
           sortable: true,
           thStyle: {background: '#92c3f9', color: 'black'},
-          thClass: 'text-center'
+          thClass: 'text-center',
+          tdClass: 'text-center'
         },
         {
           key: 'status',

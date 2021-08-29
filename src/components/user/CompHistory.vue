@@ -138,7 +138,8 @@ export default {
           label: 'Date',
           sortable: true,
           thStyle: {background: '#92c3f9', color: 'black', width: '190px'},
-          thClass: 'text-center'
+          thClass: 'text-center',
+          tdClass: 'text-center'
         },
         {
           key: 'subject',
@@ -146,6 +147,7 @@ export default {
           sortable: true,
           thStyle: {background: '#92c3f9', color: 'black', width: '150px'},
           thClass: 'text-center',
+          tdClass: 'text-center'
         },
         {
           key: 'status',
