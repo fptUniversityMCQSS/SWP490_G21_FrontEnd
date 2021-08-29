@@ -230,8 +230,12 @@ export default {
     // method format date
     formatDate(date) {
       let dateFormat = require('dateformat');
-      let newDate = new Date(date);
-      return dateFormat(newDate, "dddd, mmmm dS, yyyy, h:MM:ss TT");
+      let newDate = new Date(date).toLocaleString("en-US", {timeZone: "Etc/GMT-14"});
+      try {
+        return dateFormat(newDate, "dddd, mmmm dS, yyyy, hh:MM:ss TT");
+      } catch (e) {
+      }
+      return ""
     },
     // method download knowledge
     downloadKnowledge(item) {
@@ -263,6 +267,7 @@ export default {
         html: true,
         okText: 'Yes',
         cancelText: 'No',
+        reverse: true,
         animation: 'bounce'
       };
       this.$dialog

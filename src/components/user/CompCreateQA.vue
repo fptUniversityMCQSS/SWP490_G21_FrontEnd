@@ -9,7 +9,7 @@
             <h2>Create Exam</h2>
             <div class="page_link">
               <router-link to="/">Home</router-link>
-              <router-link to="/qa">Create Exam</router-link>
+              <router-link to="/generate">Create Exam</router-link>
             </div>
           </div>
         </div>
@@ -30,7 +30,7 @@
                   <div class="px-4" style="margin-top: 50px">
                     <div class="form-row mt-4">
                       <div class="col-md-3 col-form-label">
-                        <label for="nameQA" style="font-weight: 500; float: left">Name:</label>
+                        <label for="nameQA" style="font-weight: bold; float: left">Name:</label>
                       </div>
                       <div class="col-md-9">
                         <input v-model="qaCreated.Name" type="text" name="Name" class="form-control"
@@ -44,7 +44,7 @@
 
                     <div class="form-row mt-2">
                       <div class="col-md-3 col-form-label">
-                        <label for="subject" style="font-weight: 500; float: left">Subject:</label>
+                        <label for="subject" style="font-weight: bold; float: left">Subject:</label>
                       </div>
                       <div class="col-md-9">
                         <input v-model="qaCreated.Subject" type="text" name="Subject" class="form-control"
@@ -57,7 +57,7 @@
                     </div>
                     <div class="form-row mt-2">
                       <div class="col-md-3 col-form-label">
-                        <label style="font-weight: 500; float: left">Number of Questions: </label>
+                        <label style="font-weight: bold; float: left">Number of Questions: </label>
                       </div>
                       <div class="col-md-7">
                         <input v-model="numberQuestions" type="number" name="Number Of Questions" class="form-control"
@@ -91,44 +91,50 @@
                           <div class="card-body py-4">
                             <div class="col-12">
                               <div class="form-row mb-3">
-                                <label class="col-sm-2 col-form-label" style="font-weight: 500"
-                                       for="question-1-context">Question {{ input.number }}</label>
+                                <label class="col-sm-2 col-form-label" style="font-weight: bold;"
+                                       for="question-1-context">Question {{ input.number }}:</label>
                                 <textarea v-model="input.Content" type="text" class="form-control col-sm-9"
-                                       name="context" placeholder="Enter Question Content"
-                                       id="question-1-context"/>
+                                          name="context" placeholder="Enter Question Content"
+                                          id="question-1-context"/>
                               </div>
                               <div class="form-row mb-3">
-                                <label class="col-sm-2 col-form-label" for="question-1-option-1">A</label>
+                                <label style="font-weight: bold" class="col-sm-2 col-form-label"
+                                       for="question-1-option-1">A:</label>
                                 <input v-model="input.optionA" type="text" class="form-control col-sm-9"
                                        name="option-1" placeholder="Enter Option A"
                                        id="question-1-option-1"/>
                               </div>
                               <div class="form-row mb-3">
-                                <label class="col-sm-2 col-form-label" for="question-1-option-2">B</label>
+                                <label style="font-weight: bold" class="col-sm-2 col-form-label"
+                                       for="question-1-option-2">B:</label>
                                 <input v-model="input.optionB" type="text" class="form-control col-sm-9"
                                        name="option-2" placeholder="Enter Option B"
                                        id="question-1-option-2"/>
                               </div>
                               <div class="form-row mb-3">
-                                <label class="col-sm-2 col-form-label" for="question-1-option-3">C</label>
+                                <label style="font-weight: bold" class="col-sm-2 col-form-label"
+                                       for="question-1-option-3">C:</label>
                                 <input v-model="input.optionC" type="text" class="form-control col-sm-9"
                                        name="option-3" placeholder="Enter Option C"
                                        id="question-1-option-3"/>
                               </div>
                               <div class="form-row mb-3">
-                                <label class="col-sm-2 col-form-label" for="question-1-option-4">D</label>
+                                <label style="font-weight: bold" class="col-sm-2 col-form-label"
+                                       for="question-1-option-4">D:</label>
                                 <input v-model="input.optionD" type="text" class="form-control col-sm-9"
                                        name="option-4" placeholder="Enter Option D"
                                        id="question-1-option-4"/>
                               </div>
                               <div class="form-row mb-3">
-                                <label class="col-sm-2 col-form-label" for="question-1-option-5">E</label>
+                                <label style="font-weight: bold" class="col-sm-2 col-form-label"
+                                       for="question-1-option-5">E:</label>
                                 <input v-model="input.optionE" type="text" class="form-control col-sm-9"
                                        name="option-5" placeholder="Enter Option E"
                                        id="question-1-option-5"/>
                               </div>
                               <div class="form-row mb-3">
-                                <label class="col-sm-2 col-form-label" for="question-1-option-6">F</label>
+                                <label style="font-weight: bold" class="col-sm-2 col-form-label"
+                                       for="question-1-option-6">F:</label>
                                 <input v-model="input.optionF" type="text" class="form-control col-sm-9"
                                        name="option-6" placeholder="Enter Option F"
                                        id="question-1-option-6"/>
@@ -222,6 +228,7 @@ export default {
         html: true,
         okText: 'Yes',
         cancelText: 'No',
+        reverse: true,
         animation: 'bounce'
       };
       this.$dialog
@@ -280,6 +287,7 @@ export default {
         html: true,
         okText: 'Yes',
         cancelText: 'No',
+        reverse: true,
         animation: 'bounce',
       };
       this.$dialog
@@ -340,14 +348,14 @@ export default {
                 const url = window.URL.createObjectURL(new Blob([response.data]));
                 const link = document.createElement('a');
                 link.href = url;
-                link.setAttribute('download', jsonObject.Name+'.docx');
+                link.setAttribute('download', jsonObject.Name + '.docx');
                 document.body.appendChild(link);
                 link.click();
               }
             })
-          .catch(err=>{
-            console.log(err)
-          })
+            .catch(err => {
+              console.log(err)
+            })
         }
       })
     }

@@ -174,6 +174,7 @@ export default {
         html: true,
         okText: 'Yes',
         cancelText: 'No',
+        reverse: true,
         animation: 'bounce'
       };
       this.$dialog
@@ -207,7 +208,7 @@ export default {
     // method format date
     formatDate(date) {
       let dateFormat = require('dateformat');
-      let newDate = new Date(date).toLocaleString("en-US", {timeZone:"Etc/GMT-14"});
+      let newDate = new Date(date).toLocaleString("en-US", {timeZone: "Etc/GMT-14"});
       try {
         return dateFormat(newDate, "dddd, mmmm dS, yyyy, hh:MM:ss TT");
       } catch (e) {
@@ -271,7 +272,7 @@ export default {
 }
 </script>
 <style scoped>
-.messageNotice{
+.messageNotice {
   position: fixed;
   z-index: 1001;
   text-align: center;

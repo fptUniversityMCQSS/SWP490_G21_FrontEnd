@@ -140,7 +140,7 @@
               <!--QAResponse-->
               <div class="top" @click="QAResponse = !QAResponse">
                 <a href="#" onclick="return false">
-                  Question Answer<span class="api">PUT /api/qa &nbsp;
+                  Upload Exam<span class="api">PUT /api/qa &nbsp;
                   <i class="fa" :class="[QAResponse ? 'fa-angle-up' : 'fa-angle-down']"
                      aria-hidden="true"></i></span></a>
               </div>
@@ -203,6 +203,77 @@
   "message": "DONE"
 }
                   </pre>
+                </b-card>
+              </div>
+
+              <!--CreateQA-->
+              <div class="top" @click="CreateQA = !CreateQA">
+                <a href="#" onclick="return false">
+                  Create Exam<span class="api">POST /api/qa &nbsp;
+                  <i class="fa" :class="[CreateQA ? 'fa-angle-up' : 'fa-angle-down']"
+                     aria-hidden="true"></i></span></a>
+              </div>
+              <div>
+                <b-card class="bcardStyle" v-if="CreateQA">
+                  <span>Header:</span><br>
+                  - Authorization: "Bearer
+                  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2Mjk4MzE4MjcsInJvbGUiOiJhZG1pbiIsInVzZXJJZCI6MTcsInVzZXJuYW1lIjoia2hhaWxxIn0.ia9mnpDZU63y7tbh6-
+                  lSj0-ET6k6ub1JS6w_S4V4gPE"
+                  <br><br>
+                  <span>Params:</span><br>
+                  <pre>
+  {
+  "Name": "CEA201 Test01 test.docx",
+  "Subject": "CEA201_Test01",
+  "NumberOfQuestions": 1,
+  "Questions": [
+    {
+      "Content": "The Pentium 4 _________ component executes micro-operations, fetching the required data from the L1 data cache and temporarily storing results in registers.",
+      "Options": [
+        {
+          "OptionKey": "A",
+          "OptionContent": "Fetch/decode unit"
+        },
+        {
+          "OptionKey": "B",
+          "OptionContent": "Out-of-order execution logic"
+        },
+        {
+          "OptionKey": "C",
+          "OptionContent": "Execution unit"
+        },
+        {
+          "OptionKey": "D",
+          "OptionContent": "Memory subsystem"
+        }
+      ]
+    },
+    {
+      "Content": "The Pentium 4 _________ component executes micro-operations, fetching the required data from the L1 data cache and temporarily storing results in registers.",
+      "Options": [
+        {
+          "OptionKey": "A",
+          "OptionContent": "Fetch/decode unit"
+        },
+        {
+          "OptionKey": "B",
+          "OptionContent": "Out-of-order execution logic"
+        },
+        {
+          "OptionKey": "C",
+          "OptionContent": "Execution unit"
+        },
+        {
+          "OptionKey": "D",
+          "OptionContent": "Memory subsystem"
+        }
+      ]
+    }
+  ]
+}
+                  </pre>
+                  <br>
+                  <span>Response:</span><br>(file)
                 </b-card>
               </div>
 
@@ -661,6 +732,7 @@ export default {
       UpdateUser: false,
       ChangeProfile: false,
       GetUserInfo: false,
+      CreateQA: false
     }
   },
   created() {
@@ -723,7 +795,7 @@ pre {
   color: #b49124
 }
 
-.library{
-padding-left: 100px;
+.library {
+  padding-left: 100px;
 }
 </style>

@@ -9,7 +9,7 @@
             <h2>Upload Knowledge</h2>
             <div class="page_link">
               <router-link to="/">Home</router-link>
-              <router-link to="/knowledge">Upload Knowledge</router-link>
+              <router-link to="/knowledge/upload">Upload Knowledge</router-link>
             </div>
           </div>
         </div>
@@ -37,7 +37,8 @@
                   </div>
                 </div>
                 <br>
-                <b-button variant="outline-primary" class="btnUpload" v-on:click="submitFiles()">Study Knowledge</b-button>
+                <b-button variant="outline-primary" class="btnUpload" v-on:click="submitFiles()">Study Knowledge
+                </b-button>
                 <p id="noticeUpload" class="err"></p>
                 <!--table file uploaded-->
                 <div v-if="this.items.length > 0" style="margin-top: 50px">
@@ -65,9 +66,9 @@
 
                     <template #cell(action)="row">
                       <b-button :disabled="row.item.changeStatus"
-                        variant="outline-primary" size="sm"
-                        v-on:click="cancelUpload(row.item)"
-                        class="btnDelete">
+                                variant="outline-primary" size="sm"
+                                v-on:click="cancelUpload(row.item)"
+                                class="btnDelete">
                         Delete&nbsp;<i class="fa fa-trash" aria-hidden="true"></i>
                       </b-button>
                     </template>
@@ -156,6 +157,7 @@ export default {
         html: true,
         okText: 'Yes',
         cancelText: 'No',
+        reverse: true,
         animation: 'bounce'
       };
       this.$dialog
@@ -198,7 +200,7 @@ export default {
         let newObject = {
           nameCurrent: this.fileName,
           status: 'Processing',
-          changeStatus : true,
+          changeStatus: true,
           messageDetail: '',
           knowledgeId: '',
           idx: this.$KnowledgeData.nextId,
@@ -247,7 +249,7 @@ export default {
                     self.items[index].changeStatus = false
                   } else {
                     self.items[index].status = value.status
-                    if(self.items[index].status !== 'Processing'){
+                    if (self.items[index].status !== 'Processing') {
                       self.items[index].changeStatus = false
                     }
                     self.items[index].knowledgeId = value.knowledgeId

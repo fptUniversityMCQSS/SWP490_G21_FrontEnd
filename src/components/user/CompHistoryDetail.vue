@@ -84,7 +84,6 @@ import CompBackToTop from "../frame/CompBackToTop";
 import CompLeftSider from "../frame/CompLeftSider";
 import Loading from 'vue-loading-overlay'
 import Vue from "vue";
-import moment from "moment";
 // let moment = require('moment-timezone');
 // Vue.use(moment)
 Vue.use(Loading)
@@ -98,23 +97,8 @@ export default {
     // method format date
 
     formatDate(date) {
-      // let m = moment(date);
-      // return m.format('Asia')
-
-      // Vue.filter('formatDate', function (date) {
-      //   if (date) {
-      //     return moment(String(date)).format('MM/DD/YYYY hh:mm')
-      //   }
-      // })
-
-      // let a = moment.tz(date,"MMM Do YYYY hA", "Asia/Taipei").format();
-      // return a
-
-      // let asiaTime = new Date().toLocaleString("en-US", {timeZone: "Asia/Shanghai"});
-      // return (new Date(asiaTime)).toISOString()
-
       let dateFormat = require('dateformat');
-      let newDate = new Date(date).toLocaleString("en-US", {timeZone:"Etc/GMT-14"});
+      let newDate = new Date(date).toLocaleString("en-US", {timeZone: "Etc/GMT-14"});
       try {
         return dateFormat(newDate, "dddd, mmmm dS, yyyy, hh:MM:ss TT");
       } catch (e) {

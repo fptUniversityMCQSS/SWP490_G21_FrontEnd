@@ -181,6 +181,7 @@ export default {
         html: true,
         okText: 'Yes',
         cancelText: 'No',
+        reverse: true,
         animation: 'bounce'
       };
       this.$dialog
