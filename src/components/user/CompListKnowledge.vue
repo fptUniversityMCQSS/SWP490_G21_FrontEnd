@@ -123,6 +123,11 @@
                           <template #cell(knowledgeDate)="row">
                             <div> {{ formatDate(row.value) }}</div>
                           </template>
+
+                          <template #cell(status)="row">
+                            <div> {{ row.value === 'Encoding' ? 'Studying' : row.value }}</div>
+                          </template>
+
                           <template #cell(actions)="{item}">
                             <b-button variant="outline-primary" size="sm" v-on:click="downloadKnowledge(item)"
                                       class="mr-1">
