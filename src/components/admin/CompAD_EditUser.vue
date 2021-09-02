@@ -19,9 +19,13 @@
 
     <!--================Content Area =================-->
     <section class="cat_product_area center">
-      <div>
+      <div class="vld-parent">
         <div class="row flex-row-reverse">
           <div class="col-lg-10">
+            <!--load animation-->
+            <loading class="loading" :active.sync="isLoading"
+                     :can-cancel="true"
+                     :is-full-page="false"></loading>
             <div class="col-lg-8 mx-auto section_gap">
               <div class="comment-form shadow">
                 <h4>Edit Account</h4>
@@ -133,8 +137,9 @@
                   </div>
                   <br>
                   <div class="form-group col-lg-12 cell">
-                    <b-button class="btnUpload" style="margin-right: 49px;" v-on:click="cancelEdit()">Cancel</b-button>
-                    <b-button class="btnUpload" v-on:click="editUser()">Save</b-button>
+                    <b-button class="btnUpload" style="margin-right: 49px;" v-on:click="editUser()">Save</b-button>
+                    <b-button class="btnUpload" v-on:click="cancelEdit()">Cancel</b-button>
+
                   </div>
                   <div class="errNotice">{{ err }}</div>
                 </form>
@@ -142,8 +147,8 @@
             </div>
           </div>
           <div class="col-lg-2 fixed-sidebar">
+            <flash-message class="messageNotice"></flash-message>
             <comp-left-sider/>
-            <flash-message class="myCustomClass"></flash-message>
           </div>
         </div>
       </div>
@@ -160,11 +165,12 @@ import CompHeader from "../frame/CompHeader";
 import CompFooter from "../frame/CompFooter";
 import CompBackToTop from "../frame/CompBackToTop";
 import CompLeftSider from "../frame/CompLeftSider";
+import Loading from 'vue-loading-overlay'
 
 export default {
   name: "CompAD_EditUser",
   components: {
-    CompHeader, CompFooter, CompBackToTop, CompLeftSider
+    CompHeader, CompFooter, CompBackToTop, CompLeftSider, Loading
   },
   data() {
     return {
@@ -176,7 +182,8 @@ export default {
       password: '',
       role: '',
       checked: false,
-      submitted: false
+      submitted: false,
+      isLoading: true,
     }
   },
   created() {
@@ -194,6 +201,7 @@ export default {
           this.email = response.data.email
           this.phone = response.data.phone
           this.role = response.data.role
+          this.isLoading = false;
         }
       }).catch(error => {
       console.log(error)
@@ -203,6 +211,7 @@ export default {
     // method cancel edit user
     cancelEdit() {
       this.$router.push('/admin/user')
+      this.err = ''
     },
     // method edit user
     editUser() {
@@ -231,6 +240,7 @@ export default {
                   timeout: 3000
                 });
                 self.$router.push('/admin/user');
+                this.err = ''
               }
             }).catch(error => {
             this.err = error.response.data.message
@@ -243,6 +253,25 @@ export default {
 </script>
 
 <style scoped>
+.messageNotice{
+  position: fixed;
+  z-index: 1001;
+  text-align: center;
+  max-width: 300px;
+  bottom: 10px;
+  left: 20px;
+  float: left;
+  outline: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.loading {
+  z-index: 999;
+  background-color: rgba(149, 153, 156, 0.36);
+}
+
 .errNotice {
   color: red;
   font-weight: bold;
@@ -284,7 +313,7 @@ export default {
 .fixed-sidebar {
   position: -webkit-sticky;
   position: sticky;
-  height: 600px;
+  height: 700px;
   color: #fff;
   top: 80px;
   z-index: 999;

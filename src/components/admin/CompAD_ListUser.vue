@@ -22,7 +22,7 @@
       <div class="vld-parent">
         <div class="row flex-row-reverse">
           <div class="col-lg-10 py-5">
-            <loading :active.sync="isLoading"
+            <loading class="loading" :active.sync="isLoading"
                      :can-cancel="true"
                      :is-full-page="false"></loading>
             <div class="col-lg-10 mx-auto section_gap">
@@ -83,7 +83,7 @@
             </div>
           </div>
           <div class="col-lg-2 fixed-sidebar">
-            <flash-message></flash-message>
+            <flash-message class="messageNotice"></flash-message>
             <comp-left-sider/>
           </div>
         </div>
@@ -176,11 +176,13 @@ export default {
     deleteUser(item) {
       const self = this
       let message = "<p style='text-align: center; padding-top: 5px'><b style='font-size: 20px'>Delete Account</b>" +
-        "<br><br>Are you sure you want to delete this account?</p>";
+        "<br><br>Do you want to delete this account?</p>";
       let options = {
         html: true,
-        okText: 'Continue',
-        cancelText: 'Close',
+        okText: 'Yes',
+        cancelText: 'No',
+        reverse: true,
+        animation: 'bounce'
       };
       this.$dialog
         .confirm(message, options)
@@ -256,6 +258,24 @@ export default {
 </script>
 
 <style scoped>
+.messageNotice{
+  position: fixed;
+  z-index: 1001;
+  text-align: center;
+  max-width: 300px;
+  bottom: 10px;
+  left: 20px;
+  float: left;
+  outline: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.loading {
+  z-index: 999;
+  background-color: rgba(149, 153, 156, 0.36);
+}
 
 .btnDelete {
   border-color: red;
@@ -270,7 +290,7 @@ export default {
 .fixed-sidebar {
   position: -webkit-sticky;
   position: sticky;
-  height: 600px;
+  height: 700px;
   color: #fff;
   top: 80px;
   z-index: 999;

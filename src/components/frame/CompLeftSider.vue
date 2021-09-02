@@ -4,11 +4,28 @@
       <h3>DeepQuiz Feature</h3>
     </div>
     <ul class="list-unstyled">
+
       <li>
-        <router-link to="/qa">
-          <i class="fa fa-cogs space" aria-hidden="true"></i>Question Answer
-        </router-link>
+        <a href="#pageSubmenu1" data-toggle="collapse" aria-expanded="false"
+           @click="dropDown = !dropDown">
+          <i class="fa fa-cogs space" aria-hidden="true"/>Question Answer
+          <i class="fa"
+             :class="[dropDown ? 'fa-sort-asc' : 'fa-sort-desc']"
+             aria-hidden="true"></i></a>
+        <ul class="collapse list-unstyled" id="pageSubmenu1">
+          <li>
+            <router-link to="/qa">
+              <i class="fa fa-upload spaceMenu" aria-hidden="true"></i>Upload Exam
+            </router-link>
+          </li>
+          <li>
+            <router-link to="/generate">
+              <i class="fa fa-pencil-square-o spaceMenu" aria-hidden="true"></i>Create Exam
+            </router-link>
+          </li>
+        </ul>
       </li>
+
       <li v-if="role === 'admin' || role === 'staff'">
         <router-link to="/knowledge/upload" exact-active-class="exact-active">
           <i class="fa fa-graduation-cap space1" aria-hidden="true"></i>Upload
@@ -97,7 +114,7 @@ a.router-link-exact-active {
   color: black;
   transition: all 0.3s;
   position: absolute;
-  height: 600px;
+  height: 700px;
   background: #e8f1f8;
 }
 

@@ -155,6 +155,7 @@ export default {
               if (response.status === 200) {
                 alert("Register Successfully!")
                 self.$router.push('/login');
+                this.err = ''
               }
             }).catch(error => {
             this.err = error.response.data.message

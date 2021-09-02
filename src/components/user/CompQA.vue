@@ -22,99 +22,105 @@
       <div>
         <div class="row flex-row-reverse">
           <div class="col-lg-10">
-            <div class="col-lg-11 mx-auto section_gap">
+            <div class="col-lg-10 mx-auto">
+              <!--component Question Answer-->
               <div class="wrapper">
-                <!--form upload-->
-                <div class="cont shadow" style="background-color: #f9f9ff">
-                  <h2>Upload Question</h2>
-                  <div class="upload-container">
-                    <div class="border-container">
-                      <p>To make this feature available,
-                        your file must be in the correct format. You can check out <a
-                          href="../../../static/QB_SWT391_BanTQ.doc"
-                          download="The_sample_doc"><u>the sample
-                          format</u></a></p>
-                      <p>Drag and drop files here, or
-                        <input type="file" name="file" id="fileInput" ref="file"
-                               v-on:change="handleFilesUpload"/>
-                      </p>
+                  <div class="cont shadow">
+                    <h2>Upload Question Answer Exam</h2>
+                    <div class="upload-container">
+                      <div class="border-container">
+                        <p>To use this function manually, please download this
+                          <a href="../../../static/template.docx" download="template.docx"><u>template</u></a>
+                          and input your question bank to the template correctly.
+                          You can look at the <a href="../../../static/guideline.docx" download="guideline.docx"><u>guideline</u></a>
+                          to know how to input.
+                          You can also use <a href="../../../static/The_sample.docx" download="The_sample.docx"><u>the
+                            sample</u></a>
+                          input to test the system.</p>
+                        <p style="padding-bottom: 20px">Drag and drop files here, or
+                          <input type="file" name="file" id="fileInput" ref="file"
+                                 v-on:change="handleFilesUpload"/>
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <br>
-                <b-button variant="outline-primary" class="btnUpload"
-                          v-on:click="submitFiles()">Upload
-                </b-button>
-                <p id="noticeUpload" class="err"></p>
+                  <b-button variant="outline-primary" class="btnUpload"
+                            v-on:click="submitFiles()">Solve The Uploaded Exam
+                  </b-button>
+                  <p id="noticeUpload" class="err"></p>
+                  <!--table list QA uploaded-->
+                  <div v-if="items.length>0" style="margin-top: 50px">
+                    <b-table :bordered="true" :borderless="true" :items="items.slice().reverse()" :fields="fields"
+                             class="shadow text-center"
+                             responsive="sm">
+                      <template #cell(historyName)="row">
+                        <div>{{ row.value }}</div>
+                      </template>
+                      <template #cell(status)="{item}">
 
-                <!--table list QA uploaded-->
-                <div v-if="items.length>0" style="margin-top: 50px">
-                  <b-table :bordered="true" :borderless="true" :items="items.slice().reverse()" :fields="fields"
-                           class="shadow text-center"
-                           responsive="sm">
-                    <template #cell(historyName)="row">
-                      <div>{{ row.value }}</div>
-                    </template>
-                    <template #cell(status)="{item}">
-
-                      <div v-if="item.status === 'Loading'">
-                        Loading&nbsp;<i class="fa fa-spinner fa-spin"/>
-                      </div>
-
-                      <div v-else>
-                        <div v-if="item.message !== 'DONE' && item.message !== ''" style="color: red">
-                          <span v-b-tooltip.right="item.message">Error in processing</span>
+                        <div v-if="item.status === 'Loading'">
+                          Loading&nbsp;<i class="fa fa-spinner fa-spin"/>
                         </div>
-                        <b-progress v-else-if="item.message === 'DONE'" :max="item.questions_number">
-                          <b-progress-bar style="background-color: #4ABF60" :value="item.questions.length"
-                                          :label="`Done`"></b-progress-bar>
-                        </b-progress>
-                        <b-progress v-else :max="item.questions_number">
-                          <b-progress-bar class="progress-bar-animated" striped :value="item.questions.length"
-                                          :label="`${((item.questions.length / item.questions_number) * 100).toFixed(0)}%`"></b-progress-bar>
-                        </b-progress>
-                        {{ item.questions.length + "/" + item.questions_number }}
-                      </div>
 
-                    </template>
-                    <template #cell(action)="row">
-                      <b-button variant="outline-primary" size="sm" @click="row.toggleDetails"
-                                class="mr-1">
-                        {{ row.detailsShowing ? 'Hide' : 'Show' }} Details&nbsp;
-                        <i class="fa" :class="[row.detailsShowing ? 'fa-eye-slash':'fa-eye']" aria-hidden="true"></i>
-                      </b-button>
+                        <div v-else>
+                          <div v-if="item.message !== 'DONE' && item.message !== ''" style="color: red">
+                            <span v-b-tooltip.right="item.message">Error in processing</span>
+                          </div>
+                          <b-progress v-else-if="item.message === 'DONE'" :max="item.questions_number">
+                            <b-progress-bar style="background-color: #4ABF60" :value="item.questions.length"
+                                            :label="`Done`"></b-progress-bar>
+                          </b-progress>
+                          <b-progress v-else :max="item.questions_number">
+                            <b-progress-bar class="progress-bar-animated" striped :value="item.questions.length"
+                                            :label="`${((item.questions.length / item.questions_number) * 100).toFixed(0)}%`"></b-progress-bar>
+                          </b-progress>
+                          {{ item.questions.length + "/" + item.questions_number }}
+                        </div>
 
-                      <b-button
-                        v-if="row.item.message !== ''"
-                        variant="outline-primary" size="sm"
-                        v-on:click="viewQA(row.item.id)">
-                        View&nbsp;<i class="fa fa-share-square-o" aria-hidden="true"></i>
-                      </b-button>
+                      </template>
+                      <template #cell(action)="row">
+                        <b-button :disabled="row.item.changeStatus" variant="outline-primary" size="sm"
+                                  @click="row.toggleDetails"
+                                  class="mr-1">
+                          {{ row.detailsShowing ? 'Hide' : 'Show' }} Details&nbsp;
+                          <i class="fa" :class="[row.detailsShowing ? 'fa-eye-slash':'fa-eye']" aria-hidden="true"></i>
+                        </b-button>
 
-                      <b-button
-                        v-if="row.item.status !== 'Loading' || row.item.message !== ''"
-                        variant="outline-primary" size="sm"
-                        v-on:click="cancelUpload(row.item)"
-                        class="btnDelete">
-                        Delete&nbsp;<i class="fa fa-trash" aria-hidden="true"></i>
-                      </b-button>
-                    </template>
+                        <b-button
+                          v-if="row.item.message !== ''"
+                          variant="outline-primary" size="sm"
+                          v-on:click="viewQA(row.item.id)">
+                          View&nbsp;<i class="fa fa-share-square-o" aria-hidden="true"></i>
+                        </b-button>
 
-                    <template #row-details="row">
-                      <b-card class="scrollbar">
-                        <ul v-for="ob in row.item.questions" :key="ob.Number">
-                          <li>{{ ob.Number + ". " + ob.Content }}</li>
-                          <li>{{ "=> " + ob.Answer + ". " + ob.AnswerContent }}</li>
-                        </ul>
-                        <p v-if="row.item.message === ''">
-                          <img style="max-height: 50px; max-width: 100px " src="../../assets/img/product/thinking.gif">
-                        </p>
-                      </b-card>
-                    </template>
-                  </b-table>
+                        <b-button
+                          v-if="row.item.status !== 'Loading' || row.item.message !== ''"
+                          variant="outline-primary" size="sm"
+                          v-on:click="cancelUpload(row.item)"
+                          class="btnDelete">
+                          Delete&nbsp;<i class="fa fa-trash" aria-hidden="true"></i>
+                        </b-button>
+                      </template>
+
+                      <template #row-details="row">
+                        <b-card class="scrollbar">
+                          <ul v-for="ob in row.item.questions" :key="ob.Number">
+                            <li>{{ ob.Number + ". " + ob.Content }}</li>
+                            <li>{{ "=> " + ob.Answer + ". " + ob.AnswerContent }}</li>
+                          </ul>
+                          <p v-if="row.item.message === ''">
+                            <img style="max-height: 50px; max-width: 100px "
+                                 src="../../assets/img/product/thinking.gif">
+                          </p>
+                          <p v-if="row.item.message !== 'DONE'">
+                            {{ row.item.message }}
+                          </p>
+                        </b-card>
+                      </template>
+                    </b-table>
+                  </div>
                 </div>
               </div>
-            </div>
           </div>
           <div class="col-lg-2 fixed-sidebar">
             <comp-left-sider/>
@@ -156,12 +162,11 @@ export default {
     return {
       items: [],
       fileName: '',
-      nextIndex: 0,
       fields: [
         {
           key: 'historyName',
           label: 'File Name',
-          thStyle: {background: '#92c3f9', color: 'black', },
+          thStyle: {background: '#92c3f9', color: 'black',},
         },
         {
           key: 'status',
@@ -174,47 +179,43 @@ export default {
           thStyle: {background: '#92c3f9', color: 'black', width: '300px'},
         }
       ],
-      files: ''
+      files: '',
     }
   },
   /*
     Defines the method used by the component
   */
+  beforeRouteLeave(to, from, next) {
+    if (this.$session.exists('user')) {
+      this.$QAData.list = this.items
+    }
+    next()
+  },
   created() {
     self = this
-    if (!this.$session.exists('listQA')) {
-      this.$session.set('listQA', [])
-      this.items = this.$session.get('listQA')
-    } else {
-      this.items = this.$session.get('listQA')
-    }
-
-    if (!this.$session.exists('nextIndexQA')) {
-      this.$session.set('nextIndexQA', 0)
-      this.nextIndex = this.$session.get('nextIndexQA')
-    } else {
-      this.nextIndex = this.$session.get('nextIndexQA')
-    }
+    this.items = this.$QAData.list
   },
   methods: {
     // method cancel upload
     cancelUpload(item) {
-      let message = "<p style='text-align: center; padding-top: 5px'><b style='font-size: 20px'>Cancel Upload</b>" +
-        "<br><br>Are you sure you want to cancel upload?</p>";
+      let message = "<p style='text-align: center; padding-top: 5px'><b style='font-size: 20px'>Delete Question Answer Exam</b>" +
+        "<br><br>Do you want to delete this exam?</p>";
       let options = {
         html: true,
-        okText: 'Continue',
-        cancelText: 'Close',
+        okText: 'Yes',
+        cancelText: 'No',
+        reverse: true,
+        animation: 'bounce'
       };
       this.$dialog
         .confirm(message, options)
         .then(() => {
-
-          self.items = self.$session.get('listQA')
           let index = findQA(item.idx, self.items)
-          self.$requests[self.items[index].cancelId].abort()
+          try {
+            self.items[index].controller.abort()
+          } catch (e) {
+          }
           self.items.splice(index, 1)
-          self.$session.set('listQA', self.items)
 
           const axios = require('axios');
           axios
@@ -224,14 +225,6 @@ export default {
               }
             })
             .then(response => {
-              // if (response.status === 200) {
-              //   this.flash('Delete successfully!', 'success', {
-              //     timeout: 10000
-              //   });
-              //   let index = this.items.indexOf(item)
-              //   this.items.splice(index, 1)
-              //   this.totalRows--
-              // }
             })
             .catch(error => {
               console.log(error)
@@ -264,29 +257,24 @@ export default {
           status: 'Loading',
           questions_number: 1,
           subject: '',
+          changeStatus: true,
           questions: [],
           _showDetails: false,
-          idx: this.nextIndex,
+          idx: this.$QAData.nextId,
+          controller: new AbortController()
         }
-        objectQA.cancelId = this.$requests.nextId
-        let controller = new AbortController()
-        this.$requests[objectQA.cancelId] = controller
-        this.$requests.nextId++
-
-        this.items = this.$session.get('listQA')
+        this.$QAData.nextId++
         this.items.push(objectQA)
-        this.nextIndex++
-        this.$session.set('nextIndexQA', this.nextIndex)
-        this.$session.set('listQA', this.items)
         /*
         Initialize the form data
       */
+
         let formData = new FormData();
         formData.append('file', this.files)
         fetch(process.env.VUE_APP_BACKEND_SERVER + process.env.VUE_APP_QA,
           {
             method: "PUT",
-            signal: controller.signal,
+            signal: objectQA.controller.signal,
             headers: {
               // 'Content-Type': 'multipart/form-data',
               'Authorization': 'Bearer ' + self.$session.get("user").token
@@ -315,13 +303,14 @@ export default {
                     showDetail: !!item._showDetails
                   })
                 })
-                self.items = self.$session.get('listQA')
                 let index = findQA(objectQA.idx, self.items)
                 arrIndex.forEach((item) => {
                   self.items[item.index]._showDetails = item.showDetail
                 })
                 res.forEach((value) => {
                   self.items[index].status = 'Process'
+                  self.items[index].changeStatus = false
+                  self.items[index]._showDetails = true
                   if ("id" in value) {
                     self.items[index].id = value.id
                     self.items[index].historyDate = value.historyDate
@@ -346,16 +335,14 @@ export default {
                     self.items[index].questions.push(question)
                   }
                 })
-                self.$session.set('listQA', self.items)
               }
               reader.releaseLock();
-              delete this.$requests[objectQA.cancelId]
             }
             read();
           })
           .catch(error => {
             self.items[index].message = error.response.data.message
-            delete this.$requests[objectQA.cancelId]
+            // delete this.$requests[objectQA.cancelId]
           });
       } else {
         document.getElementById("noticeUpload").innerHTML = "Please choose file to upload!";
@@ -398,22 +385,10 @@ table.table {
   table-layout: fixed;
 }
 
-.actionBtn {
-  background-color: #92c3f9;
-  color: black;
-  font-weight: bold;
-  border: none;
-}
-
-.actionBtn:hover {
-  background-color: #0088ff;
-  color: #fff;
-}
-
 .fixed-sidebar {
   position: -webkit-sticky;
   position: sticky;
-  height: 600px;
+  height: 700px;
   color: #fff;
   top: 80px;
   z-index: 999;
@@ -426,14 +401,14 @@ table.table {
 }
 
 body {
-  font-family: 'Montserrat', sans-serif;
-  background: #535c68;
+  font-family: Arial, Helvetica, sans-serif;
+  background: rgba(83, 92, 104, 0.71);
 }
 
 .wrapper {
   margin: auto;
   max-width: 800px;
-  padding-top: 60px;
+  padding-top: 50px;
   padding-bottom: 60px;
   text-align: center;
 }
@@ -442,6 +417,7 @@ body {
   background-color: #f9f9f9;
   padding: 20px;
   border-radius: 10px;
+  margin-top: 50px
 }
 
 h2 {
@@ -460,13 +436,12 @@ h2 {
 
 .border-container {
   border: 5px dashed rgba(198, 198, 198, 0.65);
-  padding: 20px;
 }
 
 .border-container p {
-  color: #130f40;
+  color: rgba(19, 15, 64, 0.85);
   font-weight: 600;
-  font-size: 1.1em;
+  font-size: 1.05em;
   letter-spacing: -1px;
   margin-top: 30px;
   margin-bottom: 0;
@@ -474,7 +449,7 @@ h2 {
 }
 
 .btnUpload {
-  width: 200px;
+  width: auto;
   height: 50px;
   background-color: #92c3f9;
   border: none;
@@ -483,7 +458,7 @@ h2 {
   font-weight: 600;
   cursor: pointer;
   text-align: center;
-  margin-top: 20px;
+  margin-top: 40px;
 }
 
 .btnUpload:hover {

@@ -16,6 +16,7 @@ import CompMyAccount from "../components/user/CompMyAccount";
 import CompAbout from "../components/user/CompAbout";
 import CompAD_Log from "../components/admin/CompAD_Log";
 import CompAPILibrary from "../components/user/CompAPILibrary";
+import CompCreateQA from "../components/user/CompCreateQA";
 
 Vue.use(Router)
 
@@ -46,6 +47,21 @@ export default new Router({
       path: '/library',
       component: CompAPILibrary,
       meta: {title: 'API Library'}
+    },
+    {
+      path: '/generate',
+      component: CompCreateQA,
+      meta: {title: 'Create Exam'},
+      beforeEnter: (to, from, next) => {
+        if (Vue.prototype.$session.exists('user')) {
+          let role = Vue.prototype.$session.get('user').role
+          if (role === 'staff' || role === 'admin' || role === 'user') {
+            next()
+          }
+        } else {
+          next('/error')
+        }
+      }
     },
     {
       path: '/user',

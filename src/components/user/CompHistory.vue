@@ -22,7 +22,7 @@
       <div class="vld-parent">
         <div class="row flex-row-reverse">
           <div class="col-lg-10 py-5">
-            <loading :active.sync="isLoading"
+            <loading class="loading" :active.sync="isLoading"
                      :can-cancel="true"
                      :is-full-page="false"></loading>
             <div class="col-lg-10 mx-auto section_gap">
@@ -89,7 +89,7 @@
             </div>
           </div>
           <div class="col-lg-2 fixed-sidebar">
-            <flash-message class="myCustomClass"></flash-message>
+            <flash-message class="messageNotice"></flash-message>
             <comp-left-sider/>
           </div>
         </div>
@@ -138,7 +138,8 @@ export default {
           label: 'Date',
           sortable: true,
           thStyle: {background: '#92c3f9', color: 'black', width: '190px'},
-          thClass: 'text-center'
+          thClass: 'text-center',
+          tdClass: 'text-center'
         },
         {
           key: 'subject',
@@ -169,12 +170,14 @@ export default {
     //method delete history
     deleteHistory(item) {
       const self = this
-      let message = "<p style='text-align: center; padding-top: 5px'><b style='font-size: 20px'>Delete Question Answer Test</b>" +
-        "<br><br>Are you sure you want to delete this test?</p>";
+      let message = "<p style='text-align: center; padding-top: 5px'><b style='font-size: 20px'>Delete Question Answer Exam</b>" +
+        "<br><br>Do you want to delete this exam?</p>";
       let options = {
         html: true,
-        okText: 'Continue',
-        cancelText: 'Close',
+        okText: 'Yes',
+        cancelText: 'No',
+        reverse: true,
+        animation: 'bounce'
       };
       this.$dialog
         .confirm(message, options)
@@ -207,8 +210,12 @@ export default {
     // method format date
     formatDate(date) {
       let dateFormat = require('dateformat');
-      let newDate = new Date(date);
-      return dateFormat(newDate, "dddd, mmmm dS, yyyy, h:MM:ss TT");
+      let newDate = new Date(date).toLocaleString("en-US", {timeZone: "Etc/GMT-14"});
+      try {
+        return dateFormat(newDate, "dddd, mmmm dS, yyyy, hh:MM:ss TT");
+      } catch (e) {
+      }
+      return ""
     },
     // method  redirect to history detail
     sendData(item) {
@@ -255,7 +262,6 @@ export default {
       })
       .then(response => {
         if (response.status === 200) {
-          console.log(response.data)
           this.items = response.data
           this.totalRows = response.data.length
           this.isLoading = false;
@@ -268,6 +274,25 @@ export default {
 }
 </script>
 <style scoped>
+.messageNotice {
+  position: fixed;
+  z-index: 1001;
+  text-align: center;
+  max-width: 300px;
+  bottom: 10px;
+  left: 20px;
+  float: left;
+  outline: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.loading {
+  z-index: 999;
+  background-color: rgba(149, 153, 156, 0.36);
+}
+
 .btnDelete {
   border-color: red;
   color: red;
@@ -295,7 +320,7 @@ table.table {
 .fixed-sidebar {
   position: -webkit-sticky;
   position: sticky;
-  height: 600px;
+  height: 700px;
   color: #fff;
   top: 80px;
   z-index: 999;

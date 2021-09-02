@@ -84,6 +84,10 @@ export default {
     // method logout
     logout() {
       this.$session.clear();
+      this.$KnowledgeData.nextId = 0
+      this.$KnowledgeData.list = []
+      this.$QAData.nextId = 0
+      this.$QAData.list = []
       this.$router.push('/login');
     }
   }
@@ -108,7 +112,7 @@ a.router-link-exact-active {
   color: #FFFFFF;
 }
 
-.fontHeader{
+.fontHeader {
   font-size: 15px;
 }
 

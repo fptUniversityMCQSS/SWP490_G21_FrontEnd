@@ -23,7 +23,7 @@
         <div class="row flex-row-reverse">
           <div class="col-lg-10 py-5">
             <!--load animation-->
-            <loading :active.sync="isLoading"
+            <loading class="loading" :active.sync="isLoading"
                      :can-cancel="true"
                      :is-full-page="false"></loading>
             <div class="col-lg-10 mx-auto section_gap">
@@ -66,18 +66,14 @@
                                  :current-page="currentPage"
                                  stacked="md"
                                  show-empty
-                                 :per-page="perPage" :filter="filter" :fields="fields" id="my-table"
+                                 :per-page="perPage" :filter="filter" :fields="fields"
                                  @filtered="onFiltered">
-
-                          <template #cell(knowledgeName)="row">
-                            <div>{{ row.value }}</div>
-                          </template>
 
                           <template #cell(knowledgeDate)="row">
                             <div> {{ formatDate(row.value) }}</div>
                           </template>
+
                           <template #cell(actions)="{item}">
-                            <col :style="{ width: '50px' }">
                             <b-button variant="outline-primary" size="sm" v-on:click="downloadKnowledge(item)"
                                       class="mr-1">
                               <i class="fa fa-download" aria-hidden="true"></i>
@@ -94,7 +90,7 @@
                                  :items="itemAll" :current-page="currentPage"
                                  stacked="md"
                                  show-empty
-                                 :per-page="perPage" :filter="filter" :fields="fields" id="my-table"
+                                 :per-page="perPage" :filter="filter" :fields="fields"
                                  @filtered="onFiltered">
                           <template #cell(knowledgeName)="row">
                             <div>{{ row.value }}</div>
@@ -127,6 +123,11 @@
                           <template #cell(knowledgeDate)="row">
                             <div> {{ formatDate(row.value) }}</div>
                           </template>
+
+                          <template #cell(status)="row">
+                            <div> {{ row.value === 'Encoding' ? 'Studying' : row.value }}</div>
+                          </template>
+
                           <template #cell(actions)="{item}">
                             <b-button variant="outline-primary" size="sm" v-on:click="downloadKnowledge(item)"
                                       class="mr-1">
@@ -142,7 +143,7 @@
                       </div>
                       <div style="padding-top: 20px;">
                         <b-pagination size="md" :total-rows="totalRows" :per-page="perPage"
-                                      v-model="currentPage" aria-controls="my-table"/>
+                                      v-model="currentPage"/>
                       </div>
                     </div>
                   </div>
@@ -157,7 +158,7 @@
       </div>
     </section>
     <!--================End Content Area =================-->
-    <flash-message class="flash__message"></flash-message>
+    <flash-message class="messageNotice"></flash-message>
     <comp-back-to-top/>
     <comp-footer/>
   </div>
@@ -202,7 +203,8 @@ export default {
           label: 'Date',
           sortable: true,
           thStyle: {background: '#92c3f9', color: 'black'},
-          thClass: 'text-center'
+          thClass: 'text-center',
+          tdClass: 'text-center'
         },
         {
           key: 'status',
@@ -234,8 +236,12 @@ export default {
     // method format date
     formatDate(date) {
       let dateFormat = require('dateformat');
-      let newDate = new Date(date);
-      return dateFormat(newDate, "dddd, mmmm dS, yyyy, h:MM:ss TT");
+      let newDate = new Date(date).toLocaleString("en-US", {timeZone: "Etc/GMT-14"});
+      try {
+        return dateFormat(newDate, "dddd, mmmm dS, yyyy, hh:MM:ss TT");
+      } catch (e) {
+      }
+      return ""
     },
     // method download knowledge
     downloadKnowledge(item) {
@@ -262,11 +268,13 @@ export default {
     deleteKnowledge(item) {
       const self = this
       let message = "<p style='text-align: center; padding-top: 5px'><b style='font-size: 20px'>Delete Knowledge</b>" +
-        "<br><br>Are you sure you want to delete this knowledge?</p>";
+        "<br><br>Do you want to delete this knowledge?</p>";
       let options = {
         html: true,
-        okText: 'Continue',
-        cancelText: 'Close',
+        okText: 'Yes',
+        cancelText: 'No',
+        reverse: true,
+        animation: 'bounce'
       };
       this.$dialog
         .confirm(message, options)
@@ -329,7 +337,8 @@ export default {
                 username: value.Username,
                 knowledgeDate: value.knowledgeDate,
                 knowledgeId: value.knowledgeId,
-                knowledgeName: value.knowledgeName
+                knowledgeName: value.knowledgeName,
+                status: value.status
               }
               this.items.push(object)
             }
@@ -351,6 +360,25 @@ export default {
 </script>
 
 <style scoped>
+.messageNotice {
+  position: fixed;
+  z-index: 1001;
+  text-align: center;
+  max-width: 300px;
+  bottom: 10px;
+  left: 20px;
+  float: left;
+  outline: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.loading {
+  z-index: 999;
+  background-color: rgba(149, 153, 156, 0.36);
+}
+
 .center {
   margin: auto;
   display: block;
@@ -369,7 +397,7 @@ table.table {
 .fixed-sidebar {
   position: -webkit-sticky;
   position: sticky;
-  height: 600px;
+  height: 700px;
   color: #fff;
   top: 80px;
   z-index: 999;
